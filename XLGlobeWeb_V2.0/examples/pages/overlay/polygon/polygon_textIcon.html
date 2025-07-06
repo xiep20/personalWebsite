@@ -1,0 +1,71 @@
+<!--
+ * @Descripttion : 
+ * @version      : 
+ * @Author       : HeDa
+ * @Date         : 2021-01-15 15:12:18
+ * @LastEditors  : HeDa
+ * @LastEditTime : 2021-01-18 17:11:27
+ * @FilePath     : /XLGlobeWebV2.0/public/examples/pages/overlay/polygon/polygon_textIcon.html
+-->
+<style>
+</style>
+<div id="rjContainer"></div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+    });
+
+    var Globe;
+    var viewer;
+    //初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer", {
+            navigation: true, //导航
+        });
+
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+        //加载模型
+        var tileset = new XLGlobe.Model.load3DTiles(Globe.viewer, {
+            url: config.dataUrl + "model/3DTiles/changju/changju/tileset.json",
+            hideGlobe: false,
+            isZoomTo: false,
+            height: 0
+        })
+        // 文字一，贴墙
+        var textEntity1 = new XLGlobe.DataSource.textEntity(viewer, {
+            type: "wall",
+            positions: Cesium.Cartesian3.fromDegreesArray([
+                114.42882, 30.43729,
+                 114.42893, 30.43731,
+            ]),
+            minimumHeights: [14.4, 14.4],
+            maximumHeights: [16.4, 16.4],
+            text: "公司名称",
+            fontSize: 100,
+            color: "#4169E1",
+        })
+        // 文字二，贴地
+        var textEntity2 = new XLGlobe.DataSource.textEntity(viewer, {
+            type: "polygon",
+            positions: Cesium.Cartesian3.fromDegreesArray([
+                114.42917, 30.4373,
+                114.42865, 30.4373,
+                114.42865, 30.4372,
+                114.42917, 30.4372,
+            ]),
+            text: "XLGlobe",
+            fontSize: 80,
+            color: "#00BFFF",
+            zoomTo: true,
+            height: 0.3
+        })
+    }
+</script>

@@ -1,0 +1,83 @@
+<style>
+    .infoview {
+        position: absolute;
+        top: 10px;
+        right: 30px;
+        padding: 10px 15px;
+        border-radius: 4px;
+        border: 1px solid rgba(128, 128, 128, 0.5);
+        color: #ffffff;
+        background: rgba(0, 0, 0, 0.4);
+        box-shadow: 0 3px 14px rgba(128, 128, 128, 0.5);
+        z-index: 9999;
+    }
+
+    .infoview input,
+    .infoview select,
+    .infoview textarea {
+        color: #ffffff;
+        background-color: rgba(32, 160, 255, 0.2);
+        border: 1px solid #e4eaec;
+        font-size: 14px;
+    }
+</style>
+
+<div id="rjContainer"></div>
+
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+        initWork();
+    });
+
+    var viewer;
+    var scene;
+
+    //初始化地图
+    function initMap() {
+        var Globe = new XLGlobe.Globe("rjContainer", {});
+
+        viewer = Globe.viewer;
+        scene = viewer.scene;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+    }
+
+    var windy;
+    var timer = null;
+
+    //当前页面业务相关
+    function initWork() {
+        //获取数据
+        $.ajax({
+            type: "get",
+            url: config.dataUrl + "/apidemo/uvwind.json",
+            dataType: "json",
+            success: function (response) {
+                var header = response[0].header;
+
+                viewer.camera.setView({
+                    destination: Cesium.Rectangle.fromDegrees(header['lo1'], header['la2'], header[
+                        'lo2'], header['la1'])
+                });
+                //风向图
+                windy = new XLGlobe.Visualization.Windy(response, viewer);
+                redraw();
+            },
+            error: function (errorMsg) {
+                alert("请求数据失败!");
+            }
+        });
+    }
+    //动画
+    function redraw() {
+        timer = setInterval(function () {
+            windy.animate();
+        }, 100);
+    }
+</script>

@@ -1,0 +1,54 @@
+<style>
+    #isStartXZ {
+        position: ab;
+    }
+</style>
+<div id="rjContainer"></div>
+<div id="isStartXZ"></div>
+<script>
+    var Globe = new XLGlobe.Globe("rjContainer");
+
+    //添加底图图层
+    _addbdlayer(Globe);
+    //加载卫星模型
+    var position = Cesium.Cartesian3.fromDegrees(114.405286, 30.459466, 500000);
+    var heading = Cesium.Math.toRadians(135);
+    var pitch = 0;
+    var roll = 0;
+    var hpr = new Cesium.HeadingPitchRoll(heading, pitch, roll);
+    var orientation = Cesium.Transforms.headingPitchRollQuaternion(position, hpr);
+    var weixin = new XLGlobe.Model.loadGltf(Globe.viewer, {
+        id: 1, //模型ID
+        name: "test", //模型名称
+        type: "entity", //加载方式
+        url: config.dataUrl + '/model/weixin/weixin.gltf', //模型文件地址
+        position: position, //坐标位置
+        orientation: orientation, //设置方向
+        show: true, //模型是否可见
+        minimumPixelSize: 128, //用于指定模型的最小最小像素大小，而不考虑缩放。
+        maximumScale: 20000, //模型的最大比例尺大小。 minimumPixelSize的上限。
+        runAnimations: true, //是否显示动画
+        isZoomTo: true, //加载完成后是否定位
+        color: { //模型颜色
+            color: "white",
+            alpha: 1
+        },
+        silhouette: { //轮廓设置
+            color: "Red", //颜色   
+            alpha: 1, //透明度
+            size: 0, //宽度
+        },
+    })
+    //模型旋转
+    function rotation(entity, radian) {
+        //角度控制
+        var heading = Cesium.Math.toRadians(Number(radian || 0.0));
+        var hpr = new Cesium.HeadingPitchRoll(heading, 0, 0);
+        entity.orientation = Cesium.Transforms.headingPitchRollQuaternion(entity.position._value, hpr);
+    }
+    var radian = 0.1;
+    setInterval(function () {
+        rotation(weixin, radian);
+        radian += 0.5;
+    }, 100);
+</script>

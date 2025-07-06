@@ -1,0 +1,75 @@
+<importjs>
+  <!-- echarts插件 -->
+  <script src="libs/echarts.min.js"></script>
+</importjs>
+<div id="rjContainer"></div>
+
+<script>
+  $(document).ready(function () {
+    if (!XLGlobe.Utils.util.webglreport()) {
+      alert('系统检测到您使用的浏览器不支持WebGL功能');
+    }
+
+    initMap();
+    initWork();
+  });
+
+  var viewer;
+  var scene;
+
+  //初始化地图
+  function initMap() {
+    var Globe = new XLGlobe.Globe("rjContainer", {});
+
+    viewer = Globe.viewer;
+    scene = viewer.scene;
+
+    //添加底图图层
+    _addbdlayer(Globe);
+    viewer.camera.setView({
+      destination: Cesium.Cartesian3.fromDegrees(120.13018670197, 30.238217082645, 30000)
+    });
+  }
+
+  //当前页面业务相关
+  function initWork() {
+    //数据
+    $.ajax({
+      url: 'https://cdn.jsdelivr.net/gh/apache/incubator-echarts-website@asf-site/examples/data/asset/data/hangzhou-tracks.json',
+      datatype: "json",
+      type: 'GET',
+      success: function (data) {
+        var points = [].concat.apply([], data.map(function (track) {
+          return track.map(function (seg) {
+            return seg.coord.concat([1]);
+          });
+        }));
+        // echarts 配置项
+        option = {
+          animation: !1,
+          GLMap: {},
+          visualMap: {
+            show: false,
+            top: 'top',
+            min: 0,
+            max: 5,
+            seriesIndex: 0,
+            calculable: true,
+            inRange: {
+              color: ['blue', 'blue', 'green', 'yellow', 'red']
+            }
+          },
+          series: [{
+            type: 'heatmap',
+            coordinateSystem: 'GLMap',
+            data: points,
+            pointSize: 5,
+            blurSize: 6
+          }]
+        };
+        //Echarts到地图
+        var combineEcharts = new XLGlobe.Echarts.CombineEcharts(viewer, option);
+      }
+    })
+  }
+</script>

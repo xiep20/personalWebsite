@@ -1,0 +1,120 @@
+<importjs>
+    <!-- mapV -->
+    <script src="libs/mapV/mapv.js"></script>
+    <script src="libs/mapV/mapvgl.js"></script>
+</importjs>
+<div id="rjContainer"></div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+        initMap();
+        weibo_point();
+    });
+    var viewer;
+    var scene;
+    //初始化地图
+    function initMap() {
+        var Globe = new XLGlobe.Globe("rjContainer", {});
+        viewer = Globe.viewer;
+        scene = viewer.scene;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+        //定位
+        viewer.camera.setView({
+            destination: Cesium.Cartesian3.fromDegrees(112.088953, 31.161181, 5000000)
+        });
+
+    }
+
+    //当前页面业务相关
+    function weibo_point() {
+        //获取数据
+        $.get('./examples/pages/visualization/mapV/data/weibo.json', function (
+            rs) {
+            var data1 = [];
+            var data2 = [];
+            var data3 = [];
+            var data4 = [];
+            for (var i = 0; i < rs[0].length; i++) {
+                var geoCoord = rs[0][i].geoCoord;
+                data1.push({
+                    geometry: {
+                        type: 'Point',
+                        coordinates: geoCoord
+                    }
+                });
+            }
+
+            for (var i = 0; i < rs[1].length; i++) {
+                var geoCoord = rs[1][i].geoCoord;
+                data2.push({
+                    geometry: {
+                        type: 'Point',
+                        coordinates: geoCoord
+                    },
+                    time: Math.random() * 10
+                });
+            }
+
+            for (var i = 0; i < rs[2].length; i++) {
+                var geoCoord = rs[2][i].geoCoord;
+                data3.push({
+                    geometry: {
+                        type: 'Point',
+                        coordinates: geoCoord
+                    },
+                });
+            }
+            //MapV配置项
+            var options = {
+                fillStyle: 'rgba(200, 200, 0, 0.8)',
+                bigData: 'Point',
+                size: 0.7,
+                draw: 'simple',
+            }
+            //MapV加载到地图
+            var MapVLayer = new XLGlobe.MapV.CombineMapV(viewer, data1, options);
+
+            //MapV配置项
+            var options = {
+                fillStyle: 'rgba(255, 250, 0, 0.8)',
+                size: 0.7,
+                bigData: 'Point',
+                draw: 'simple',
+            }
+            //MapV加载到地图
+            var MapVLayer = new XLGlobe.MapV.CombineMapV(viewer, data2, options);
+
+            //MapV配置项
+            var options = {
+                fillStyle: 'rgba(255, 250, 250, 0.6)',
+                size: 0.7,
+                bigData: 'Point',
+                draw: 'simple',
+            }
+            //MapV加载到地图
+            var MapVLayer = new XLGlobe.MapV.CombineMapV(viewer, data3, options);
+
+            //MapV配置项
+            var options = {
+                fillStyle: 'rgba(255, 250, 250, 0.9)',
+                size: 1.1,
+                draw: 'simple',
+                bigData: 'Point',
+                animation: {
+                    stepsRange: {
+                        start: 0,
+                        end: 10
+                    },
+                    trails: 1,
+                    duration: 6,
+                }
+            }
+            //MapV加载到地图
+            var MapVLayer = new XLGlobe.MapV.CombineMapV(viewer, data2, options);
+        })
+    }
+</script>

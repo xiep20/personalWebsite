@@ -1,0 +1,1026 @@
+{
+    "md": "开发文档左侧配置文件-类参考",
+    "tree": [
+        {
+            "id": "2",
+            "name": "类 参 考",
+            "icon": "el-icon-iconleicankao",
+            "isHtml": false,
+            "children": [{
+                    "id": "2-1",
+                    "name": "Globe",
+                    "isHtml": true,
+                    "icon": "iconshuzhuangbiaoqian"
+                },
+                {
+                    "id": "2-2",
+                    "name": "createMap",
+                    "isHtml": false,
+                    "icon": "iconshuzhuangbiaoqian"
+                },
+                {
+                    "id": "2-3",
+                    "name": "Layer",
+                    "isHtml": false,
+                    "icon": "iconshuzhuangbiaoqian",
+                    "children": [{
+                            "id": "2-3-1",
+                            "name": "ArcGISTiledElevationTerrainProvider",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-3-2",
+                            "name": "ArcgisCacheImageryProvider",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-3-3",
+                            "name": "ArcgisDynamicImageryProvider",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-3-4",
+                            "name": "ArcgisImageryProvider",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-3-5",
+                            "name": "ArcgisTileImageryProvider",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-3-6",
+                            "name": "BingImageryProvider",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-3-7",
+                            "name": "BaiduImageryProvider",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-3-8",
+                            "name": "EllipsoidTerrainProvider",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-3-9",
+                            "name": "GaodeImageryProvider",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-3-10",
+                            "name": "GoogleEarthEnterpriseTerrainProvider",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-3-11",
+                            "name": "GoogleImageryProvider",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-3-12",
+                            "name": "GridImageryProvider",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-3-13",
+                            "name": "ImageImageryProvider",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-3-14",
+                            "name": "MapboxImageryProvider",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-3-15",
+                            "name": "MapboxStyleImageryProvider",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-3-16",
+                            "name": "OSMImageryProvider",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-3-17",
+                            "name": "SingleImageryProvider",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-3-18",
+                            "name": "TMSImageryProvider",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-3-19",
+                            "name": "TiandituImageryProvider",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-3-20",
+                            "name": "TiandituTerrainProvider",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-3-21",
+                            "name": "TileCoordinatesImageryProvider",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-3-22",
+                            "name": "TileImageryProvider",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-3-23",
+                            "name": "VRTheWorldTerrainProvider",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-3-24",
+                            "name": "WMSImageryProvider",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-3-25",
+                            "name": "WMTSImageryProvider",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-3-26",
+                            "name": "XYZImageryProvider",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-3-27",
+                            "name": "createImageryProvider",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-3-28",
+                            "name": "createLayer",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-3-29",
+                            "name": "createTerrainProvider",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-3-30",
+                            "name": "layerTerrainProvider",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-3-31",
+                            "name": "_FeatureGridImageryProvider",
+                            "isHtml": false,
+                            "icon": ""
+                        }
+                    ]
+                },
+                {
+                    "id": "2-4",
+                    "name": "Analysis",
+                    "isHtml": false,
+                    "icon": "iconshuzhuangbiaoqian",
+                    "children": [{
+                            "id": "2-4-1",
+                            "name": "MeasureVolume",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-4-2",
+                            "name": "Profile",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-4-3",
+                            "name": "SubmergenceAnalysis",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-4-4",
+                            "name": "analysisBuffer",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-4-5",
+                            "name": "bufferAnalysis",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-4-6",
+                            "name": "contour",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-4-7",
+                            "name": "excavateTerrain",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-4-8",
+                            "name": "falling",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-4-9",
+                            "name": "lookAround",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-4-10",
+                            "name": "skyline",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-4-11",
+                            "name": "sunlight",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-4-12",
+                            "name": "tilesClip",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-4-13",
+                            "name": "undergroundmode",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-4-14",
+                            "name": "video",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-4-15",
+                            "name": "viewshed",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-4-16",
+                            "name": "visibility",
+                            "isHtml": false,
+                            "icon": ""
+                        }
+                    ]
+                },
+                {
+                    "id": "2-5",
+                    "name": "DataSource",
+                    "isHtml": false,
+                    "icon": "iconshuzhuangbiaoqian",
+                    "children": [{
+                            "id": "2-5-1",
+                            "name": "DrawSector",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-2",
+                            "name": "EllipsoidFadeMaterialProperty",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-3",
+                            "name": "Entity",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-4",
+                            "name": "LoadCorridor",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-5",
+                            "name": "LoadCzml",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-6",
+                            "name": "LoadGeojson",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-7",
+                            "name": "LoadGif",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-8",
+                            "name": "LoadKml",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-9",
+                            "name": "LoadWFS",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-10",
+                            "name": "LoadWMS",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-11",
+                            "name": "LoadWMTS",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-12",
+                            "name": "OSMBuilding",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-13",
+                            "name": "PolylineTrailLinkMaterialProperty",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-14",
+                            "name": "RadarPrimitiveMaterialProperty",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-15",
+                            "name": "ShpVector",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-16",
+                            "name": "TetrahedronPrimitive",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-17",
+                            "name": "activeLine",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-18",
+                            "name": "barChart",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-19",
+                            "name": "customPrimitive",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-20",
+                            "name": "divPoint",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-21",
+                            "name": "dynamicWall",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-22",
+                            "name": "flowLine",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-23",
+                            "name": "geojsonToTile",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-24",
+                            "name": "globeBuilding",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-25",
+                            "name": "globePM",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-26",
+                            "name": "haloLine",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-27",
+                            "name": "loadHtml",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-28",
+                            "name": "loadWKT",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-29",
+                            "name": "pointCluster",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-30",
+                            "name": "rampWall",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-31",
+                            "name": "road",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-32",
+                            "name": "sector",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-33",
+                            "name": "shinePoint",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-34",
+                            "name": "spreadWall",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-5-35",
+                            "name": "textEntity",
+                            "isHtml": false,
+                            "icon": ""
+                        }
+                    ]
+                },
+                {
+                    "id": "2-6",
+                    "name": "Scene",
+                    "isHtml": false,
+                    "icon": "iconshuzhuangbiaoqian",
+                    "children": [{
+                            "id": "2-6-1",
+                            "name": "BookmarkWidget",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-6-2",
+                            "name": "CameraFlight",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-6-3",
+                            "name": "DownloadImg",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-6-4",
+                            "name": "FlyLineEdit",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-6-5",
+                            "name": "HistoryCamera",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-6-6",
+                            "name": "KeyboardRoam",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-6-7",
+                            "name": "LimitCamera",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-6-8",
+                            "name": "RoamLineWidget",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-6-9",
+                            "name": "Roaming",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-6-10",
+                            "name": "Rotate",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-6-11",
+                            "name": "SkyBox",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-6-12",
+                            "name": "sceneEffects",
+                            "isHtml": false,
+                            "icon": "",
+                            "children": [{
+                                    "id": "2-6-12-1",
+                                    "name": "CircleScanSystem",
+                                    "isHtml": false,
+                                    "icon": ""
+                                },
+                                {
+                                    "id": "2-6-12-2",
+                                    "name": "ParticalSystem",
+                                    "isHtml": false,
+                                    "icon": ""
+                                }, {
+                                    "id": "2-6-12-3",
+                                    "name": "ParticleSystemEx",
+                                    "isHtml": false,
+                                    "icon": ""
+                                }, {
+                                    "id": "2-6-12-4",
+                                    "name": "WaterReflection",
+                                    "isHtml": false,
+                                    "icon": ""
+                                }, {
+                                    "id": "2-6-12-5",
+                                    "name": "brightness",
+                                    "isHtml": false,
+                                    "icon": ""
+                                }, {
+                                    "id": "2-6-12-6",
+                                    "name": "nightness",
+                                    "isHtml": false,
+                                    "icon": ""
+                                }, {
+                                    "id": "2-6-12-7",
+                                    "name": "weatherEffects",
+                                    "isHtml": false,
+                                    "icon": ""
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "2-7",
+                    "name": "Model",
+                    "isHtml": false,
+                    "icon": "iconshuzhuangbiaoqian",
+                    "children": [{
+                            "id": "2-7-1",
+                            "name": "Buildflowline",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-7-2",
+                            "name": "load3DTiles",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-7-3",
+                            "name": "loadGltf",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-7-4",
+                            "name": "modelStoreWidget",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-7-5",
+                            "name": "tileMonomer",
+                            "isHtml": false,
+                            "icon": ""
+                        }
+                    ]
+                },
+                {
+                    "id": "2-8",
+                    "name": "Utils",
+                    "isHtml": false,
+                    "icon": "iconshuzhuangbiaoqian",
+                    "children": [{
+                            "id": "2-8-1",
+                            "name": "DragBox",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-8-2",
+                            "name": "Popup",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-8-3",
+                            "name": "Rainbow",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-8-4",
+                            "name": "Tooltip",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-8-6",
+                            "name": "draw",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-8-7",
+                            "name": "latlng",
+                            "isHtml": false,
+                            "icon": "",
+                            "children": [{
+                                    "id": "2-8-7-1",
+                                    "name": "Cartesian3To",
+                                    "isHtml": false,
+                                    "icon": ""
+                                },
+                                {
+                                    "id": "2-8-7-2",
+                                    "name": "aroundPoint",
+                                    "isHtml": false,
+                                    "icon": ""
+                                },
+                                {
+                                    "id": "2-8-7-3",
+                                    "name": "formatPositon",
+                                    "isHtml": false,
+                                    "icon": ""
+                                },
+                                {
+                                    "id": "2-8-7-4",
+                                    "name": "getCameraView",
+                                    "isHtml": false,
+                                    "icon": ""
+                                },
+                                {
+                                    "id": "2-8-7-5",
+                                    "name": "getCenter",
+                                    "isHtml": false,
+                                    "icon": ""
+                                },
+                                {
+                                    "id": "2-8-7-6",
+                                    "name": "getCurrentMousePosition",
+                                    "isHtml": false,
+                                    "icon": ""
+                                },
+                                {
+                                    "id": "2-8-7-7",
+                                    "name": "getExtent",
+                                    "isHtml": false,
+                                    "icon": ""
+                                },
+                                {
+                                    "id": "2-8-7-8",
+                                    "name": "getViewBounds",
+                                    "isHtml": false,
+                                    "icon": ""
+                                },
+                                {
+                                    "id": "2-8-7-9",
+                                    "name": "windingPoint",
+                                    "isHtml": false,
+                                    "icon": ""
+                                }
+                            ]
+                        },
+                        {
+                            "id": "2-8-8",
+                            "name": "notice",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-8-9",
+                            "name": "pointconvert",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-8-10",
+                            "name": "tooltip",
+                            "isHtml": false,
+                            "icon": ""
+                        },
+                        {
+                            "id": "2-8-11",
+                            "name": "util",
+                            "isHtml": false,
+                            "icon": "",
+                            "children": [{
+                                "id": "2-8-11-1",
+                                "name": "clone",
+                                "isHtml": false,
+                                "icon": ""
+                            }, {
+                                "id": "2-8-11-2",
+                                "name": "createModel",
+                                "isHtml": false,
+                                "icon": ""
+                            }, {
+                                "id": "2-8-11-3",
+                                "name": "extend",
+                                "isHtml": false,
+                                "icon": ""
+                            }, {
+                                "id": "2-8-11-4",
+                                "name": "floatObj",
+                                "isHtml": false,
+                                "icon": ""
+                            }, {
+                                "id": "2-8-11-5",
+                                "name": "formatDegree",
+                                "isHtml": false,
+                                "icon": ""
+                            }, {
+                                "id": "2-8-11-6",
+                                "name": "getEllipsoidTerrain",
+                                "isHtml": false,
+                                "icon": ""
+                            }, {
+                                "id": "2-8-11-7",
+                                "name": "getJSON",
+                                "isHtml": false,
+                                "icon": ""
+                            }, {
+                                "id": "2-8-11-8",
+                                "name": "getRequest",
+                                "isHtml": false,
+                                "icon": ""
+                            }, {
+                                "id": "2-8-11-9",
+                                "name": "getRequestByName",
+                                "isHtml": false,
+                                "icon": ""
+                            }, {
+                                "id": "2-8-11-10",
+                                "name": "getTerrainProvider",
+                                "isHtml": false,
+                                "icon": ""
+                            }, {
+                                "id": "2-8-11-11",
+                                "name": "isDotInPolygon",
+                                "isHtml": false,
+                                "icon": ""
+                            }, {
+                                "id": "2-8-11-12",
+                                "name": "isNumber",
+                                "isHtml": false,
+                                "icon": ""
+                            }, {
+                                "id": "2-8-11-13",
+                                "name": "isPCBroswer",
+                                "isHtml": false,
+                                "icon": ""
+                            }, {
+                                "id": "2-8-11-14",
+                                "name": "isString",
+                                "isHtml": false,
+                                "icon": ""
+                            }, {
+                                "id": "2-8-11-15",
+                                "name": "onSegment",
+                                "isHtml": false,
+                                "icon": ""
+                            }, {
+                                "id": "2-8-11-16",
+                                "name": "randomPointsWithinBbox",
+                                "isHtml": false,
+                                "icon": ""
+                            }, {
+                                "id": "2-8-11-17",
+                                "name": "randomPointsWithinPolygon",
+                                "isHtml": false,
+                                "icon": ""
+                            }, {
+                                "id": "2-8-11-18",
+                                "name": "terrainPolyline",
+                                "isHtml": false,
+                                "icon": ""
+                            }, {
+                                "id": "2-8-11-19",
+                                "name": "webglreport",
+                                "isHtml": false,
+                                "icon": ""
+                            }]
+                        }
+                    ]
+                },
+                {
+                    "id": "2-9",
+                    "name": "Visualization",
+                    "isHtml": false,
+                    "icon": "iconshuzhuangbiaoqian",
+                    "children": [{
+                        "id": "2-9-1",
+                        "name": "RJHeatMap",
+                        "isHtml": false,
+                        "icon": "iconshuzhuangbiaoqian"
+                    }, {
+                        "id": "2-9-3",
+                        "name": "Windy",
+                        "isHtml": false,
+                        "icon": "iconshuzhuangbiaoqian"
+                    }, {
+                        "id": "2-9-4",
+                        "name": "drawKriging",
+                        "isHtml": false,
+                        "icon": "iconshuzhuangbiaoqian"
+                    }, {
+                        "id": "2-9-5",
+                        "name": "video",
+                        "isHtml": false,
+                        "icon": "iconshuzhuangbiaoqian"
+                    }]
+                },
+                {
+                    "id": "2-10",
+                    "name": "其他",
+                    "isHtml": false,
+                    "icon": "iconshuzhuangbiaoqian",
+                    "children": [{
+                            "id": "2-10-1",
+                            "name": "Echarts",
+                            "isHtml": true,
+                            "icon": "iconshuzhuangbiaoqian",
+                            "children": [{
+                                "id": "2-10-1-1",
+                                "name": "CombineEcharts",
+                                "isHtml": false,
+                                "icon": "iconshuzhuangbiaoqian"
+                            }, {
+                                "id": "2-10-1-2",
+                                "name": "colorModifyHSL",
+                                "isHtml": false,
+                                "icon": "iconshuzhuangbiaoqian"
+                            }]
+                        },
+                        {
+                            "id": "2-10-2",
+                            "name": "MapV",
+                            "isHtml": true,
+                            "icon": "iconshuzhuangbiaoqian",
+                            "children": [{
+                                "id": "2-10-2-1",
+                                "name": "CombineMapV",
+                                "isHtml": false,
+                                "icon": "iconshuzhuangbiaoqian"
+                            }, {
+                                "id": "2-10-2-2",
+                                "name": "DataSet",
+                                "isHtml": false,
+                                "icon": "iconshuzhuangbiaoqian"
+                            }, {
+                                "id": "2-10-2-3",
+                                "name": "getCenterByCityName",
+                                "isHtml": false,
+                                "icon": "iconshuzhuangbiaoqian"
+                            }, {
+                                "id": "2-10-2-4",
+                                "name": "getDataSet",
+                                "isHtml": false,
+                                "icon": "iconshuzhuangbiaoqian"
+                            }, {
+                                "id": "2-10-2-5",
+                                "name": "getPoints",
+                                "isHtml": false,
+                                "icon": "iconshuzhuangbiaoqian"
+                            }, {
+                                "id": "2-10-2-6",
+                                "name": "utilForceEdgeBundling",
+                                "isHtml": false,
+                                "icon": "iconshuzhuangbiaoqian"
+                            }]
+                        },
+                        {
+                            "id": "2-10-4",
+                            "name": "GeoJsonDataSource",
+                            "isHtml": true,
+                            "icon": "iconshuzhuangbiaoqian"
+                        },
+                        {
+                            "id": "2-10-5",
+                            "name": "PointOnMode",
+                            "isHtml": true,
+                            "icon": "iconshuzhuangbiaoqian"
+                        },
+                        {
+                            "id": "2-10-6",
+                            "name": "Service",
+                            "isHtml": true,
+                            "icon": "iconshuzhuangbiaoqian",
+                            "children": [{
+                                "id": "2-10-6-1",
+                                "name": "baiduQueryWidget",
+                                "isHtml": false,
+                                "icon": "iconshuzhuangbiaoqian"
+                            }, {
+                                "id": "2-10-6-2",
+                                "name": "gaodePoiQuery",
+                                "isHtml": false,
+                                "icon": "iconshuzhuangbiaoqian"
+                            }]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

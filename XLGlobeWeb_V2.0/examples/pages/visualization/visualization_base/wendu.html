@@ -1,0 +1,50 @@
+<style>
+</style>
+
+<div id="rjContainer"></div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+        initWork();
+    });
+
+    var Globe;
+    var viewer;
+    var drawControl;
+    var drawtype = 'rectangle';
+    var heatmap;
+    //初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer");
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+        //地形
+        var provider = new XLGlobe.Layer.layerTerrainProvider({
+            url: "http://data.marsgis.cn/terrain",
+            requestWaterMask: true,
+            requestVertexNormals: true
+        });
+        Globe.addTerrainLayer(provider);
+    }
+
+    //当前页面业务相关
+    function initWork() {
+        XLGlobe.Utils.util.getJSON(config.dataUrl + 'geojson/guojie1.json', function (gj) {
+            XLGlobe.Utils.util.getJSON(config.dataUrl + 'geojson/temp.json', function (data) {
+                //克里金插值
+                var _Rectangle = XLGlobe.Visualization.drawKriging(data, gj, {
+                    "propname": 'temperature',
+                    width: 0.1,
+                    alpha: 0.5
+                });
+            });
+        });
+    }
+</script>

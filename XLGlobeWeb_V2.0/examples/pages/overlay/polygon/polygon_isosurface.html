@@ -1,0 +1,54 @@
+<style>
+</style>
+
+<div id="rjContainer"></div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+        initWork();
+    });
+
+    var Globe;
+    var viewer;
+    var drawControl;
+    var drawtype = 'rectangle';
+    var heatmap;
+    //初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer");
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+        //定位
+        viewer.camera.flyTo({
+            destination: Cesium.Cartesian3.fromDegrees(114.4, 30.6, 100000.0)
+        });
+    }
+
+    //当前页面业务相关
+    function initWork() {
+        var poly = [
+            [
+                [114.2, 30.4],
+                [114.6, 30.4],
+                [114.6, 30.8],
+                [114.2, 30.8],
+                [114.2, 30.4]
+            ]
+        ];
+        //克里金插值
+        var data = XLGlobe.Utils.util.randomPointsWithinBbox(114.2, 114.6, 30.4, 30.8, 10, 'geojson')
+        var _Rectangle = XLGlobe.Visualization.drawKriging(data, poly, {
+            propname: 'value',
+            alpha: 0.8,
+            colors: ["#ff0000", "#00ff00"],
+            colorsNum: 8
+        });
+    }
+</script>

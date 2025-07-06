@@ -1,0 +1,52 @@
+<style>
+</style>
+
+<div id="rjContainer"></div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+        initWork();
+    });
+
+    var Globe;
+    var viewer;
+    var drawControl;
+    var drawtype = 'rectangle';
+    var heatmap;
+    //初始化地图
+    function initMap() {
+        //cesium key
+        Cesium.Ion.defaultAccessToken =
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhNzFiNzhkYS04ZTRmLTRkNzYtYjQzYS05Y2IzZDQ3NzYwZjIiLCJpZCI6Mzg4NzAsImlhdCI6MTYwNjg5OTY2OX0.K0s-16tZq6fBs0dNJSP2BOiyvIyUZl28o-1jVEAo6-s';
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer");
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+        //地形
+        var provider = new XLGlobe.Layer.layerTerrainProvider({
+            url: "http://data.marsgis.cn/terrain",
+            requestWaterMask: true,
+            requestVertexNormals: true
+        });
+        Globe.addTerrainLayer(provider);
+    }
+    //当前页面业务相关
+    function initWork() {
+        viewer.camera.flyTo({
+            destination: Cesium.Cartesian3.fromDegrees(114.2, 29.2, 5000.0)
+        });
+        var contour = new XLGlobe.Analysis.contour(viewer, {
+            enableContour: true, //是否显示等高线
+            selectedShading: 'ElevationContour',
+            color: Cesium.Color.RED, //等高线颜色
+            contourSpacing: 150, //间隔
+            contourWidth: 5 //线宽
+        });
+    }
+</script>

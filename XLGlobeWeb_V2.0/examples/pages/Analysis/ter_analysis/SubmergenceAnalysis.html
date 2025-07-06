@@ -1,0 +1,175 @@
+<style>
+  #toolbar {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    padding: 10px 15px;
+    border-radius: 4px;
+    border: 1px solid rgba(128, 128, 128, .5);
+    color: #fff;
+    background: rgba(0, 0, 0, .4);
+    box-shadow: 0 3px 14px rgba(128, 128, 128, .5);
+    z-index: 999;
+  }
+
+  #toolbar .tool_row {
+    height: 32px;
+    margin: 10px 0 10px 10px;
+    text-align: center;
+  }
+
+  #toolbar .tool_row div {
+    float: left;
+    font-size: 16px;
+  }
+
+  #toolbar .tool_row input {
+    vertical-align: middle;
+    margin: 0 10px 0 5px;
+    padding: 0 5px;
+    background-color: rgba(32, 160, 255, .2);
+    line-height: 22px;
+    border-radius: 3px;
+    width: 80px;
+    border: 1px solid #f0f0f0;
+    float: left;
+  }
+
+  #toolbar .tool_row .btn-primary {
+    cursor: pointer;
+    color: #fff;
+    background-color: rgba(32, 160, 255, .2);
+    border: 1px solid #e4eaec;
+    font-size: 14px;
+    border-radius: 3px;
+  }
+
+  #toolbar .tool_row .btn-primary,
+  input {
+    float: none;
+  }
+
+  #toolbar .tool_row .btn-primary:hover {
+    color: #ffffff;
+    border-color: #4db3ff;
+  }
+
+  #toolbar .tool_row .selbox1 {
+    border-color: #4db3ff;
+  }
+</style>
+
+<div id="rjContainer"></div>
+<div id="toolbar">
+  <div class="tool_row">
+    <div>目 标 高 度：</div><input type="text" id="Hval" value="100">
+    <div>初 始 高 度：</div><input type="text" id="nHval" value="1">
+  </div>
+  <div class="tool_row">
+    <div>速 度(m/s)：</div><input type="text" id="timeval" value="4">
+    <div>当 前 高 度：</div><input type="text" id="nowH" value="">
+  </div>
+  <div class="tool_row">
+    <input type="button" class="btn btn-primary" value="绘制区域" onclick="drawPolygon(this)">
+    <input type="button" class="btn btn-primary" value="清除" onclick="clearPolygon()">
+  </div>
+</div>
+<script>
+  $(document).ready(function () {
+    if (!XLGlobe.Utils.util.webglreport()) {
+      alert('系统检测到您使用的浏览器不支持WebGL功能');
+    }
+
+    initMap();
+    initWork();
+  });
+
+  var Globe;
+  var viewer;
+  var drawControl;
+  var sa;
+  //初始化地图
+  function initMap() {
+    //初始化地图
+    Globe = new XLGlobe.Globe("rjContainer");
+    viewer = Globe.viewer;
+
+    //添加底图图层
+    _addbdlayer(Globe);
+    //地形
+    var provider = new XLGlobe.Layer.layerTerrainProvider({
+      url: config.dataUrl + "dem_tiles",
+      requestWaterMask: true,
+      requestVertexNormals: true
+    });
+    Globe.addTerrainLayer(provider);
+
+    //加载3D模型
+    var tiles3d = new XLGlobe.Model.load3DTiles(viewer, {
+      url: config.dataUrl + "model/3DTiles/changju/changju/tileset.json",
+      hideGlobe: false,
+      isZoomTo: true,
+      height: 34,
+    });
+  }
+
+  //当前页面业务相关
+  function initWork() {
+    drawControl = XLGlobe.Utils.draw({
+      viewer: viewer,
+      hasEdit: true,
+      onStopDrawing: function (entity) {
+        drawControl.deleteEntity(entity)
+        var p = entity._polygon.hierarchy._value.positions;
+
+        sa = new XLGlobe.Analysis.SubmergenceAnalysis({
+          viewer: viewer,
+          targetHeight: parseFloat(document.getElementById("Hval").value),
+          startHeight: parseFloat(document.getElementById("nHval").value),
+          adapCoordi: p,
+          speed: Number(document.getElementById("timeval").value),
+          changetype: "up",
+          speedCallback: function (h) {
+            document.getElementById("nowH").value = h;
+          }
+        });
+        sa.start()
+      },
+      onStartEditing: function (entity) {
+
+      },
+      onChangeEditing: function (entity) {
+
+      },
+      onStopEditing: function (entity) {
+
+      },
+    });
+    //按钮变色事件
+    document.onclick = function (e) {
+      var len = document.querySelectorAll('.selbox1').length;
+      if (e.target.className !== "" && e.target.className.indexOf("selbox1") >= 0 && len == 1) {
+        return
+      }
+      if (len > 0) {
+        document.querySelector('.selbox1').classList.remove('selbox1');
+      }
+    };
+  }
+  //绘制
+  function drawPolygon(e) {
+    e.classList.add('selbox1');
+    drawControl.startDraw({
+      type: "polygon",
+      style: {
+        color: "#29cf34",
+        opacity: 0.5,
+      }
+    });
+  }
+  //清除
+  function clearPolygon() {
+    drawControl.deleteAll()
+    sa.clear();
+  }
+</script>

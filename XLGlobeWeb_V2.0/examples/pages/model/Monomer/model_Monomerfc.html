@@ -1,0 +1,144 @@
+<style>
+</style>
+
+<div id="rjContainer"></div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+        initMap();
+        initWork();
+    });
+
+    var Globe;
+    var viewer;
+    var tiles3d;
+    var popup, monomer, Collection;
+    //初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer");
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+
+        //加载3D模型
+        tiles3d = new XLGlobe.Model.load3DTiles(viewer, {
+            url: config.dataUrl + "model/3DTiles/changju/changju/tileset.json",
+            hideGlobe: false,
+            isZoomTo: true,
+            height: 0
+        });
+    }
+
+    //当前页面业务相关
+    function initWork() {
+        //初始化弹窗
+        popup = new XLGlobe.Utils.Popup({
+            viewer: viewer,
+            className: "bx-popup-ctn4"
+        });
+        //单体化
+        monomer = new XLGlobe.Model.tileMonomer({
+            viewer: viewer,
+            type: 'property', //根据属性进行查询单体化
+            comparisonField: ['name', 'name'],
+            height: 0,
+            url: config.dataUrl + 'geojson/wdy_mian_jidixp.json',
+            heightField: 'Elevation',
+            fillcolor: Cesium.Color.LIME.withAlpha(0.1),
+            leftcallback: function (fea, point) {
+                if (fea) {
+                    monomer.clearColor();
+                    showlouceng(fea);
+                }
+            }
+        });
+        Collection = new Cesium.PrimitiveCollection();
+        viewer.scene.primitives.add(Collection);
+        hightlightLine();
+        //显示楼层
+        function showlouceng(fea) {
+            Collection.removeAll();
+            var name = fea.properties.name;
+            var cg = parseFloat(fea.properties.cenggao);
+            var cs = parseFloat(fea.properties.cengshu);
+            var plist = [];
+            var startH = 0,
+                endH = 0;
+            for (var i = 0; i < cs; i++) {
+                var color;
+                if (i % 2 == 0) {
+                    color = Cesium.Color.fromCssColorString("rgba(17, 116, 202, 0.7)")
+                } else {
+                    color = Cesium.Color.fromCssColorString("rgba(17, 116, 202, 0.9)")
+                }
+                startH = i * cg;
+                endH = startH + cg;
+                // 绘制楼层
+                Collection.add(new Cesium.ClassificationPrimitive({
+                    geometryInstances: new Cesium.GeometryInstance({
+                        geometry: new Cesium.PolygonGeometry({
+                            polygonHierarchy: new Cesium.PolygonHierarchy(
+                                Cesium.Cartesian3.fromDegreesArray([].concat.apply(
+                                    [],
+                                    fea.geometry.coordinates[0]))
+                            ),
+                            extrudedHeight: endH,
+                            height: startH,
+                            vertexFormat: Cesium.PerInstanceColorAppearance.VERTEX_FORMAT
+                        }),
+                        attributes: {
+                            color: Cesium.ColorGeometryInstanceAttribute.fromColor(color),
+                            show: new Cesium.ShowGeometryInstanceAttribute(true)
+                        },
+                        id: name + ' - ' + (i + 1) + '楼'
+                    }),
+                    classificationType: Cesium.ClassificationType.CESIUM_3D_TILE
+                }))
+            }
+        }
+        //高亮层
+        function hightlightLine() {
+            var highlightFace = [];
+            viewer.screenSpaceEventHandler.setInputAction(function onLeftClick(movement) {
+                var pickedFeature = viewer.scene.pick(movement.position);
+                //点击位置坐标
+                var cartesian = viewer.scene.pickPosition(movement.position);
+                if (!Cesium.defined(cartesian)) {
+                    let ray = viewer.camera.getPickRay(movement.position);
+                    cartesian = viewer.scene.globe.pick(ray, viewer.scene);
+                }
+                //判断之前是否有高亮面存在
+                if (highlightFace.length > 0) {
+                    highlightFace[0].color = highlightFace[1];
+                    highlightFace = [];
+                    popup.closeAll()
+                }
+                if (pickedFeature && pickedFeature.primitive && pickedFeature.id && pickedFeature.id.indexOf(
+                        " - ") > 0) {
+                    var attributes = pickedFeature.primitive.getGeometryInstanceAttributes(pickedFeature
+                        .id); //获取某个实例的属性集
+                    highlightFace = [
+                        attributes,
+                        attributes.color
+                    ];
+                    attributes.color = Cesium.ColorGeometryInstanceAttribute.toValue(Cesium.Color.AQUA
+                        .withAlpha(0.5));
+                    popup.add({
+                        geometry: cartesian,
+                        content: {
+                            header: '',
+                            content: `
+                        <div><span>${pickedFeature.id}</span></div>
+                            `
+                        },
+                        isclose: false
+                    });
+                }
+            }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+        }
+    }
+</script>

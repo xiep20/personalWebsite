@@ -1,0 +1,68 @@
+<importjs>
+    <!-- mapV -->
+    <script src="libs/mapV/mapv.js"></script>
+    <script src="libs/mapV/mapvgl.js"></script>
+</importjs>
+<div id="rjContainer"></div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+        initMap();
+        honeyComb();
+    });
+    var viewer;
+    var scene;
+    //初始化地图
+    function initMap() {
+        var Globe = new XLGlobe.Globe("rjContainer", {});
+        viewer = Globe.viewer;
+        scene = viewer.scene;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+        //定位
+        viewer.camera.setView({
+            destination: Cesium.Cartesian3.fromDegrees(112.088953, 31.161181, 5000000)
+        });
+
+    }
+
+    //当前页面业务相关
+    function honeyComb() {
+        var randomCount = 200;
+        var data = [];
+        while (randomCount--) {
+            data.push({
+                geometry: {
+                    type: 'Point',
+                    coordinates: [105.500 + Math.random() * 10, 25.100 + Math.random() * 20]
+                },
+                count: 50 * Math.random()
+            });
+        }
+        //MapV配置项
+        var options = {
+            fillStyle: 'rgba(55, 50, 250, 0.8)',
+            shadowColor: 'rgba(255, 250, 50, 1)',
+            shadowBlur: 20,
+            max: 100,
+            size: 50,
+            label: {
+                show: true,
+                fillStyle: 'white',
+            },
+            globalAlpha: 0.5,
+            gradient: {
+                0.25: "rgb(0,0,255)",
+                0.55: "rgb(0,255,0)",
+                0.85: "yellow",
+                1.0: "rgb(255,0,0)"
+            },
+            draw: 'honeycomb'
+        }
+        //MapV加载到地图
+        var MapVLayer = new XLGlobe.MapV.CombineMapV(viewer, data, options);
+    }
+</script>

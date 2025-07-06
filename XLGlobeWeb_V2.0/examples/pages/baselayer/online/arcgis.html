@@ -1,0 +1,12 @@
+<div id="rjContainer"></div>
+<script>
+  var Globe = new XLGlobe.Globe("rjContainer");
+  //ArcGis图层
+  var baselayer = new XLGlobe.Layer.ArcgisImageryProvider({
+    type: "wmts",
+    url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
+    showClickFeature: true,
+    visible: true
+  });
+  Globe.addBaseLayer(baselayer);//添加ArcGis图层
+</script>

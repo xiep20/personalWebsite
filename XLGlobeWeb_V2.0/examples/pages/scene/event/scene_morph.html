@@ -1,0 +1,31 @@
+<style>
+</style>
+
+<div id="rjContainer"></div>
+<script>
+    //初始化地图
+    var Globe = new XLGlobe.Globe("rjContainer", {
+        sceneModePicker: true
+    });
+    var viewer = Globe.viewer;
+
+    //添加底图图层
+    _addbdlayer(Globe);
+    // 回调函数 
+    function callbackFunc(event) {
+        console.log(event)
+    }
+
+    //事件在场景转换完成时触发。
+    viewer.scene.morphComplete.addEventListener(function (e) {
+        XLGlobe.eDialog.msg('场景转换完成', {
+            offset: 't'
+        })
+    });
+    //事件在场景转换开始时触发。
+    viewer.scene.morphStart.addEventListener(function (e) {
+        XLGlobe.eDialog.msg('场景转换开始', {
+            offset: 't'
+        })
+    });
+</script>

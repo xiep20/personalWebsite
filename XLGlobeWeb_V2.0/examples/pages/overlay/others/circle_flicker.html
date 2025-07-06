@@ -1,0 +1,44 @@
+<div id="rjContainer"></div>
+
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+    });
+
+    var Globe;
+    var viewer;
+    //初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer");
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+
+        //加载人工模型
+        tiles3d = new XLGlobe.Model.load3DTiles(viewer, {
+            url: config.dataUrl + "model/3DTiles/changju/changju/tileset.json",
+            hideGlobe: false,
+            isZoomTo: true,
+            height: 0
+        });
+        //闪烁圆
+        var entity = new XLGlobe.DataSource.Entity({
+            ellipse: {
+                height: 105,
+                semiMinorAxis: 160.0,
+                semiMajorAxis: 160.0,
+                material: new XLGlobe.DataSource.EllipsoidFadeMaterialProperty(Cesium.Color.RED,
+                    1600) //颜色，闪烁速度
+            },
+            id: "temporary",
+            position: Cesium.Cartesian3.fromDegrees(114.427858, 30.438438, 0)
+        })
+        viewer.entities.add(entity)
+    }
+</script>

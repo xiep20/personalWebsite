@@ -1,0 +1,86 @@
+<style>
+    #toolbar {
+        position: absolute;
+        top: 0;
+        right: 10px;
+        padding: 10px 15px;
+        border-radius: 4px;
+        border: 1px solid rgba(128, 128, 128, .5);
+        color: #fff;
+        background: rgba(0, 0, 0, .4);
+        box-shadow: 0 3px 14px rgba(128, 128, 128, .5);
+        z-index: 999;
+    }
+
+    #toolbar input {
+        vertical-align: middle;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        background-color: white;
+        width: 110px;
+        border: 1px solid #f0f0f0;
+    }
+
+    #toolbar .header {
+        font-weight: bold;
+    }
+
+    #toolbar .btn-primary {
+        cursor: pointer;
+        color: #fff;
+        background-color: rgba(32, 160, 255, .2);
+        border: 1px solid #e4eaec;
+        font-size: 14px;
+        border-radius: 3px;
+    }
+</style>
+
+<div id="rjContainer"></div>
+<div id="toolbar">
+    <input type="button" class="btn btn-primary" value="绘制" onclick="drawPoint()">
+</div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+    });
+
+    var Globe;
+    var viewer;
+    //初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer");
+        viewer = Globe.viewer;
+
+
+        //添加底图图层
+        _addbdlayer(Globe);
+        //定位
+        viewer.camera.flyTo({
+            destination: Cesium.Cartesian3.fromDegrees(114.45, 30.43, 6000.0),
+            orientation: {
+                heading: Cesium.Math.toRadians(0),
+                pitch: Cesium.Math.toRadians(-10.0),
+                roll: 0.0
+            }
+        });
+    }
+
+    //绘制默认圆
+    function drawPoint() {
+        viewer.entities.removeAll();
+        viewer.entities.add({
+            position: Cesium.Cartesian3.fromDegrees(114.455, 30.554),
+            name: "默认圆",
+            ellipse: {
+                semiMinorAxis: 1000.0,
+                semiMajorAxis: 1000.0,
+                // material: Cesium.Color.RED.withAlpha(0.5),
+            }
+        });
+    }
+</script>

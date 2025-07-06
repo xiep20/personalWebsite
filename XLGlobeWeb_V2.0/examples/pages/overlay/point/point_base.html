@@ -1,0 +1,42 @@
+<style>
+</style>
+
+<div id="rjContainer"></div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+    });
+
+    var Globe;
+    var viewer;
+    //初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer");
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+        //定位
+        viewer.camera.flyTo({
+            destination: Cesium.Cartesian3.fromDegrees(114.405, 30.554, 2000.0)
+        });
+        drawPoint()
+    }
+
+    //绘制点
+    function drawPoint() {
+        viewer.entities.removeAll();
+        viewer.entities.add({
+            position: Cesium.Cartesian3.fromDegrees(114.405, 30.554),
+            point: {
+                pixelSize: 10,
+                color: Cesium.Color.YELLOW
+            }
+        });
+    }
+</script>

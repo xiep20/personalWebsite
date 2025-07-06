@@ -1,0 +1,305 @@
+{
+	"data": [
+		{
+			"type": "车辆",
+			"modelList": [{
+				"name": "奥迪",
+				"imgUrl": "images/model/奥迪.png",
+				"model": "http://103.94.20.254:6090/wuhan_20201014/model/bujian/aodi1.gltf"
+			}, {
+				"name": "奔驰",
+				"imgUrl": "images/model/奔驰.png",
+				"model": "http://103.94.20.254:6090/wuhan_20201014/model/bujian/benchi2.gltf"
+			}, {
+				"name": "警车",
+				"imgUrl": "images/model/警车.png",
+				"model": "http://103.94.20.254:6090/wuhan_20201014/model/modelWidget/jingche.gltf"
+			}, {
+				"name": "货运车",
+				"imgUrl": "images/model/货运车.png",
+				"model": "http://103.94.20.254:6090/wuhan_20201014/model/bujian/kache2.gltf"
+			}, {
+				"name": "卡车",
+				"imgUrl": "images/model/卡车.png",
+				"model": "http://103.94.20.254:6090/wuhan_20201014/model/bujian/kache3.gltf"
+			}, {
+				"name": "suv",
+				"imgUrl": "images/model/suv.png",
+				"model": "http://103.94.20.254:6090/wuhan_20201014/model/bujian/suv.gltf"
+			},
+			{
+				"name": "公交",
+				"imgUrl": "images/model/公交.png",
+				"model": "http://103.94.20.254:6090/wuhan_20201014/model/bujian/bus1.gltf"
+			}, 
+				{
+					"name": "小轿车",
+					"imgUrl": "images/model/小轿车.png",
+					"model": "http://172.16.13.83:8080/geoJSON/benchi3.gltf"
+				},
+				{
+					"name": "土方车",
+					"imgUrl": "images/model/土方车.jpg",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/bujian/tufangche.glb"
+				}, {
+					"name": "挖掘机",
+					"imgUrl": "images/model/挖掘机.jpg",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/bujian/wajueji.glb"
+				}, {
+					"name": "消防车",
+					"imgUrl": "images/model/消防车.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/bujian/xiaofangche.gltf"
+				}, {
+					"name": "起重车",
+					"imgUrl": "images/model/起重车.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/Model/qizhongche/qizhongche.gltf"
+				}, {
+					"name": "摩托车",
+					"imgUrl": "images/model/摩托车.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/Model/motuoche/motuoche.gltf"
+				}, {
+					"name": "电动车",
+					"imgUrl": "images/model/电动车.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/Model/diandongche/diandongche.gltf"
+				}, {
+					"name": "有轨电车",
+					"imgUrl": "images/model/有轨电车.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/Model/youguidianche/youguidianche.gltf"
+				}, {
+					"name": "装甲车",
+					"imgUrl": "images/model/装甲车.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/Model/zhuangjiache/zhuangjiache.gltf"
+				}, {
+					"name": "救护车",
+					"imgUrl": "images/model/救护车.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/Model/jiuhuche/jiuhuche.gltf"
+				}]
+		},
+		{
+			"type": "火车及铁路",
+			"modelList": [{
+				"name": "高铁头",
+				"scale": 0.001,
+				"imgUrl": "images/model/高铁头.png",
+				"model": "http://103.94.20.254:6090/wuhan_20201014/model/bujian/heada.glb"
+			}, {
+				"name": "高铁车身",
+				"scale": 0.001,
+				"imgUrl": "images/model/高铁车身.png",
+				"model": "http://103.94.20.254:6090/wuhan_20201014/model/bujian/body.glb"
+			}, {
+				"name": "隧道",
+				"scale": 0.001,
+				"imgUrl": "images/model/隧道.png",
+				"model": "http://103.94.20.254:6090/wuhan_20201014/model/bujian/suidao.glb"
+			}, {
+				"name": "车站",
+				"scale": 0.002,
+				"imgUrl": "images/model/车站.png",
+				"model": "http://103.94.20.254:6090/wuhan_20201014/model/bujian/station.glb"
+			}, {
+				"name": "桥墩",
+				"scale": 0.001,
+				"imgUrl": "images/model/桥墩.png",
+				"model": "http://103.94.20.254:6090/wuhan_20201014/model/bujian/bridge.glb"
+			},{
+				"name": "铁路路基",
+				"scale": 0.001,
+				"imgUrl": "images/model/铁路路基.png",
+				"model": "http://103.94.20.254:6090/wuhan_20201014/model/bujian/railway.glb"
+			}
+			]
+		},
+		{
+			"type": "人物",
+			"modelList": [
+				{
+					"name": "动画_人",
+					"imgUrl": "images/model/动画_人.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/CesiumMan/Cesium_Man.gltf"
+				}, 
+				{
+					"name": "工人",
+					"imgUrl": "images/model/工人.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/bujian/gongren.glb"
+				}, {
+					"name": "行人",
+					"imgUrl": "images/model/行人.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/Model/xingren/xingren.gltf"
+				},
+				{
+					"name": "奔跑消防员",
+					"scale": 2,
+					"imgUrl": "images/model/奔跑消防员.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/bujian/xiaofangyuan-run.gltf"
+				}, {
+					"name": "站立消防员",
+					"imgUrl": "images/model/站立消防员.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/bujian/xiaofangyuan.glb"
+				}
+			]
+		},
+		{
+			"type": "飞机及航空",
+			"modelList": [
+				{
+					"name": "战斗机",
+					"scale": 0.01,
+					"imgUrl": "images/model/战斗机.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/bujian/zhanji.glb"
+				},{
+					"name": "客机",
+					"scale": 0.07,
+					"imgUrl": "images/model/客机.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/bujian/feiji.glb"
+				},{
+					"name": "飞机",
+					"imgUrl": "images/model/飞机.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/bujian/Cesium_Air.glb"
+				},{
+					"name": "直升机",
+					"scale": 0.8,
+					"imgUrl": "images/model/直升机.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/Model/zhishengji/zhishengji.gltf"
+				},{
+					"name": "大疆无人机",
+					"imgUrl": "images/model/大疆无人机.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/Model/dajiang/dajiang.gltf"
+				},{
+					"name": "卫星",
+					"imgUrl": "images/model/卫星.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/weixin/weixin.gltf"
+				}
+			]
+		},
+		{
+			"type": "船及水利航海",
+			"modelList": [
+				{
+					"name": "散货船",
+					"imgUrl": "images/model/散货船.jpg",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/bujian/ship01.glb"
+				}, {
+					"name": "油轮",
+					"imgUrl": "images/model/油轮.jpg",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/bujian/ship02.glb"
+				}, {
+					"name": "集装箱船",
+					"imgUrl": "images/model/集装箱船.jpg",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/bujian/ship03.glb"
+				}, {
+					"name": "煤炭船",
+					"imgUrl": "images/model/煤炭船.jpg",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/bujian/ship05.glb"
+				}, {
+					"name": "滚装船",
+					"imgUrl": "images/model/滚装船.jpg",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/bujian/ship07.glb"
+				}, {
+					"name": "渔船",
+					"imgUrl": "images/model/渔船.jpg",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/bujian/ship09.glb"
+				}, {
+					"name": "港口设备01",
+					"imgUrl": "images/model/港口设备01.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/Model/gkshebei01/gkshebei01.gltf"
+				}, {
+					"name": "港口起重机",
+					"imgUrl": "images/model/港口起重机.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/Model/gangkouqizhongji/gangkouqizhongji.gltf"
+				}
+			]
+		},
+		{
+			"type": "街道及交通设施",
+			"modelList": [
+				{
+					"name": "红绿灯",
+					"imgUrl": "images/model/红绿灯.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/bujian/honglvdeng.gltf"
+				},	{
+					"name": "红绿灯2",
+					"imgUrl": "images/model/红绿灯2.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/Model/honglvdeng2/honglvdeng2.gltf"
+				},
+				{
+					"name": "指示牌",
+					"imgUrl": "images/model/指示牌.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/bujian/led-gan.gltf"
+				},
+				{
+					"name": "摄像头带杆",
+					"imgUrl": "images/model/摄像头带杆.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/Model/shexiangtou/shexiangtou.gltf"
+				},
+				{
+					"name": "交通设备",
+					"imgUrl": "images/model/交通设备.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/Model/jiaotongshebei/jiaotongshebei.gltf"
+				}
+			]
+		},
+		{
+			"type": "测绘仪器",
+			"modelList": [
+				{
+					"name": "全站仪",
+					"scale": 0.15,
+					"imgUrl": "images/model/全站仪.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/bujian/qzy.glb"
+				}
+			]
+		},{
+			"type": "电力设施",
+			"modelList": [
+				{
+					"name": "电线塔",
+					"imgUrl": "images/model/电线塔.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/tower/tower.glb"
+				},
+				{
+					"name": "太阳能板",
+					"imgUrl": "images/model/太阳能板.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/bujian/taiyang.gltf"
+				},
+				{
+					"name": "风车",
+					"scale": 5,
+					"imgUrl": "images/model/风车.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/Model/fengche/fengche.gltf"
+				},
+				{
+					"name": "三角杆",
+					"imgUrl": "images/model/三角杆.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/Model/sanjiaogan/sanjiaogan.gltf"
+				},
+				{
+					"name": "路灯",
+					"scale": 1.5,
+					"imgUrl": "images/model/路灯.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/Model/ludeng/ludeng.gltf"
+				},
+				{
+					"name": "电箱",
+					"imgUrl": "images/model/电箱.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/Model/dianxiang/dianxiang.gltf"
+				},
+				{
+					"name": "电塔",
+					"imgUrl": "images/model/电塔.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/Model/dianta/dianta.gltf"
+				},
+				{
+					"name": "发动机",
+					"imgUrl": "images/model/发动机.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/Model/fadongji/fadongji.gltf"
+				},
+				{
+					"name": "油田设备",
+					"imgUrl": "images/model/油田设备.png",
+					"model": "http://103.94.20.254:6090/wuhan_20201014/model/Model/youtianshebei/youtianshebei.gltf"
+				}
+			]
+		}
+	]
+}

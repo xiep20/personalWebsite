@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Model</title>
+    <link rel="stylesheet" href="./css/bass.css">
+    </link>
+    <link rel="stylesheet" href="./css/style.css">
+    </link>
+    <link rel="stylesheet" href="./css/github.css">
+    </link>
+    <script src="scripts/jquery.min.js"></script>
+</head>
+
+<body>
+    <section class="p2 mb2 clearfix bg-white minishadow">
+        <div class="clearfix">
+            <h3 class="fl m0"><a class="anchorjs-link " name="Map"
+                    style="font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 1em; line-height: inherit; font-family: anchorjs-icons; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>
+                Model
+            </h3>
+        </div>
+        <p>Model对象表示页面上的模型。它公开允许您以编程方式更改模型的属性，并在用户与其交互时激发事件。
+        </p>
+
+        <div class="py1 quiet mt1 prose-big">
+            <a class="anchorjs-link " name="Instancemembers"
+                style="font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 1em; line-height: inherit; font-family: anchorjs-icons; position: absolute; margin-left: -1em; padding-right: 0.5em;"
+                id="InstanceMembers"></a>
+            Instance Members
+        </div>
+
+        <div class="border-bottom" id="styleimageinterfaceonadd">
+            <div class="clearfix small pointer toggle-sibling">
+                <div class="py1 contain">
+                    <a class="icon pin-right py1 dark-link caret-right" id="Buildflowline">▸</a>
+                    <span class="code strong strong truncate">Buildflowline(options)</span>
+                </div>
+            </div>
+            <div class="clearfix display-none toggle-target">
+                <section class="p2 mb2 clearfix bg-white minishadow">
+                    <p>建筑流动线特效。</p>
+                    <div class="py1 quiet mt1 prose-big">Parameters</div>
+                    <div class="prose">
+                        <div class="space-bottom0">
+                            <div>
+                                <span class="code bold">options</span> <code class="quiet">(object)</code>
+                                添加建筑3DTiles的特效设置。 有效值包括： 'tileset' ， 'backgroundcolor' ， 'linespeed' ，
+                                'linewidth'，'brightness','glowRange'
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <span class="code bold">options</span><code class="quiet"></code>
+                    <table class="mt1 mb2 fixed-table h5 col-12">
+                        <colgroup>
+                            <col width="30%">
+                            <col width="70%">
+                        </colgroup>
+                        <thead>
+                            <tr class="bold fill-light">
+                                <th>Name</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody class="mt1">
+                            <tr id="">
+                                <td class="break-word">
+                                    <span class="code bold">options.tileset</span>
+                                    <br>
+                                    <code class="quiet">
+                                        &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String" target="_Blank">string</a>&gt
+                                    <br>
+                                    </code>
+                                </td>
+                                <td class="break-word"><span>建筑的3DTiles设置,默认为null。
+                            </tr>
+                            <tr id="">
+                                <td class="break-word"><span class="code bold">options.backgroundcolor</span>
+                                    <br>
+                                    <code class="quiet">
+                                        &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_Blank">string</a>&gt
+                                    <br>
+                                    </code>
+                                </td>
+                                <td class="break-word">
+                                    <span>背景颜色，默认为rgba(0, 127.5, 255 ,1)。</span>
+                                </td>
+                            </tr>
+                            <tr id="">
+                                <td class="break-word">
+                                    <span class="code bold">options.linespeed</span>
+                                    <br>
+                                    <code class="quiet">
+                                        &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/float" target="_Blank">float</a>&gt
+                                    <br>
+                                    </code>
+                                </td>
+                                <td class="break-word">
+                                    <span>线流动速度，默认为2.0。</span>
+                                </td>
+                            </tr>
+                            <tr id="">
+                                <td class="break-word">
+                                    <span class="code bold">options.linewidth</span>
+                                    <br>
+                                    <code class="quiet">
+                                    &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/float" target="_Blank">float</a>&gt
+                                    <br>
+                                    </code>
+                                </td>
+                                <td class="break-word">
+                                    <span>流动线宽度，默认为0.005。</span>
+                                </td>
+                            </tr>
+                            <tr id="">
+                                <td class="break-word"><span class="code bold">options.brightless</span>
+                                    <br>
+                                    <code class="quiet">
+                                    &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/float" target="_Blank">float</a>&gt
+                                    <br>
+                                    </code>
+                                </td>
+                                <td class="break-word">
+                                    <span>亮度，默认为100。</span>
+                                </td>
+                            </tr>
+                            <tr id="">
+                                <td class="break-word">
+                                    <span class="code bold">options.glowRange</span>
+                                    <br>
+                                    <code class="quiet">
+                                    &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/float" target="_Blank">float</a>&gt
+                                    <br>
+                                    </code>
+                                </td>
+                                <td class="break-word">
+                                    <span>扩散范围，默认为360.0。</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- <div class="py1 quiet mt1 prose-big">Returns</div>
+                    <div class="prose">
+                        <div class="space-bottom0">
+                            <div>
+                                <span class="code bold">Map</span> <code class="quiet"> : this</code>
+                            </div>
+                        </div>
+                    </div> -->
+                </section>
+            </div>
+        </div>
+
+        <div class="border-bottom" id="styleimageinterfaceonadd">
+            <div class="clearfix small pointer toggle-sibling">
+                <div class="py1 contain">
+                    <a class="icon pin-right py1 dark-link caret-right" id="load3DTiles">▸</a>
+                    <span class="code strong strong truncate">load3DTiles(viewer,config)</span>
+                </div>
+            </div>
+            <div class="clearfix display-none toggle-target">
+                <section class="p2 mb2 clearfix bg-white minishadow">
+                    <p>加载3DTiles数据。</p>
+                    <div class="py1 quiet mt1 prose-big">Parameters</div>
+                    <div class="prose">
+                        <div class="space-bottom0">
+                            <div>
+                                <span class="code bold">viewer</span>
+                                <code class="quiet">(object)</code>
+                                视图对象。
+                                <span class="code bold">config</span>
+                                <code class="quiet">(object)</code>
+                                模型设置。
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <span class="code bold">options</span>
+                    <code class="quiet"></code>
+                    <table class="mt1 mb2 fixed-table h5 col-12">
+                        <colgroup>
+                            <col width="30%">
+                            <col width="70%">
+                        </colgroup>
+                        <thead>
+                            <tr class="bold fill-light">
+                                <th>Name</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody class="mt1">
+                            <tr id="">
+                                <td class="break-word">
+                                    <span class="code bold">options.url</span>
+                                    <br>
+                                    <code class="quiet">
+                                    &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String" target="_Blank">string</a>&gt
+                                    <br>
+                                    </code>
+                                </td>
+                                <td class="break-word"><span>模型地址。
+                            </tr>
+                            <tr id="">
+                                <td class="break-word"><span class="code bold">config.show</span> <br><code
+                                        class="quiet">
+                                        &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_Blank">string</a>&gt
+                          <br>
+                          </code>
+                                </td>
+                                <td class="break-word"><span>模型是否显示。
+                                    </span></td>
+                            </tr>
+                            <tr id="">
+                                <td class="break-word"><span class="code bold">config.maximumScale</span> <br><code
+                                        class="quiet">
+                                        &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/float" target="_Blank">float</a>&gt
+                          <br>
+                        </code>
+                                </td>
+                                <td class="break-word"><span>模型显示的最大比例尺。
+                            </tr>
+                            <tr id="">
+                                <td class="break-word"><span class="code bold">config.minimumScale</span> <br><code
+                                        class="quiet">
+                                        &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/float" target="_Blank">float</a>&gt
+                          <br>
+                        </code>
+                                </td>
+                                <td class="break-word"><span>模型显示的最小比例尺。
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+        </div>
+
+        <div class="border-bottom" id="styleimageinterfaceonadd">
+            <div class="clearfix small pointer toggle-sibling">
+                <div class="py1 contain">
+                    <a class="icon pin-right py1 dark-link caret-right" id="loadGltf">▸</a>
+                    <span class="code strong strong truncate">loadGltf(viewer,config)</span>
+                </div>
+            </div>
+            <div class="clearfix display-none toggle-target">
+                <section class="p2 mb2 clearfix bg-white minishadow">
+                    <p>加载Gltf模型数据。
+                    </p>
+                    <div class="py1 quiet mt1 prose-big">Parameters</div>
+                    <div class="prose">
+                        <div class="space-bottom0">
+                            <div>
+                                <span class="code bold">viewer</span> <code class="quiet">(object)</code>
+                                视图对象。
+                                <span class="code bold">config</span> <code class="quiet">(object)</code>
+                                模型设置。
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <span class="code bold">config</span><code class="quiet"></code>
+                    <table class="mt1 mb2 fixed-table h5 col-12">
+                        <colgroup>
+                            <col width="30%">
+                            <col width="70%">
+                        </colgroup>
+                        <thead>
+                            <tr class="bold fill-light">
+                                <th>Name</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody class="mt1">
+                            <tr id="">
+                                <td class="break-word"><span class="code bold">config.url</span> <br><code
+                                        class="quiet">
+                                        &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String" target="_Blank">string</a>&gt
+                          <br>
+                        </code>
+                                </td>
+                                <td class="break-word"><span>模型地址。
+                            </tr>
+                            <tr id="">
+                                <td class="break-word"><span class="code bold">config.show</span> <br><code
+                                        class="quiet">
+                                        &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_Blank">boolean</a>&gt
+                          <br>
+                          </code>
+                                </td>
+                                <td class="break-word"><span>模型是否显示。
+                                    </span></td>
+                            </tr>
+                            <tr id="">
+                                <td class="break-word"><span class="code bold">config.maximumScale</span> <br><code
+                                        class="quiet">
+                                        &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/float" target="_Blank">float</a>&gt
+                          <br>
+                        </code>
+                                </td>
+                                <td class="break-word"><span>模型显示的最大比例尺。
+                            </tr>
+                            <tr id="">
+                                <td class="break-word"><span class="code bold">config.minimumScale</span> <br><code
+                                        class="quiet">
+                                        &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/float" target="_Blank">float</a>&gt
+                          <br>
+                        </code>
+                                </td>
+                                <td class="break-word"><span>模型显示的最小比例尺。
+                            </tr>
+                            <tr id="">
+                                <td class="break-word"><span class="code bold">config.silhouette.size</span> <br><code
+                                        class="quiet">
+                                        &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/float" target="_Blank">float</a>&gt
+                          <br>
+                        </code>
+                                </td>
+                                <td class="break-word"><span>模型边界宽度。
+                            </tr>
+                            <tr id="">
+                                <td class="break-word"><span class="code bold">config.color</span> <br><code
+                                        class="quiet">
+                                        &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/string" target="_Blank">string</a>&gt
+                          <br>
+                        </code>
+                                </td>
+                                <td class="break-word"><span>模型颜色。
+                            </tr>
+                            <tr id="">
+                                <td class="break-word"><span class="code bold">config.silhouetteColor.color</span>
+                                    <br><code class="quiet">
+                                        &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/string" target="_Blank">float</a>&gt
+                          <br>
+                        </code>
+                                </td>
+                                <td class="break-word"><span>模型边界颜色。
+                            </tr>
+                            <tr id="">
+                                <td class="break-word"><span class="code bold">config.isZoomTo</span>
+                                    <br><code class="quiet">
+                                        &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_Blank">boolean</a>&gt
+                          <br>
+                        </code>
+                                </td>
+                                <td class="break-word"><span>是否缩放到模型位置处。
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+        </div>
+
+        <div class="border-bottom" id="styleimageinterfaceonadd">
+            <div class="clearfix small pointer toggle-sibling">
+                <div class="py1 contain">
+                    <a class="icon pin-right py1 dark-link caret-right" id="modelStoreWidget">▸</a>
+                    <span class="code strong strong truncate">modelStoreWidget(viewer,config)</span>
+                </div>
+            </div>
+            <div class="clearfix display-none toggle-target">
+                <section class="p2 mb2 clearfix bg-white minishadow">
+                    <p>加载模型库列表控件。
+                    </p>
+                    <div class="py1 quiet mt1 prose-big">Parameters</div>
+                    <div class="prose">
+                        <div class="space-bottom0">
+                            <div>
+                                <span class="code bold">viewer</span> <code class="quiet">(object)</code>
+                                视图对象。
+                                <span class="code bold">config</span> <code class="quiet">(object)</code>
+                                模型列表信息。
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <span class="code bold">config</span><code class="quiet"></code>
+                    <table class="mt1 mb2 fixed-table h5 col-12">
+                        <colgroup>
+                            <col width="30%">
+                            <col width="70%">
+                        </colgroup>
+                        <thead>
+                            <tr class="bold fill-light">
+                                <th>Name</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody class="mt1">
+                            <tr id="">
+                                <td class="break-word"><span class="code bold">config.url</span> <br><code
+                                        class="quiet">
+                                        &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String" target="_Blank">string</a>&gt
+                          <br>
+                        </code>
+                                </td>
+                                <td class="break-word"><span>模型列表地址。
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+        </div>
+
+        <div class="border-bottom" id="styleimageinterfaceonadd">
+            <div class="clearfix small pointer toggle-sibling">
+                <div class="py1 contain">
+                    <a class="icon pin-right py1 dark-link caret-right" id="tileMonomer">▸</a>
+                    <span class="code strong strong truncate">tileMonomer(options)</span>
+                </div>
+            </div>
+            <div class="clearfix display-none toggle-target">
+                <section class="p2 mb2 clearfix bg-white minishadow">
+                    <p>模型单体化。</p>
+                    <div class="py1 quiet mt1 prose-big">Parameters</div>
+                    <div class="prose">
+                        <div class="space-bottom0">
+                            <div>
+                                <span class="code bold">options</span> <code class="quiet">(object)</code>
+                                添加模型单体化设置。 有效值包括：
+                                'type',
+                                'comparisonField',
+                                'leftClick',
+                                'leftcallback',
+                                'mouseMove',
+                                'movecallback',
+                                'handler',
+                                'height',
+                                'startheight',
+                                'endheight',
+                                'heightField',
+                                'url',
+                                'bufferRadius',
+                                'fillcolor',
+                                'fillcolor2',
+                                'outlinecolor',
+                                'sel3Dtiles'
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <span class="code bold">options</span><code class="quiet"></code>
+                    <table class="mt1 mb2 fixed-table h5 col-12">
+                        <colgroup>
+                            <col width="30%">
+                            <col width="70%">
+                        </colgroup>
+                        <thead>
+                            <tr class="bold fill-light">
+                                <th>Name</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody class="mt1">
+                            <tr id="">
+                                <td class="break-word">
+                                    <span class="code bold">options.type</span>
+                                    <br>
+                                    <code class="quiet">
+                                            &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String" target="_Blank">string</a>&gt
+                                        <br>
+                                        </code>
+                                </td>
+                                <td class="break-word">
+                                    <span>3dtiles与建筑面对照方式，property为按对应属性，geometry为按空间位置（点击位置时会有误差）,model为模型变色,coverage为覆盖面。
+                            </tr>
+                            <tr id="">
+                                <td class="break-word"><span class="code bold">options.comparisonField</span>
+                                    <br>
+                                    <code class="quiet">
+                                            &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_Blank">Array</a>&gt
+                                        <br>
+                                        </code>
+                                </td>
+                                <td class="break-word">
+                                    <span>type为property时对照的字段[3dtiles字段名,对照面数据字段名]。</span>
+                                </td>
+                            </tr>
+                            <tr id="">
+                                <td class="break-word">
+                                    <span class="code bold">options.leftClick</span>
+                                    <br>
+                                    <code class="quiet">
+                                            &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_Blank">boolean</a>&gt
+                                        <br>
+                                        </code>
+                                </td>
+                                <td class="break-word">
+                                    <span>是否左击时单体化显示。</span>
+                                </td>
+                            </tr>
+                            <tr id="">
+                                <td class="break-word">
+                                    <span class="code bold">options.leftcallback</span>
+                                    <br>
+                                    <code class="quiet">
+                                        &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/func" target="_Blank">func</a>&gt
+                                        <br>
+                                        </code>
+                                </td>
+                                <td class="break-word">
+                                    <span>左击回调。</span>
+                                </td>
+                            </tr>
+                            <tr id="">
+                                <td class="break-word"><span class="code bold">options.mouseMove</span>
+                                    <br>
+                                    <code class="quiet">
+                                        &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_Blank">boolean</a>&gt
+                                        <br>
+                                        </code>
+                                </td>
+                                <td class="break-word">
+                                    <span>是否鼠标移动时单体化显示。</span>
+                                </td>
+                            </tr>
+                            <tr id="">
+                                <td class="break-word">
+                                    <span class="code bold">options.movecallback</span>
+                                    <br>
+                                    <code class="quiet">
+                                        &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/func" target="_Blank">func</a>&gt
+                                        <br>
+                                        </code>
+                                </td>
+                                <td class="break-word">
+                                    <span>移动回调。</span>
+                                </td>
+                            </tr>
+                            <tr id="">
+                                <td class="break-word">
+                                    <span class="code bold">options.handler</span>
+                                    <br>
+                                    <code class="quiet">
+                                            &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/object" target="_Blank">object</a>&gt
+                                            <br>
+                                            </code>
+                                </td>
+                                <td class="break-word">
+                                    <span>操作对象。</span>
+                                </td>
+                            </tr>
+                            <tr id="">
+                                <td class="break-word">
+                                    <span class="code bold">options.height</span>
+                                    <br>
+                                    <code class="quiet">
+                                                &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/float" target="_Blank">float</a>&gt
+                                                <br>
+                                                </code>
+                                </td>
+                                <td class="break-word">
+                                    <span>高度差。</span>
+                                </td>
+                            </tr>
+                            <tr id="">
+                                <td class="break-word">
+                                    <span class="code bold">options.startheight</span>
+                                    <br>
+                                    <code class="quiet">
+                                                    &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/float" target="_Blank">float</a>&gt
+                                                    <br>
+                                                    </code>
+                                </td>
+                                <td class="break-word">
+                                    <span>开始高度。</span>
+                                </td>
+                            </tr>
+                            <tr id="">
+                                <td class="break-word">
+                                    <span class="code bold">options.endheight</span>
+                                    <br>
+                                    <code class="quiet">
+                                                        &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/float" target="_Blank">float</a>&gt
+                                                        <br>
+                                                        </code>
+                                </td>
+                                <td class="break-word">
+                                    <span>结束高度。</span>
+                                </td>
+                            </tr>
+                            <tr id="">
+                                <td class="break-word">
+                                    <span class="code bold">options.url</span>
+                                    <br>
+                                    <code class="quiet">
+                                                            &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/string" target="_Blank">string</a>&gt
+                                                            <br>
+                                                            </code>
+                                </td>
+                                <td class="break-word">
+                                    <span>数据url。</span>
+                                </td>
+                            </tr>
+                            <tr id="">
+                                <td class="break-word">
+                                    <span class="code bold">options.heightField</span>
+                                    <br>
+                                    <code class="quiet">
+                                                                &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/string" target="_Blank">string</a>&gt
+                                                                <br>
+                                                                </code>
+                                </td>
+                                <td class="break-word">
+                                    <span>高度字段。</span>
+                                </td>
+                            </tr>
+                            <tr id="">
+                                <td class="break-word">
+                                    <span class="code bold">options.bufferRadius</span>
+                                    <br>
+                                    <code class="quiet">
+                                                                    &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/float" target="_Blank">float</a>&gt
+                                                                    <br>
+                                                                    </code>
+                                </td>
+                                <td class="break-word">
+                                    <span>缓冲区半径。</span>
+                                </td>
+                            </tr>
+                            <tr id="">
+                                <td class="break-word">
+                                    <span class="code bold">options.fillcolor</span>
+                                    <br>
+                                    <code class="quiet">
+                                                                        &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/string" target="_Blank">string</a>&gt
+                                                                        <br>
+                                                                        </code>
+                                </td>
+                                <td class="break-word">
+                                    <span>填充颜色。</span>
+                                </td>
+                            </tr>
+                            <tr id="">
+                                <td class="break-word">
+                                    <span class="code bold">options.fillcolor2</span>
+                                    <br>
+                                    <code class="quiet">
+                                                                            &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/string" target="_Blank">string</a>&gt
+                                                                            <br>
+                                                                            </code>
+                                </td>
+                                <td class="break-word">
+                                    <span>填充颜色。</span>
+                                </td>
+                            </tr>
+                            <tr id="">
+                                <td class="break-word">
+                                    <span class="code bold">options.outlinecolor</span>
+                                    <br>
+                                    <code class="quiet">
+                                                                                &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/string" target="_Blank">string</a>&gt
+                                                                                <br>
+                                                                                </code>
+                                </td>
+                                <td class="break-word">
+                                    <span>外边线颜色。</span>
+                                </td>
+                            </tr>
+                            <tr id="">
+                                <td class="break-word">
+                                    <span class="code bold">options.sel3Dtiles</span>
+                                    <br>
+                                    <code class="quiet">
+                                                                                    &lt<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/float" target="_Blank">float</a>&gt
+                                                                                    <br>
+                                                                                    </code>
+                                </td>
+                                <td class="break-word">
+                                    <span>3DTiles设置。</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- <div class="py1 quiet mt1 prose-big">Returns</div>
+                        <div class="prose">
+                            <div class="space-bottom0">
+                                <div>
+                                    <span class="code bold">Map</span> <code class="quiet"> : this</code>
+                                </div>
+                            </div>
+                        </div> -->
+                </section>
+            </div>
+        </div>
+
+    </section>
+
+</body>
+<script src="../../libs/jquery-3.5.1.min.js"></script>
+<script src="./scripts/site.js"></script>
+
+</html>

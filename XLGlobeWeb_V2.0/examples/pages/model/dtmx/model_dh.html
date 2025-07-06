@@ -1,0 +1,58 @@
+<div id="rjContainer"></div>
+<script>
+    //初始化地图
+    var Globe = new XLGlobe.Globe("rjContainer", {
+        shouldAnimate: true, //自动播放动画
+        mouseLocation: true
+    });
+    var viewer = Globe.viewer;
+
+    //添加底图图层
+    _addbdlayer(Globe);
+    Globe.flyTo(114.427996, 30.438148, 27, 335, -36.5, 360, 2)
+    // viewer.camera.setView({
+    //     orientation: {
+    //         heading: -1.3, // east, default value is 0.0 (north)
+    //         pitch: -0.2, // default value (looking down)
+    //         roll: 0.0 // default value
+    //     },
+    //     destination: Cesium.Cartesian3.fromDegrees(114.427886,30.438323, 10),
+    // });
+    //加载模型
+    var position = Cesium.Cartesian3.fromDegrees(114.427858, 30.438438, 0);
+    var heading = Cesium.Math.toRadians(0);
+    var pitch = 0;
+    var roll = 0;
+    var hpr = new Cesium.HeadingPitchRoll(heading, pitch, roll);
+    var orientation = Cesium.Transforms.headingPitchRollQuaternion(position, hpr);
+    var persion = new XLGlobe.Model.loadGltf(viewer, {
+        id: 1, //模型ID
+        name: "test", //模型名称
+        type: "entity", //加载方式
+        url: config.dataUrl + 'model/Model/qizhongche/qizhongche.gltf', //模型文件地址
+        position: position, //坐标位置
+        orientation: orientation, //设置方向
+        show: true, //模型是否可见
+        //minimumPixelSize: 128, //用于指定模型的最小最小像素大小，而不考虑缩放。
+        maximumScale: 20000, //模型的最大比例尺大小。 minimumPixelSize的上限。
+        runAnimations: true, //是否显示动画
+        isZoomTo: false, //加载完成后是否定位
+        color: { //模型颜色
+            color: "white",
+            alpha: 1
+        },
+        silhouette: { //轮廓设置
+            color: "Red", //颜色   
+            alpha: 1, //透明度
+            size: 0, //宽度
+        }
+    })
+    point2Mod()
+    //加载模型
+    function point2Mod() {
+        var tileset = new Cesium.Cesium3DTileset({
+            url: config.dataUrl + 'model/3DTiles/changju/changju/tileset.json',
+        });
+        viewer.scene.primitives.add(tileset); //加载模型
+    }
+</script>

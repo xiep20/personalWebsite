@@ -1,0 +1,76 @@
+<style>
+    .bts {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 10px 15px;
+        border-radius: 4px;
+        border: 1px solid rgba(128, 128, 128, .5);
+        font-size: 14px;
+        color: #fff;
+        background: rgba(0, 0, 0, .4);
+        box-shadow: 0 3px 14px rgba(128, 128, 128, .5);
+    }
+
+    .bts input {
+        display: inline-block;
+        padding: 6px 12px;
+        margin-bottom: 0;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        touch-action: manipulation;
+        border-radius: 3px;
+        outline: 0;
+        color: #fff;
+        cursor: pointer;
+        border: 1px solid #e4eaec;
+        font-size: 14px;
+        background-color: rgba(32, 160, 255, .2);
+    }
+</style>
+<div id="rjContainer"></div>
+<div class="bts">
+    <input type="button" onclick="startCameraSituFlight()" value="开始"></input>
+    <input type="button" onclick="endCameraSituFlight()" value="暂停"></input>
+</div>
+<&other&>
+</&other&>
+<script>
+    var Globe = new XLGlobe.Globe("rjContainer", {
+        logo: true,
+    });
+
+    //添加底图图层
+    _addbdlayer(Globe);
+
+    //加载模型
+    var wdytiles = new XLGlobe.Model.load3DTiles(Globe.viewer, {
+        url: config.dataUrl + "model/3DTiles/changju/changju/tileset.json",
+        hideGlobe: false,
+        isZoomTo: false,
+        height: 0,
+    })
+    Globe.viewer.camera.setView({
+        destination: Cesium.Cartesian3.fromDegrees(114.427858, 30.438438, 100),
+        orientation: {
+            // 指向
+            heading: Cesium.Math.toRadians(0, 0),
+            // 视角
+            pitch: Cesium.Math.toRadians(-30),
+
+        }
+    });
+    //相机飞行类
+    var cameraFlight = new XLGlobe.Scene.CameraFlight(Globe.viewer);
+    //开始旋转
+    function startCameraSituFlight() {
+        cameraFlight.startCameraSituFlight()
+    }
+    //暂停旋转
+    function endCameraSituFlight() {
+        cameraFlight.endCameraSituFlight()
+    }
+</script>

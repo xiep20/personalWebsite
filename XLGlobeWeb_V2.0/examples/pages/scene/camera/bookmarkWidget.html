@@ -1,0 +1,14 @@
+<div id="rjContainer"></div>
+<&other&>
+</&other&>
+<script>
+    var Globe = new XLGlobe.Globe("rjContainer", {
+        logo: true,
+    });
+
+    //添加底图图层
+    _addbdlayer(Globe);
+
+    //视角书签
+    var bookmarkWidget = new XLGlobe.Scene.BookmarkWidget(Globe.viewer);
+</script>

@@ -1,0 +1,16 @@
+<div id="rjContainer"></div>
+<script>
+  var Globe = new XLGlobe.Globe("rjContainer");
+
+  //添加底图图层
+  _addbdlayer(Globe);
+
+  //地形
+  var provider = new XLGlobe.Layer.layerTerrainProvider({
+    url: config.dataUrl + "dem_tiles",
+    requestWaterMask: true,
+    requestVertexNormals: true
+  });
+  Globe.addTerrainLayer(provider);
+  Globe.flyTo(114.199, 29.203, 3200, 350, -15, 360, 3);
+</script>

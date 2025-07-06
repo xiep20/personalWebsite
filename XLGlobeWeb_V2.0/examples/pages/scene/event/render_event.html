@@ -1,0 +1,35 @@
+<style>
+</style>
+
+<div id="rjContainer"></div>
+<script>
+    //初始化地图
+    var Globe = new XLGlobe.Globe("rjContainer");
+    var viewer = Globe.viewer;
+
+    //添加底图图层
+    _addbdlayer(Globe);
+    // 回调函数 
+    function callbackFunc(event) {
+        XLGlobe.eDialog.msg('渲染前执行', {
+            offset: 't',
+        })
+        console.log(event)
+    }
+
+    // 渲染之前执行
+    viewer.scene.preRender.addEventListener(callbackFunc)
+    // viewer.scene.preRender.removeEventListener(callbackFunc)
+
+    // // 更新之前执行
+    //viewer.scene.preUpdate.addEventListener(callbackFunc)
+    // viewer.scene.preUpdate.removeEventListener(callbackFunc)
+
+    // // 实时渲染执行
+    //viewer.scene.postRender.addEventListener(callbackFunc)
+    // viewer.scene.postRender.removeEventListener(callbackFunc)
+
+    // // 实时更新执行
+    // viewer.scene.postUpdate.addEventListener(callbackFunc)
+    // viewer.scene.postUpdate.removeEventListener(callbackFunc)
+</script>

@@ -1,0 +1,57 @@
+<style>
+</style>
+
+<div id="rjContainer"></div>
+<script>
+  $(document).ready(function () {
+    if (!XLGlobe.Utils.util.webglreport()) {
+      alert('系统检测到您使用的浏览器不支持WebGL功能');
+    }
+
+    initMap();
+  });
+
+  var Globe;
+  var viewer;
+  //初始化地图
+  function initMap() {
+    //初始化地图
+    Globe = new XLGlobe.Globe("rjContainer");
+    viewer = Globe.viewer;
+
+    //添加底图图层
+    _addbdlayer(Globe);
+
+    //加载人工模型
+    tiles3d = new XLGlobe.Model.load3DTiles(viewer, {
+      url: config.dataUrl + "model/3DTiles/changju/changju/tileset.json",
+      hideGlobe: false,
+      isZoomTo: true,
+      height: 0
+    });
+    //加入场景
+    var tetrahedronPrimitive = new XLGlobe.DataSource.TetrahedronPrimitive({
+      viewer: viewer,
+      position: Cesium.Cartesian3.fromDegrees(114.42727, 30.4381, 35.0),
+      color: Cesium.Color.RED.withAlpha(0.8),
+      color2: Cesium.Color.YELLOW.withAlpha(0.8)
+    })
+    viewer.scene.primitives.add(tetrahedronPrimitive);
+    //开启动画
+    tetrahedronPrimitive.startAnimate();
+    //关闭动画
+    // tetrahedronPrimitive.closeAnimate();
+
+    //加入场景
+    var tetrahedronPrimitive = new XLGlobe.DataSource.TetrahedronPrimitive({
+      viewer: viewer,
+      position: Cesium.Cartesian3.fromDegrees(114.42837, 30.4386, 35.0),
+      color: Cesium.Color.YELLOW.withAlpha(0.8),
+      color2: Cesium.Color.GREEN.withAlpha(0.8)
+    })
+    viewer.scene.primitives.add(tetrahedronPrimitive);
+    //开启动画
+    tetrahedronPrimitive.startAnimate();
+
+  }
+</script>

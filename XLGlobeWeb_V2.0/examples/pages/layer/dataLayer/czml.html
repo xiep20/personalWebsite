@@ -1,0 +1,36 @@
+<div id="rjContainer"></div>
+
+<script>
+  var Globe;
+  var viewer;
+  var scene;
+  initMap();
+  // 初始化地图
+  function initMap() {
+    Globe = new XLGlobe.Globe("rjContainer", {
+      logo: true,
+      animation: true, //开启动画
+      shouldAnimate: true //动画控制面板
+    });
+    viewer = Globe.viewer;
+    scene = viewer.scene;
+
+    //添加底图图层
+    _addbdlayer(Globe);
+    // 添加czml数据
+    new XLGlobe.DataSource.LoadCzml(viewer, {
+      url: "./examples/pages/layer/data/data.czml",
+      flyTo: true, //飞到自定义视角
+      center: {
+        x: 114.41956261326343, //经度
+        y: 30.600411805485802, //纬度
+        z: 80000000, // 高度
+        heading: 0, //方向角
+        pitch: -1.5, //俯仰角
+        roll: 0 //翻滚角
+      },
+      duration: 1 //动画执行时间
+    })
+
+  }
+</script>

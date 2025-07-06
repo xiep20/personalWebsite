@@ -1,0 +1,43 @@
+<style>
+</style>
+
+<div id="rjContainer"></div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+    });
+
+    var Globe;
+    var viewer;
+    //初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer", {
+            navigation: true, //导航
+        });
+
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+        //设置相机视角
+        viewer.camera.setView({
+            destination: Cesium.Cartesian3.fromDegrees(117.48, 30.67, 18000000.0)
+
+        });
+
+        //禁止角度倾斜  
+        viewer.scene.screenSpaceCameraController.enableTilt = false;
+
+        //微博点
+        var activePoint = new XLGlobe.DataSource.shinePoint(viewer, {
+            url: './examples/pages/visualization/mapV/data/weibo.json',
+            zoomTo: true
+        })
+
+    }
+</script>

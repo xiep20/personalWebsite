@@ -1,0 +1,155 @@
+<style>
+    #menu {
+        position: absolute;
+        top: 20px;
+        left: 100px;
+        padding: 10px 15px;
+        border-radius: 4px;
+        border: 1px solid rgba(128, 128, 128, .5);
+        color: #fff;
+        background: rgba(0, 0, 0, .4);
+        box-shadow: 0 3px 14px rgba(128, 128, 128, .5);
+        z-index: 999;
+        width: 350px;
+    }
+
+    button {
+        color: #fff;
+        background-color: rgba(32, 160, 255, .2);
+        border: 1px solid #e4eaec;
+        font-size: 15px;
+        margin: 0 5px;
+    }
+</style>
+
+<div id="rjContainer"></div>
+<div id="menu">
+    <li>
+        <button onclick="loadWGS84()">WGS84标准底图</button>
+        <button onclick="loadGCJ02()">GCJ02国测局偏移底图</button>
+    </li>
+</div>
+<script>
+    var baselayer1;
+    var baselayer3;
+    var wgs84Loc;
+    var gcj02Loc;
+    var tileset;
+    var Globe;
+    var viewer;
+
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+        initMap();
+    });
+    // 初始化地图
+    function initMap() {
+        Globe = new XLGlobe.Globe("rjContainer");
+        viewer = Globe.viewer;
+        baselayer1 = new XLGlobe.Layer.TiandituImageryProvider({
+            layer: "img",
+            token: "6a043ce7d3a0791392dd921a6d6f5f29"
+        });
+        Globe.addLayer(baselayer1);
+        // 添加模型
+        tileset = new XLGlobe.Model.load3DTiles(Globe.viewer, {
+            url: config.dataUrl + "model/3DTiles/changju/changju/tileset.json",
+            hideGlobe: false,
+            isZoomTo: true,
+            height: 0
+        })
+        tileset.readyPromise.then(function (tileset) {
+            // 获取模型坐标系
+            var location = getModelInfo(tileset);
+            wgs84Loc = location;
+        })
+
+    }
+
+    //改变
+    function changeP(params) {
+        let mx = Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(params.rx));
+        let my = Cesium.Matrix3.fromRotationY(Cesium.Math.toRadians(params.ry));
+        let mz = Cesium.Matrix3.fromRotationZ(Cesium.Math.toRadians(params.rz));
+        let rotationX = Cesium.Matrix4.fromRotationTranslation(mx);
+        let rotationY = Cesium.Matrix4.fromRotationTranslation(my);
+        let rotationZ = Cesium.Matrix4.fromRotationTranslation(mz);
+        //平移
+        let position = Cesium.Cartesian3.fromDegrees(params.tx, params.ty, params.tz);
+        let m = Cesium.Transforms.eastNorthUpToFixedFrame(position);
+
+        let scale = Cesium.Matrix4.fromUniformScale(1);
+        // //缩放
+        Cesium.Matrix4.multiply(m, scale, m);
+        //旋转、平移矩阵相乘
+        Cesium.Matrix4.multiply(m, rotationX, m);
+        Cesium.Matrix4.multiply(m, rotationY, m);
+        Cesium.Matrix4.multiply(m, rotationZ, m);
+        // return m;
+        tileset._root.transform = m;
+        // viewer.zoomTo(tileset)
+    }
+    //加载WGS84
+    function loadWGS84() {
+        let params = {
+            tx: wgs84Loc.x + "",
+            ty: wgs84Loc.y + "",
+            tz: 0 + "",
+            rx: 0 + "",
+            ry: 0 + "",
+            rz: 0 + ""
+        };
+        Globe.removeLayer(baselayer3)
+        baselayer1 = new XLGlobe.Layer.TiandituImageryProvider({
+            layer: "img",
+            token: "6a043ce7d3a0791392dd921a6d6f5f29"
+        });
+        Globe.addLayer(baselayer1);
+        changeP(params)
+    }
+    //加载GCJ02
+    function loadGCJ02() {
+        let params = {
+            tx: wgs84togcj02(wgs84Loc.x, wgs84Loc.y)[0] + "",
+            ty: wgs84togcj02(wgs84Loc.x, wgs84Loc.y)[1] + "",
+            tz: 0 + "",
+            rx: 0 + "",
+            ry: 0 + "",
+            rz: 0 + ""
+        };
+        Globe.removeLayer(baselayer1)
+        baselayer3 = new XLGlobe.Layer.GaodeImageryProvider({
+            layer: "img_d"
+        });
+        Globe.addLayer(baselayer3);
+        changeP(params)
+    }
+    //获取模型信息
+    function getModelInfo(tileset) {
+        var result = {};
+
+        var boundingSphere = tileset.boundingSphere;
+        var position = boundingSphere.center;
+        var catographic = Cesium.Cartographic.fromCartesian(position);
+
+        var height = Number(catographic.height.toFixed(2));
+        var longitude = Number(Cesium.Math.toDegrees(catographic.longitude).toFixed(6));
+        var latitude = Number(Cesium.Math.toDegrees(catographic.latitude).toFixed(6));
+        result = {
+            x: longitude,
+            y: latitude,
+            z: height,
+            heading: 0
+        };
+
+        var mat = Cesium.Matrix4.fromArray(tileset._root.transform);
+        var pos = Cesium.Matrix4.getTranslation(mat, new Cesium.Cartesian3());
+        var wpos = Cesium.Cartographic.fromCartesian(pos);
+        result.x = Number(Cesium.Math.toDegrees(wpos.longitude).toFixed(6));
+        result.y = Number(Cesium.Math.toDegrees(wpos.latitude).toFixed(6));
+        result.z = Number(wpos.height.toFixed(2));
+        return result;
+    }
+</script>

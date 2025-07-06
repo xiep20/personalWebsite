@@ -1,0 +1,45 @@
+{
+  "_from": "libgif",
+  "_id": "libgif@0.0.3",
+  "_inBundle": false,
+  "_integrity": "sha512-4lJhyr5AQvHIs+Btdqvx0UgUAuZNJhcG6vZS0yYNrYm4B1k9Lo4NxezWR5AQ7EJrXkxmktrx1ZplWJVwRBz/ew==",
+  "_location": "/libgif",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "libgif",
+    "name": "libgif",
+    "escapedName": "libgif",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/libgif/-/libgif-0.0.3.tgz",
+  "_shasum": "18c86ace0ec98d86d5d984b5dac9cb567f20d20e",
+  "_spec": "libgif",
+  "_where": "D:\\xiongzhonggang\\XLGlobeV2.0\\03开发文档\\03编码\\XLGlobeV2.0",
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/kelyvin/libgif-js/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "JavaScript GIF parser and player forked from Buzzfeed",
+  "homepage": "https://github.com/kelyvin/libgif-js#readme",
+  "license": "MIT",
+  "main": "libgif.js",
+  "name": "libgif",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kelyvin/libgif-js.git"
+  },
+  "scripts": {
+    "test": "echo \"No active tests\" && exit 0"
+  },
+  "version": "0.0.3"
+}

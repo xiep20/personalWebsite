@@ -1,0 +1,81 @@
+<style>
+
+</style>
+
+<div id="rjContainer"></div>
+<div id="toolbar">
+    <input type="button" class="btn btn-primary" value="绘制" onclick="drawPoint()">
+</div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+    });
+
+    var Globe;
+    var viewer;
+    //初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer");
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+        //定位
+        viewer.camera.flyTo({
+            destination: Cesium.Cartesian3.fromDegrees(114.455, 30.5446, 6000.0)
+        });
+        //波动圆一
+        viewer.entities.add({
+            name: "",
+            position: Cesium.Cartesian3.fromDegrees(114.455, 30.5546, 0),
+            ellipse: {
+                height: 0,
+                semiMinorAxis: 500,
+                semiMajorAxis: 500,
+                material: new Cesium.CircleWaveMaterialProperty({
+                    duration: 2e3, //速度
+                    gradient: 0, //内光晕大小
+                    color: new Cesium.Color(1.0, 1.0, 0.0, 1.0),
+                    count: 3 //波动圆圈数
+                })
+            }
+        });
+        //波动圆二
+        viewer.entities.add({
+            name: "",
+            position: Cesium.Cartesian3.fromDegrees(114.445, 30.5446, 0),
+            ellipse: {
+                height: 0,
+                semiMinorAxis: 500,
+                semiMajorAxis: 500,
+                material: new Cesium.CircleWaveMaterialProperty({
+                    duration: 2e3,
+                    gradient: 0,
+                    color: new Cesium.Color(1.0, 0.0, 0.0, 1.0),
+                    count: 3
+                })
+            }
+        });
+        // 波动圆三
+        viewer.entities.add({
+            name: "",
+            position: Cesium.Cartesian3.fromDegrees(114.45, 30.5346, 0),
+            ellipse: {
+                height: 0,
+                semiMinorAxis: 700,
+                semiMajorAxis: 700,
+                material: new Cesium.CircleWaveMaterialProperty({
+                    duration: 2e3,
+                    gradient: 0,
+                    color: new Cesium.Color(1.0, 0.0, 1.0, 1.0),
+                    count: 3
+                })
+            }
+        });
+    }
+</script>

@@ -1,0 +1,71 @@
+<style>
+  .infoview {
+    position: absolute;
+    top: 10px;
+    right: 30px;
+    padding: 10px 15px;
+    border-radius: 4px;
+    border: 1px solid rgba(128, 128, 128, 0.5);
+    color: #ffffff;
+    background: rgba(0, 0, 0, 0.4);
+    box-shadow: 0 3px 14px rgba(128, 128, 128, 0.5);
+    z-index: 9999;
+  }
+
+  .infoview input,
+  .infoview select,
+  .infoview textarea {
+    color: #ffffff;
+    background-color: rgba(32, 160, 255, 0.2);
+    border: 1px solid #e4eaec;
+    font-size: 14px;
+  }
+</style>
+<div id="rjContainer"></div>
+<div id="toolbar" class="infoview"></div>
+<script>
+  var Globe = new XLGlobe.Globe("rjContainer");
+
+  var Layernames = [];
+  //百度
+  //各类风格地图
+  Globe.addBaseLayer(new XLGlobe.Layer.BaiduImageryProvider({
+    layer: "vec"
+  }));
+
+  Globe.addBaseLayer([new XLGlobe.Layer.BaiduImageryProvider({
+    layer: "img_d"
+  }), new XLGlobe.Layer.BaiduImageryProvider({
+    layer: "img_z"
+  })]);
+
+  //自定义风格地图
+  var custimid = ['dark', 'midnight', 'grayscale', 'hardedge', 'light', 'redalert', 'googlelite', 'grassgreen', 'pink',
+    'darkgreen', 'bluish'
+  ];
+  for (var i = 0; i < custimid.length; i++) {
+    Globe.addBaseLayer(new XLGlobe.Layer.BaiduImageryProvider({
+      layer: "custom",
+      customid: custimid[i]
+    }));
+  }
+  var ProviderMenu = [],
+    menulist = ['矢量', '影像', 'dark', 'midnight', 'grayscale', 'hardedge', 'light', 'redalert', 'googlelite',
+      'grassgreen', 'pink', 'darkgreen', 'bluish'
+    ];
+  for (var i = 0; i < menulist.length; i++) {
+    //选择栏
+    var obj = {
+      text: menulist[i],
+      onselect: function (index) {
+        return function () {
+          Globe.changeBaseLayer(index);
+        }
+      }(i)
+    };
+    ProviderMenu.push(obj);
+  }
+
+  //加载选择栏内容
+  Sandcastle.addDefaultToolbarMenu(ProviderMenu);
+</script>

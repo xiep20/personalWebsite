@@ -1,0 +1,190 @@
+<style>
+    #menu {
+        position: absolute;
+        top: 20px;
+        left: 80px;
+        padding: 10px;
+        background: #8192a7cc;
+        border-radius: 3px;
+        z-index: 999;
+        color: #ffffff;
+        padding: 10px 15px;
+        border-radius: 4px;
+        border: 1px solid rgba(128, 128, 128, .5);
+        color: #fff;
+        background: rgba(0, 0, 0, .4);
+        box-shadow: 0 3px 14px rgba(128, 128, 128, .5);
+    }
+
+    #menu li {
+        line-height: 40px;
+    }
+
+    input {
+        color: #fff;
+    }
+</style>
+
+<div id="rjContainer">
+
+</div>
+<div id="menu">
+    <ul>
+        <li>
+            <span>
+                内曲面半径（米）
+            </span>
+            <input id="nbj" value="200" type="number">
+        </li>
+        <li>
+            <span>
+                外曲面半径（米）
+            </span>
+            <input id="wbj" value="20000" type="number">
+        </li>
+        <li>
+            <span>
+                边框颜色
+            </span>
+            <input id="bkys" value="#FFFF00" type="color">
+        </li>
+        <li>
+            <span>
+                填充颜色
+            </span>
+            <input id="tcys" value="#00FF00" type="color">
+        </li>
+        <li>
+            <span>
+                左横截面角度
+            </span>
+            <input id="zjd" value="3.141592653589793" type="range" step="0.1" min="0" max="3.141592653589793">
+        </li>
+        <li>
+            <span>
+                右横截面角度
+            </span>
+            <input id="yjd" value="-3.141592653589793" type="range" step="0.1" min="-3.141592653589793" max="0">
+        </li>
+    </ul>
+</div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+    });
+
+    var Globe;
+    var viewer;
+    var p;
+    //初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer", {
+            shouldAnimate: true
+        });
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+        // 更改边框颜色
+        $("#bkys").change(() => {
+            p.lineColor = Cesium.Color.fromCssColorString($("#bkys").val())
+        })
+        // 更改面颜色
+        $("#tcys").change(() => {
+            p.faceColor = Cesium.Color.fromCssColorString($("#tcys").val())
+        })
+        // 内曲面半径
+        $("#nbj").change(() => {
+            p.startRadius = $("#nbj").val()
+        })
+        //外曲面半径
+        $("#wbj").change(() => {
+            p.radius = $("#wbj").val()
+        })
+        //左横截面角度
+        $("#zjd").change(() => {
+            p.startFovH = Number($("#zjd").val())
+        })
+        //右横截面角度
+        $("#yjd").change(() => {
+            p.endFovH = Number($("#yjd").val())
+        })
+
+        var scratchMatrix4 = new Cesium['Matrix4']();
+        var scratchMatrix3 = new Cesium['Matrix3']();
+
+        // 创建模型矩阵
+        function createModelMatrix(a, b, c, d, e, f) {
+            var _0x46ae03 = {
+                'RhfEs': '5|2|4|1|0|3',
+                'zhuzI': function (_0x2c3633, _0x427f00) {
+                    return _0x2c3633 || _0x427f00;
+                }
+            };
+            var _0x51039e = _0x46ae03['RhfEs']['split']('|'),
+                _0x414a47 = 0x0;
+            while (!![]) {
+                switch (_0x51039e[_0x414a47++]) {
+                    case '0':
+                        var _0x4a5e04 = Cesium['Matrix3']['fromHeadingPitchRoll'](Cesium['HeadingPitchRoll'][
+                            'fromDegrees'
+                        ](
+                            b, c, d), scratchMatrix3);
+                        continue;
+                    case '1':
+                        var _0x310ed3 = Cesium['Matrix4']['multiply'](_0x240906, _0x214847, _0x240906);
+                        continue;
+                    case '2':
+                        var _0x240906 = Cesium['Transforms']['eastNorthUpToFixedFrame'](a, undefined,
+                            f);
+                        continue;
+                    case '3':
+                        return Cesium['Matrix4']['multiplyByMatrix3'](_0x310ed3, _0x4a5e04, _0x310ed3);
+                    case '4':
+                        var _0x214847 = Cesium['Matrix4']['fromScale'](new Cesium['Cartesian3'](e, e,
+                            e), scratchMatrix4);
+                        continue;
+                    case '5':
+                        e = _0x46ae03['zhuzI'](e, 0x1);
+                        continue;
+                }
+                break;
+            }
+        }
+        // 创建雷达
+        function createCamberRadarPrimitive(obj) {
+            return new Cesium.CamberRadarPrimitive({
+                'modelMatrix': obj.modelMatrix,
+                'faceColor': obj.faceColor || new Cesium.Color(0, 1, 0, 0.5),
+                'lineColor': obj.lineColor || new Cesium.Color(1, 1, 0, 1),
+                'startRadius': obj.startRadius || 200,
+                'radius': obj.radius || 20000,
+                'startFovH': obj.startFovH || 3.141592653589793,
+                'endFovH': obj.endFovH || -3.141592653589793,
+                'startFovV': obj.startFovV || 0,
+                'endFovV': obj.endFovV || 1.5707963267948966,
+                'segmentH': obj.segmentH || 0x14,
+                'segmentV': obj.segmentV || 0x14,
+                'subSegmentH': obj.subSegmentH || 0x3,
+                'subSegmentV': obj.subSegmentV || 0x5,
+                'show': obj.show || !![]
+            });
+        }
+
+        let position = Cesium.Cartesian3.fromDegrees(114.37169679640347, 30.483518218936656, 10);
+        var modelMatrix = createModelMatrix(position, 0x0, 0x0, 0x0);
+
+        p = viewer.scene.primitives.add(createCamberRadarPrimitive({
+            'modelMatrix': modelMatrix
+        }));
+        viewer.camera.flyTo({
+            destination: Cesium.Cartesian3.fromDegrees(114.37169679640347, 30.483518218936656, 100000)
+        });
+
+    }
+</script>

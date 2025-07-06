@@ -1,0 +1,58 @@
+<style>
+  .tip {
+    text-align: center;
+    padding: 4px 10px;
+    margin: 0;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 999;
+    background-color: rgba(0, 0, 0, 0.4);
+    color: white;
+    font-size: 14px;
+  }
+
+  #model-attribute {
+    height: auto;
+  }
+</style>
+<div id="rjContainer"></div>
+<div id="toolbar" class="infoview"></div>
+<p class="tip">说明：1.选择右侧模型，2点击场景生成模型，3.双击模型可在左侧属性面板修改参数</p>
+<script>
+  $(document).ready(function () {
+    if (!XLGlobe.Utils.util.webglreport()) {
+      alert('系统检测到您使用的浏览器不支持WebGL功能');
+    }
+    initMap();
+  });
+
+  var Globe;
+  var viewer;
+  //初始化地图
+  function initMap() {
+    //初始化地图
+    Globe = new XLGlobe.Globe("rjContainer", {
+      navigation: true, //导航
+      animation: true
+    });
+
+    viewer = Globe.viewer;
+
+    var Layernames = [];
+    //添加底图图层
+    _addbdlayer(Globe);
+    // 加载模型
+    var tiles3d = new XLGlobe.Model.load3DTiles(viewer, {
+      url: config.dataUrl + "model/3DTiles/changju/changju/tileset.json",
+      hideGlobe: false,
+      isZoomTo: true,
+      height: 0
+    });
+    //模型库widget
+    new XLGlobe.Model.modelStoreWidget(viewer, {
+      url: "geoJSON/modelList.json"
+    });
+
+  }
+</script>

@@ -1,0 +1,100 @@
+{
+    "md": "开发文档左侧配置文件-开发指南",
+    "tree": [{
+            "id": "1",
+            "name": "开发指南",
+            "isHtml": false,
+            "icon": "el-icon-iconkaifazhinan",
+            "children": [{
+                    "id": "1-1",
+                    "name": "入门指南",
+                    "isHtml": false,
+                    "children": [{
+                            "id": "1-1-1",
+                            "name": "准备",
+                            "isHtml": true,
+                            "icon": "el-icon-iconkaifazhinan"
+                        },
+                        {
+                            "id": "1-1-2",
+                            "name": "Hello World",
+                            "isHtml": true,
+                            "icon": "el-icon-iconkaifazhinan"
+                        }
+                    ]
+                },
+                {
+                    "id": "1-2",
+                    "name": "创建地图",
+                    "isHtml": false,
+                    "children": [{
+                        "id": "1-2-1",
+                        "name": "控件控制",
+                        "isHtml": true,
+                        "icon": "el-icon-iconkaifazhinan"
+                    }, {
+                        "id": "1-2-2",
+                        "name": "数据地图",
+                        "isHtml": true,
+                        "icon": "el-icon-iconkaifazhinan"
+                    }, {
+                        "id": "1-2-3",
+                        "name": "加载3Dtiles",
+                        "isHtml": true,
+                        "icon": "el-icon-iconkaifazhinan"
+                    }]
+                },
+                {
+                    "id": "1-3",
+                    "name": "场景设置",
+                    "isHtml": false,
+                    "children": [{
+                        "id": "1-3-1",
+                        "name": "设置颜色",
+                        "isHtml": true,
+                        "icon": "el-icon-iconkaifazhinan"
+                    }, {
+                        "id": "1-3-2",
+                        "name": "相机视角",
+                        "isHtml": true,
+                        "icon": "el-icon-iconkaifazhinan"
+                    }, {
+                        "id": "1-3-3",
+                        "name": "场景特效",
+                        "isHtml": true,
+                        "icon": "el-icon-iconkaifazhinan"
+                    }]
+                },
+                {
+                    "id": "1-4",
+                    "name": "地图标绘",
+                    "isHtml": false,
+                    "children": [{
+                            "id": "1-4-1",
+                            "name": "绘制",
+                            "isHtml": true,
+                            "icon": "el-icon-iconkaifazhinan"
+                        },
+                        {
+                            "id": "1-4-2",
+                            "name": "信息窗口",
+                            "isHtml": true,
+                            "icon": "el-icon-iconkaifazhinan"
+                        }
+                    ]
+                },
+                {
+                    "id": "1-5",
+                    "name": "量算",
+                    "isHtml": false,
+                    "children": [{
+                        "id": "1-5-1",
+                        "name": "量算",
+                        "isHtml": true,
+                        "icon": "el-icon-iconkaifazhinan"
+                    }]
+                }
+            ]
+        }
+    ]
+}

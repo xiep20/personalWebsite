@@ -1,0 +1,62 @@
+<style>
+    .bts {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 10px 15px;
+        border-radius: 4px;
+        border: 1px solid rgba(128, 128, 128, .5);
+        color: #fff;
+        background: rgba(0, 0, 0, .4);
+        box-shadow: 0 3px 14px rgba(128, 128, 128, .5);
+    }
+
+    .bts input {
+        display: inline-block;
+        padding: 6px 12px;
+        margin-bottom: 0;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        touch-action: manipulation;
+        border-radius: 3px;
+        outline: 0;
+        color: #fff;
+        cursor: pointer;
+        border: 1px solid #e4eaec;
+        font-size: 14px;
+        background-color: rgba(32, 160, 255, .2);
+    }
+</style>
+<div id="rjContainer"></div>
+<div class="bts">
+    <input type="button" onclick="startRotate()" value="开始旋转"></input>
+    <input type="button" onclick="stopRotate()" value="暂停旋转"></input>
+</div>
+<&other&>
+</&other&>
+<script>
+    var Globe = new XLGlobe.Globe("rjContainer", {
+        logo: true,
+    });
+
+    //添加底图图层
+    _addbdlayer(Globe);
+
+    //旋转地球  
+    var rotate = new XLGlobe.Scene.Rotate(Globe.viewer, {
+        speed: 300
+    });
+
+    function startRotate() {
+        //开始旋转
+        rotate.startRotate();
+    }
+
+    function stopRotate() {
+        //暂停旋转
+        rotate.stopRotate();
+    }
+</script>

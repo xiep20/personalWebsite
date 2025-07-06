@@ -1,0 +1,15 @@
+<importjs>
+  <script src="libs/pbf/ol.js"></script>
+  <script src="libs/pbf/mvt.js"></script>
+</importjs>
+<div id="rjContainer"></div>
+<script>
+  var Globe = new XLGlobe.Globe("rjContainer");
+  //pbf
+  var baselayer = mvt.create({
+    url: 'https://a.tiles.mapbox.com/v4/mapbox.mapbox-streets-v6/{z}/{x}/{y}.vector.pbf?access_token={k}',
+    key: 'pk.eyJ1IjoibWFyc2dpcyIsImEiOiJja2Fod2xlanIwNjJzMnhvMXBkMnNqcjVpIn0.WnxikCaN2KV_zn9tLZO77A',
+    style: mvt.StreetsV6Style
+  });
+  Globe.addBaseLayer(baselayer);
+</script>

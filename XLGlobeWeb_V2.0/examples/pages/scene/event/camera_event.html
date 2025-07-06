@@ -1,0 +1,30 @@
+<style>
+</style>
+
+<div id="rjContainer"></div>
+<script>
+    //初始化地图
+    var Globe = new XLGlobe.Globe("rjContainer");
+
+    //添加底图图层
+    _addbdlayer(Globe);
+
+    //相机移动开始事件
+    Globe.viewer.scene.camera.moveStart.addEventListener(function () {
+        XLGlobe.eDialog.msg('相机移动开始', {
+            offset: 't'
+        })
+    });
+    //相机移动结束事件
+    Globe.viewer.scene.camera.moveEnd.addEventListener(function () {
+        XLGlobe.eDialog.msg('相机移动结束', {
+            offset: 't'
+        })
+    });
+    // //视图发生变化事件
+    Globe.viewer.scene.camera.changed.addEventListener(function () {
+        XLGlobe.eDialog.msg('相机变化', {
+            offset: 't'
+        })
+    });
+</script>

@@ -1,0 +1,58 @@
+<importjs>
+    <!-- mapV -->
+    <script src="libs/mapV/mapv.js"></script>
+    <script src="libs/mapV/mapvgl.js"></script>
+</importjs>
+<div id="rjContainer"></div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+        initMap();
+        point();
+    });
+    var viewer;
+    var scene;
+    //初始化地图
+    function initMap() {
+        var Globe = new XLGlobe.Globe("rjContainer", {});
+        viewer = Globe.viewer;
+        scene = viewer.scene;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+        //定位
+        viewer.camera.setView({
+            destination: Cesium.Cartesian3.fromDegrees(112.088953, 31.161181, 5000000)
+        });
+
+    }
+
+    //当前页面业务相关
+    function point() {
+        var randomCount = 300;
+        var data = [];
+        while (randomCount--) {
+            data.push({
+                geometry: {
+                    type: 'Point',
+                    coordinates: [100.500 + Math.random() * 20, 24.100 + Math.random() * 15]
+                },
+                count: 30 * Math.random()
+            });
+        }
+        //MapV配置项
+        var options = {
+            fillStyle: 'rgba(255, 250, 50, 0.8)',
+            globalCompositeOperation: "lighter",
+            maxSize: 10,
+            max: 30,
+            shadowBlur: 30,
+            shadowColor: 'rgba(255, 250, 50, 1)',
+            draw: 'bubble'
+        }
+        //MapV加载到地图
+        var MapVLayer = new XLGlobe.MapV.CombineMapV(viewer, data, options);
+    }
+</script>

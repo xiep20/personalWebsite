@@ -1,0 +1,1 @@
+import{_ as a,c as e,o as r,ae as s}from"./chunks/framework.Dgg8-8ov.js";const p=JSON.parse('{"title":"👨‍💻 关于我","description":"","frontmatter":{},"headers":[],"relativePath":"about.md","filePath":"about.md"}'),o={name:"about.md"};function n(i,t,l,g,h,d){return r(),e("div",null,t[0]||(t[0]=[s("",32)]))}const u=a(o,[["render",n]]);export{p as __pageData,u as default};

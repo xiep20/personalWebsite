@@ -1,0 +1,239 @@
+<style>
+    #toolbar {
+        position: absolute;
+        top: 0;
+        left: 100px;
+        padding: 10px 15px;
+        border-radius: 4px;
+        border: 1px solid rgba(128, 128, 128, .5);
+        color: #fff;
+        background: rgba(0, 0, 0, .4);
+        box-shadow: 0 3px 14px rgba(128, 128, 128, .5);
+        z-index: 999;
+    }
+
+    #toolbar .tool_li {
+        margin: 0 0 10px;
+    }
+
+    #toolbar .tool_li .btgltffile {
+        width: 350px;
+        float: left;
+        border: 1px solid #6293aa;
+        margin: 0 5px 0 2px;
+        border-radius: 3px;
+        position: relative;
+    }
+
+    #toolbar .tool_li .btgltffile input {
+        height: 26px;
+        width: 100%;
+        cursor: pointer;
+        opacity: 0;
+    }
+
+    #toolbar .tool_li .btgltffile .addfiletitle {
+        position: absolute;
+        z-index: -1;
+        font-size: 14px;
+        left: 5px;
+        top: 2px;
+    }
+
+    #toolbar input {
+        vertical-align: middle;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        width: 60px;
+        line-height: 22px;
+        border: 1px solid #6293aa;
+        border-radius: 3px;
+        color: #fff;
+        background-color: rgba(63, 72, 84, .7);
+    }
+
+    #toolbar .header {
+        font-weight: bold;
+    }
+
+    #toolbar .btn-primary {
+        cursor: pointer;
+        color: #fff;
+        background-color: rgba(32, 160, 255, .2);
+        border: 1px solid #e4eaec;
+        font-size: 14px;
+        border-radius: 3px;
+    }
+
+    #toolbar .btn-primary:hover {
+        border-color: #4db3ff;
+    }
+
+    #toolbar .btn-primary:focus {
+        border-color: #4db3ff;
+    }
+</style>
+<div id="rjContainer"></div>
+<div id="toolbar">
+    <div class="tool_li">模型URL： <input id="modelurl" type="text"
+            value="http://103.94.20.254:6090/wuhan_20201014/model/Model/qizhongche/qizhongche.gltf" style="width:350px">
+        <input type="button" class="btn btn-primary" title="在地图上单击点选位置" value="标绘" onclick="drawModel('point1')">
+    </div>
+    <div class="tool_li"><span style="float: left;">本地模型： </span>
+        <div class="btgltffile">
+            <div class="addfiletitle">选择本地gltf模型</div><input type="file" id="btnaddgltf" />
+        </div>
+        <input type="button" class="btn btn-primary" title="在地图上单击点选位置" value="标绘" onclick="drawModel('point2')">
+    </div>
+</div>
+<script>
+    var Globe = new XLGlobe.Globe("rjContainer", {
+        shouldAnimate: true,
+        mouseLocation: true
+    });
+    var viewer = Globe.viewer;
+
+    //添加底图图层
+    _addbdlayer(Globe);
+    //加载模型
+    var tiles3d = new XLGlobe.Model.load3DTiles(viewer, {
+        url: config.dataUrl + "model/3DTiles/changju/changju/tileset.json",
+        hideGlobe: false,
+        isZoomTo: true,
+        height: 0
+    });
+
+    var gltfpath = '';
+    //模型上传按钮
+    var gltfFile = document.getElementById('btnaddgltf');
+    var loaddialog = null;
+    gltfFile.addEventListener("click", function () {
+        loaddialog = XLGlobe.eDialog.load();
+        gltfFile.value = '';
+        document.querySelector(".addfiletitle").innerHTML = ''
+    })
+    //加载文件后的事件
+    gltfFile.addEventListener("change", function (event) {
+        if (loaddialog) {
+            loaddialog.remove();
+            loaddialog = null;
+        }
+        var input = event.target;
+        if (input.files.length > 0 && (fileType(input.files[0].name) === "gltf" || fileType(input.files[0]
+                .name) === "glb")) {
+            var url = getObjectURL(input.files[0])
+            gltfpath = url;
+            document.querySelector(".addfiletitle").innerHTML = input.files[0].name;
+        } else {
+            XLGlobe.eDialog.msg('请加载正确数据', {
+                offset: 't'
+            })
+            gltfpath = ''
+            gltfFile.value = '';
+            document.querySelector(".addfiletitle").innerHTML = ''
+        }
+    });
+
+    //加载gltf
+    function addGltfToMap(url, position_) {
+        var position = position_; //
+        var heading = Cesium.Math.toRadians(135);
+        var pitch = 0;
+        var roll = 0;
+        var hpr = new Cesium.HeadingPitchRoll(heading, pitch, roll);
+        var orientation = Cesium.Transforms.headingPitchRollQuaternion(position, hpr);
+        //加载Gltf模型
+        var feiji = new XLGlobe.Model.loadGltf(viewer, {
+            url: url, //模型文件地址
+            position: position, //坐标位置
+            orientation: orientation, //设置方向
+            show: true, //模型是否可见
+            minimumPixelSize: 128, //用于指定模型的最小最小像素大小，而不考虑缩放。
+            maximumScale: 20000, //模型的最大比例尺大小。 minimumPixelSize的上限。
+            isZoomTo: true, //加载完成后是否定位
+            silhouette: { //轮廓设置
+                color: "Red", //颜色   
+                alpha: 0, //透明度
+                size: 2, //宽度
+            }
+        })
+    }
+    //判断文件后缀名
+    function fileType(name) {
+        var str = '',
+            a = '',
+            b = '';
+        if (!name.length) {
+            return false
+        };
+        for (let i = 0; i < name.length; i++) {
+            str += name[i];
+        };
+        a = str.split('').reverse().join('');
+        b = a.substring(0, a.search(/\./)).split('').reverse().join('');
+        if (b.length) {
+            return b
+        } else {
+            throw 'This file has no suffix name'
+        };
+    }
+    //获取上传文件浏览器路径
+    function getObjectURL(file) {
+        var url = null;
+        if (window.createObjectURL != undefined) { // basic
+            url = window.createObjectURL(file);
+        } else if (window.URL != undefined) { // mozilla(firefox)
+            url = window.URL.createObjectURL(file);
+        } else if (window.webkitURL != undefined) { // webkit or chrome
+            url = window.webkitURL.createObjectURL(file);
+        }
+        return url;
+    }
+    //绘制
+    var drawControl = XLGlobe.Utils.draw({
+        viewer: viewer,
+        hasEdit: false,
+        onStopDrawing: function (entity) {
+            if (!entity.position) {
+                return
+            }
+            var coords = entity.position._value;
+
+            addGltfToMap(addurl, coords);
+        }
+    });
+
+    var addurl = "";
+
+    //地图点击获取点
+    function drawModel(type) {
+        drawControl.deleteAll()
+        var urlvalue = "";
+        if (type == "point1") {
+            urlvalue = document.querySelector("#modelurl").value;
+            if (urlvalue == "") {
+                XLGlobe.eDialog.msg('请先加载数据', {
+                    offset: 't'
+                })
+                return
+            }
+            addurl = urlvalue;
+        } else {
+            if (gltfpath == "") {
+                XLGlobe.eDialog.msg('请先加载数据', {
+                    offset: 't'
+                })
+                return
+            }
+            addurl = gltfpath;
+        }
+        //绘点
+        drawControl.startDraw({
+            type: "point",
+            style: {
+                pixelSize: 12,
+                color: '#3388ff',
+            }
+        });
+    }
+</script>

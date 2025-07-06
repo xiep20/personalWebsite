@@ -1,0 +1,104 @@
+<importjs>
+    <!-- mapV -->
+    <script src="libs/mapV/mapv.js"></script>
+    <script src="libs/mapV/mapvgl.js"></script>
+</importjs>
+<div id="rjContainer"></div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+        initMap();
+        linetime();
+    });
+    var viewer;
+    var scene;
+    //初始化地图
+    function initMap() {
+        var Globe = new XLGlobe.Globe("rjContainer", {});
+        viewer = Globe.viewer;
+        scene = viewer.scene;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+        //定位
+        viewer.camera.setView({
+            destination: Cesium.Cartesian3.fromDegrees(114.321317, 30.398428, 100000)
+        });
+
+    }
+
+    //当前页面业务相关
+    function linetime() {
+        $.get('./examples/pages/visualization/mapV/data/wuhan-car', function (
+            rs) {
+            var data = [];
+            var timeData = [];
+            rs = rs.split("\n");
+            var maxLength = 0;
+            for (var i = 0; i < rs.length; i++) {
+                var item = rs[i].split(',');
+                var coordinates = [];
+                if (item.length > maxLength) {
+                    maxLength = item.length;
+                }
+                for (j = 0; j < item.length; j += 2) {
+                    var x = Number(item[j]) / 20037508.34 * 180;
+                    var y = Number(item[j + 1]) / 20037508.34 * 180;
+                    y = 180 / Math.PI * (2 * Math.atan(Math.exp(y * Math.PI / 180)) - Math.PI / 2);
+                    if (x == 0 || y == NaN) {
+                        continue;
+                    }
+                    coordinates.push([x, y]);
+                    timeData.push({
+                        geometry: {
+                            type: 'Point',
+                            coordinates: [x, y]
+                        },
+                        count: 1,
+                        time: j
+                    });
+                }
+                data.push({
+                    geometry: {
+                        type: 'LineString',
+                        coordinates: coordinates
+                    }
+                });
+
+            }
+
+
+            //MapV配置项
+            var options = {
+                strokeStyle: 'rgba(53,57,255,0.5)',
+                coordType: 'bd09mc',
+                // globalCompositeOperation: 'lighter',
+                shadowColor: 'rgba(53,57,255,0.2)',
+                shadowBlur: 3,
+                lineWidth: 3.0,
+                draw: 'simple'
+            }
+            var MapVLayer = new XLGlobe.MapV.CombineMapV(viewer, timeData, options);
+            var options = {
+                fillStyle: 'rgba(255, 250, 250, 0.2)',
+                coordType: 'bd09mc',
+                globalCompositeOperation: "lighter",
+                size: 1.5,
+                animation: {
+                    stepsRange: {
+                        start: 0,
+                        end: 100
+                    },
+                    trails: 3,
+                    duration: 5,
+                },
+                draw: 'simple'
+            }
+
+            //MapV加载到地图
+            var MapVLayer = new XLGlobe.MapV.CombineMapV(viewer, timeData, options);
+        });
+    }
+</script>

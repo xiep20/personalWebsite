@@ -1,0 +1,53 @@
+<!--
+ * @Descripttion : 
+ * @version      : 
+ * @Author       : HeDa
+ * @Date         : 2021-01-21 16:28:53
+ * @LastEditors  : HeDa
+ * @LastEditTime : 2021-01-22 15:07:19
+ * @FilePath     : /XLGlobeWebV2.0/public/examples/pages/overlay/polygon/polygon_OSMBuilding.html
+-->
+<style>
+</style>
+<div id="rjContainer"></div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+    });
+
+    var Globe;
+    var viewer;
+    //初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer", {
+            navigation: true, //导航
+        });
+
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+        //设置相机视角
+        viewer.camera.setView({
+            destination: Cesium.Cartesian3.fromDegrees(117.48, 30.67, 18000000.0)
+
+        });
+
+        new XLGlobe.DataSource.OSMBuilding(viewer, {
+            colorHash: { //分值颜色
+                10: new Cesium.Color.fromCssColorString("#FFEDA0"),
+                15: new Cesium.Color.fromCssColorString("#FED976"),
+            },
+            url: config.dataUrl + "/geojson/wuhan_jianzu/wuhan_jianzu1-0.json",
+            attributeFloor: "floor", //楼高关键字段
+            zoomTo: true,
+            shine: false //是否闪烁
+        })
+
+    }
+</script>

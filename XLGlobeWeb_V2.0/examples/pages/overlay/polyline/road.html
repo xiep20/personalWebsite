@@ -1,0 +1,183 @@
+<style>
+    #menu {
+        position: absolute;
+        top: 20px;
+        left: 100px;
+        padding: 10px;
+        background: #8192a7cc;
+        border-radius: 3px;
+        z-index: 999;
+    }
+
+    #menu li {
+        color: #ffffff;
+        line-height: 32px;
+    }
+</style>
+<div id="rjContainer"></div>
+<div id="menu">
+    <li>
+        <span>宽度</span>
+        <input id="lukuan" value="20" min="5" max="100" type="number">
+    </li>
+    <li>
+        <span>透明度</span>
+        <input id='toumingdu' value="1" type='range' min='0.1' max='1' step='0.1' />
+    </li>
+    <li>
+        <button onclick="duobianxing()">画</button>
+        <button onclick="clears()">清除</button>
+    </li>
+</div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+    });
+
+    var Globe;
+    var viewer;
+    var drawControl;
+    var road;
+    //初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer");
+
+        viewer = Globe.viewer;
+        //添加底图图层
+        _addbdlayer(Globe);
+
+        viewer.cesiumWidget.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+        viewer.cesiumWidget.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_CLICK);
+        viewer.scene.globe.depthTestAgainstTerrain = true;
+
+        // 初始化道路
+        road = new XLGlobe.DataSource.road(viewer, {
+            line: {
+                "type": "Feature",
+                "properties": {},
+                "geometry": {
+                    "type": "LineString",
+                    "coordinates": [
+                        [114.37169679640347, 30.483518218936656],
+                        [114.37022355466874, 30.48991653867099],
+                        [114.37006747656626, 30.490913605102605],
+                        [114.37028485157524, 30.491681033375098],
+                        [114.37133675194131, 30.49328766741138],
+                        [114.37169656625595, 30.494066041451937],
+                        [114.3719047342563, 30.49469174338189],
+                        [114.37175327454433, 30.496895461776386],
+                        [114.3717805679946, 30.498093208517066],
+                        [114.3723398005309, 30.49894520138387],
+                        [114.37339158743373, 30.499937612987193],
+                        [114.37389522272254, 30.500482630465353],
+                        [114.37473875056281, 30.502797429559617]
+                    ]
+                }
+            },
+            opacity: 1,
+            width: 20
+        })
+        //创建道路
+        road.creatRoad();
+        //相机视角
+        viewer.camera.setView({
+            destination: new Cesium.Cartesian3(-2269853.2005088474, 5010873.906834066, 3217319.352526568),
+            orientation: {
+                heading: 0.2608349245802053,
+                pitch: -0.28008964423867,
+                roll: 0.0007874235373739324
+            }
+        });
+
+        // 绘制线
+        drawControl = XLGlobe.Utils.draw({
+            viewer: viewer,
+            hasEdit: true,
+            onStopDrawing: function (entity) {
+                var luKuan = Number($("input").val()) //宽度
+                var nArr2 = []; //道路
+                drawControl.deleteAll();
+                var ellipsoid = viewer.scene.globe.ellipsoid;
+                var arr = entity._polyline._positions._value;
+
+                arr.forEach((element) => {
+
+                    var catographic = Cesium.Cartographic.fromCartesian(element);
+                    var height = Number(catographic.height.toFixed(2));
+
+                    var cartographic = ellipsoid.cartesianToCartographic({
+                        x: element.x,
+                        y: element.y,
+                        z: element.z,
+                    });
+                    var lat = Cesium.Math.toDegrees(cartographic.latitude);
+                    var lng = Cesium.Math.toDegrees(cartographic.longitude);
+                    nArr2.push(
+                        [
+                            lng,
+                            lat
+                        ]
+                    );
+                });
+                var linestring1 = turf.lineString(nArr2);
+
+                road = new XLGlobe.DataSource.road(viewer, {
+                    line: linestring1,
+                    opacity: 1,
+                    width: luKuan
+                })
+                road.creatRoad();
+
+                setTimeout(() => {
+                    drawControl.deleteAll();
+                }, 1000)
+
+            },
+            onStartEditing: function (entity) {
+
+            },
+            onChangeEditing: function (entity) {
+
+            },
+            onStopEditing: function (entity) {
+
+            },
+        });
+    }
+    // 绘制多边形
+    function duobianxing() {
+        drawControl.deleteAll();
+        drawControl.startDraw({
+            type: "polyline",
+            style: {
+                color: "#ffffff",
+                opacity: 1,
+                clampToGround: true,
+                extrudedHeight: 1
+            }
+        });
+    }
+    //调整路宽
+    $("#lukuan").change(() => {
+        road.change({
+            width: Number($("#lukuan").val()),
+            opacity: Number($("#toumingdu").val()),
+        })
+    })
+    //更改透明度
+    $("#toumingdu").change(() => {
+        road.change({
+            width: Number($("#lukuan").val()),
+            opacity: Number($("#toumingdu").val()),
+        })
+    })
+
+    function clears() {
+        new XLGlobe.DataSource.road(viewer, {}).clearAll();
+    }
+</script>

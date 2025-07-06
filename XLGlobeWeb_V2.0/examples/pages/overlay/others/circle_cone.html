@@ -1,0 +1,90 @@
+<style>
+</style>
+
+<div id="rjContainer"></div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+    });
+
+    var Globe;
+    var viewer;
+    //初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer", {
+            shouldAnimate: true
+        });
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+
+        var position = Cesium.Cartesian3.fromDegrees(114, 35, 750000.0);
+        var heading = Cesium.Math.toRadians(135);
+        var pitch = 0;
+        var roll = 0;
+        var hpr = new Cesium.HeadingPitchRoll(heading, pitch, roll);
+        var orientation = Cesium.Transforms.headingPitchRollQuaternion(position, hpr);
+        // //卫星
+        this.entity = this.viewer.entities.add({
+            // 位置
+            position: position,
+            orientation: orientation,
+            // 加载模型
+            model: {
+                uri: config.dataUrl + 'model/weixin/weixin.gltf',
+                minimumPixelSize: 128,
+                maximumScale: 20000,
+            }
+        });
+
+        //创建圆锥实体
+        var cylinder = viewer.entities.add({
+            name: 'Red cone',
+            position: Cesium.Cartesian3.fromDegrees(114, 35, 500000.0),
+            cylinder: {
+                length: 500000,
+                topRadius: 0,
+                bottomRadius: 50000,
+                //topSurface: false,    //新增参数，控制顶部是否渲染
+                // bottomSurface: false, //新增参数，控制底部是否渲染
+                material: new XLGlobe.DataSource.RadarPrimitiveMaterialProperty({
+                    color: Cesium.Color.CORAL,
+                    thickness: 0.1,
+                })
+            }
+        });
+        viewer.zoomTo(cylinder)
+
+        var position2 = Cesium.Cartesian3.fromDegrees(115, 38, 450000.0);
+        var orientation2 = Cesium.Transforms.headingPitchRollQuaternion(position2, hpr);
+        // //卫星
+        this.entity = this.viewer.entities.add({
+            // 位置
+            position: position2,
+            orientation: orientation2,
+            // 加载模型
+            model: {
+                uri: config.dataUrl + 'model/weixin/weixin.gltf',
+                minimumPixelSize: 128,
+                maximumScale: 20000,
+            }
+        });
+        //创建圆锥实体
+        var cylinder = viewer.entities.add({
+            name: 'Red cone',
+            position: Cesium.Cartesian3.fromDegrees(115, 38, 200000.0),
+            cylinder: {
+                length: 500000,
+                topRadius: 0,
+                bottomRadius: 50000,
+                material: new XLGlobe.DataSource.EllipsoidFadeMaterialProperty(Cesium.Color.GREEN, 1000)
+            }
+        });
+    }
+</script>

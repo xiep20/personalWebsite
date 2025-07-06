@@ -1,0 +1,80 @@
+<style>
+  #toolbar {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    padding: 10px 15px;
+    border-radius: 4px;
+    border: 1px solid rgba(128, 128, 128, .5);
+    color: #fff;
+    background: rgba(0, 0, 0, .4);
+    box-shadow: 0 3px 14px rgba(128, 128, 128, .5);
+    z-index: 999;
+  }
+</style>
+<div id="rjContainer"></div>
+<div id="toolbar">
+  <table>
+    <tbody>
+      <tr>
+        <td>透明度</td>
+        <td>
+          <input type="range" min="0.0" max="1.0" step="0.1" data-bind="value: alpha, valueUpdate: 'input'">
+          <input type="text" size="1" data-bind="value: alpha">
+        </td>
+      </tr>
+      <tr>
+        <td>亮度</td>
+        <td>
+          <input type="range" min="0.2" max="3" step="0.2" data-bind="value: brightness, valueUpdate: 'input'">
+          <input type="text" size="1" data-bind="value: brightness">
+        </td>
+      </tr>
+      <tr>
+        <td>对比度</td>
+        <td>
+          <input type="range" min="0.2" max="2.0" step="0.2" data-bind="value: contrast, valueUpdate: 'input'">
+          <input type="text" size="1" data-bind="value: contrast">
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<script>
+  var Globe = new XLGlobe.Globe("rjContainer");
+  //arcgis切片
+  var layer = new XLGlobe.Layer.ArcgisCacheImageryProvider({
+    "url": config.dataUrl + "tile/arcgis_cache/_alllayers/L{arc_z}/R{arc_y}/C{arc_x}.jpg",
+    "maximumLevel": 4,
+    "minimumLevel": 0,
+  });
+  layer.defaultAlpha = 1 //透明度 0~1
+  layer.defaultBrightness = 1 //亮度 1为界点
+  layer.defaultContrast = 1 //对比度  1为界点
+  layer.defaultGamma = undefined //伽马强度
+  layer.defaultSaturation = undefined // 饱和度
+  var lay = Globe.addLayer(layer);
+
+
+  //面板事件
+  var viewModel = {
+    alpha: 1,
+    brightness: 1,
+    contrast: 1
+  };
+  Cesium.knockout.track(viewModel);
+  var toolbar = document.getElementById("toolbar");
+  Cesium.knockout.applyBindings(viewModel, toolbar);
+  for (var name in viewModel) {
+    if (viewModel.hasOwnProperty(name)) {
+      Cesium.knockout.getObservable(viewModel, name).subscribe(update);
+    }
+  }
+
+  //更新参数
+  function update() {
+    lay.layer.alpha = parseFloat(viewModel.alpha); //透明度 0~1
+    lay.layer.brightness = parseFloat(viewModel.brightness); //亮度 1为界点
+    lay.layer.contrast = parseFloat(viewModel.contrast); //对比度  1为界点
+  }
+</script>

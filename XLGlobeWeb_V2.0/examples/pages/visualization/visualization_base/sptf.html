@@ -1,0 +1,194 @@
+<style>
+    #video_dom {
+        display: none;
+        position: absolute;
+        top: 30vh;
+        left: 30vw;
+        transform: translate(-50%, -50%);
+        width: 70vw;
+    }
+
+    #menu button {
+        /* width: 90px; */
+        height: 27px;
+        line-height: 20px;
+        padding: 2px 12px;
+        margin-bottom: 0;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        touch-action: manipulation;
+        border-radius: 3px;
+        outline: 0;
+        color: #fff;
+        cursor: pointer;
+        border: 1px solid #e4eaec;
+        font-size: 14px;
+        background-color: #47475450;
+        margin: 0 5px 0 0px;
+    }
+
+    #menu {
+        position: absolute;
+        top: 20px;
+        left: 90px;
+        padding: 10px;
+        background: #8192a7cc;
+        border-radius: 3px;
+        z-index: 999;
+        padding: 10px 15px;
+        border-radius: 4px;
+        border: 1px solid rgba(128, 128, 128, .5);
+        font-size: 14px;
+        color: #fff;
+        background: rgba(0, 0, 0, .4);
+        box-shadow: 0 3px 14px rgba(128, 128, 128, .5);
+        padding: 10px 50px 10px 15px;
+    }
+</style>
+<div id="rjContainer"></div>
+<div id="menu">
+    <button onclick="duobianxing()">绘制立面体</button>
+    <button onclick="play(1)">播放</button>
+    <button onclick="play(0)">暂停</button>
+    <button onclick="clears()">清除</button>
+</div>
+<video id="video_dom" preload="auto" autoPlay loop>
+    <source src="./images/menu/Analysis/spatial_analysis/analysis_ksyfx.mp4" type="video/mp4" />
+    Your browser does not support the <code>video</code> element.
+</video>
+
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+    });
+
+    var viewer;
+    var scene;
+    var flgs = false;
+    var drawControl;
+    var videoElement = document.getElementById('video_dom');
+
+    //初始化地图
+    function initMap() {
+        var Globe = new XLGlobe.Globe("rjContainer", {});
+
+        viewer = Globe.viewer;
+        scene = viewer.scene;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+        // 加载倾斜摄影模型----------------------------------
+        new XLGlobe.Model.load3DTiles(viewer, {
+            url: config.dataUrl + "model/3DTiles/changju/changju/tileset.json",
+            hideGlobe: false,
+            isZoomTo: true,
+            height: 0,
+        })
+        // 加载倾斜摄影模型----------------------------------
+
+        new XLGlobe.Analysis.video(viewer, {
+            videoElement: videoElement,
+            clampToGround: false,
+            positions: [114.40404463095764, 30.45822577783207, 68.69, 114.40404409335436, 30.458225770881846,
+                40.5, 114.40450154714627, 30.45822577347297, 40.62, 114.40450127102639, 30.458225780282355,
+                68.76, 114.40404463095764, 30.45822577783207, 68.69
+            ]
+        }).creat();
+
+        drawControl = XLGlobe.Utils.draw({
+            viewer: viewer,
+            hasEdit: true,
+            onStopDrawing: function (entity) {
+
+                // 如果是立面体
+                drawControl.deleteAll();
+                var ellipsoid = viewer.scene.globe.ellipsoid;
+                var arr = entity.polygon.hierarchy._value.positions;
+
+                var nArr2 = [];
+                arr.forEach((element) => {
+
+                    var catographic = Cesium.Cartographic.fromCartesian(element);
+                    var height = Number(catographic.height.toFixed(2));
+
+                    var cartographic = ellipsoid.cartesianToCartographic({
+                        x: element.x,
+                        y: element.y,
+                        z: element.z,
+                    });
+                    var lat = Cesium.Math.toDegrees(cartographic.latitude);
+                    var lng = Cesium.Math.toDegrees(cartographic.longitude);
+                    nArr2.push(
+                        lng,
+                        lat,
+                        height + 0.1
+                    );
+                });
+                var cartographic = ellipsoid.cartesianToCartographic({
+                    x: arr[0].x,
+                    y: arr[0].y,
+                    z: arr[0].z,
+                });
+                var catographic1 = Cesium.Cartographic.fromCartesian(arr[0]);
+                var height1 = Number(catographic1.height.toFixed(2));
+                var lat = Cesium.Math.toDegrees(cartographic.latitude);
+                var lng = Cesium.Math.toDegrees(cartographic.longitude);
+                nArr2.push(
+                    lng,
+                    lat,
+                    height1 + 0.1,
+                );
+                new XLGlobe.Analysis.video(viewer, {
+                    videoElement: videoElement,
+                    clampToGround: false,
+                    positions: nArr2
+                }).creat();
+
+
+            },
+            onStartEditing: function (entity) {
+
+            },
+            onChangeEditing: function (entity) {
+
+            },
+            onStopEditing: function (entity) {
+
+            },
+        });
+
+    }
+    //多边形
+    function duobianxing() {
+        drawControl.deleteAll();
+        drawControl.startDraw({
+            type: "polygon",
+            style: {
+                color: "#29cf34",
+                opacity: 0.5,
+                clampToGround: false,
+                //  height:0,
+                // extrudedHeight: 0
+            }
+        });
+    }
+    //开始关闭
+    function play(ff) {
+        if (ff) {
+            videoElement.play();
+        } else {
+            videoElement.pause();
+        }
+    }
+    //清除
+    function clears() {
+        new XLGlobe.Analysis.video(viewer, {}).clearAll();
+    }
+</script>

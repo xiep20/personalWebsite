@@ -1,0 +1,59 @@
+<!--
+ * @Descripttion : 
+ * @version      : 
+ * @Author       : HeDa
+ * @Date         : 2021-01-13 09:13:39
+ * @LastEditors  : HeDa
+ * @LastEditTime : 2021-01-14 11:25:37
+ * @FilePath     : /XLGlobeWebV2.0/public/examples/pages/overlay/point/point_time.html
+-->
+<style>
+</style>
+<div id="rjContainer"></div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+    });
+
+    var Globe;
+    var viewer;
+    var globePM;
+    //初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer", {
+            navigation: true, //导航
+            infoBox: true,
+        });
+
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+        //设置相机视角
+        viewer.camera.setView({
+            destination: Cesium.Cartesian3.fromDegrees(117.48, 30.67, 18000000.0)
+
+        });
+        showPM();
+        setInterval(showPM, 30000);
+
+        function showPM() {
+            XLGlobe.eDialog.msg('数据更新中......', {
+                offset: 't'
+            });
+            if (globePM) {
+                globePM.helper.removeAll();
+                viewer.dataSources.remove(globePM.dataSource);
+            }
+            // 加载实时点
+            globePM = new XLGlobe.DataSource.globePM(viewer, {
+                urlJs: "./libs/pmworkers.js"
+            });
+        }
+    }
+</script>

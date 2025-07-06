@@ -1,0 +1,72 @@
+<div id="rjContainer"></div>
+
+<script>
+    var viewer;
+    var scene;
+    var RJCesFun = new XLGlobe.GeoJsonDataSource();
+    initMap();
+    initWork();
+    arcgisWfs();
+    // 初始化地图
+    function initMap() {
+        Globe = new XLGlobe.Globe("rjContainer", {
+            logo: true,
+            selectionIndicator: false
+        });
+        viewer = Globe.viewer;
+        scene = viewer.scene;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+        //定位
+        viewer.camera.setView({
+            destination: Cesium.Cartesian3.fromDegrees(114.3396, 30.5664, 4000),
+            orientation: {
+                heading: 6.283185307179586, // east, default value is 0.0 (north)
+                pitch: -0.7853981633974483, // default value (looking down)
+                roll: 0.0 // default value
+            }
+        });
+    }
+    //初始化气泡
+    function initWork() {
+        // 弹框样式二
+        tooltip = new XLGlobe.Utils.Tooltip({
+            viewer: viewer,
+            width: 130,
+            lineheight: 20,
+        });
+    }
+
+    //获取数据并添加点击事件
+    function arcgisWfs() {
+        $.get(config.dataUrl + '/geojson/wuhan_jianzu/wuhan_jianzhu1.json', function (resData) { //模拟arcgis数据
+            var dataPromise = RJCesFun.load(resData);
+            dataPromise.then(function (dataSource) {
+                viewer.dataSources.add(dataSource); //加载服务数据
+                var entities = dataSource.entities.values;
+                for (var i = 0; i < entities.length; i++) { //添加属性
+                    var entity = entities[i];
+                    entity.polygon.material = Cesium.Color.PALETURQUOISE;
+                    entity.polygon.outline = false;
+                    entity.polygon.extrudedHeight = parseInt(resData.features[i].properties.Height) *
+                        3; //设置楼层高度
+                    entity.attributes = resData.features[i].properties;
+                }
+            })
+            var handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
+            handler.setInputAction(function (movement) { //点击查询信息
+                var pick = scene.pick(movement.position);
+                var cartesian = XLGlobe.Utils.latlng.getCurrentMousePosition(scene, movement.position);
+                tooltip.cleartooltip(); //关闭之前气泡
+                if (cartesian) {
+                    tooltip.add({
+                        position: cartesian,
+                        header: "信息",
+                        content: `楼高：${pick.id.attributes.Height}m<br/>层数：${pick.id.attributes.floor}层`
+                    });
+                }
+            }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+        })
+    }
+</script>

@@ -1,0 +1,51 @@
+<style>
+    #cesiumCantainer {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+<div id="cesiumCantainer"></div>
+<script>
+    window.onload = function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+        initMap();
+    };
+    var Globe;
+    var viewer;
+    //初始化地球
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("cesiumCantainer", {
+            navigation: true, //导航
+        });
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+        //设置相机高度
+        viewer.camera.setView({
+            destination: new Cesium.Cartesian3(-2317061.4846297908, 8050023.743565536, 6410137.255700269)
+        });
+        //[95, 120, 30, 40]范围内随机40个点
+        var results = XLGlobe.Utils.util.randomPointsWithinBbox(95, 120, 30, 40, 40, 'geojson').features;
+        for (var item of results) {
+            var x = item.geometry.coordinates[0];
+            var y = item.geometry.coordinates[1];
+            var positions = Cesium.Cartesian3.fromDegrees(x, y);
+            viewer.entities.add({
+                position: positions,
+                billboard: {
+                    image: "images/marker/mark2.png",
+                    scale: 0.5 //设置图片大小
+                }
+
+            });
+        };
+
+
+
+
+    }
+</script>

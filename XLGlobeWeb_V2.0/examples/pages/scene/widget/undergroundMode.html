@@ -1,0 +1,71 @@
+<style>
+  #toolbar {
+    background: rgba(42, 42, 42, 0.8);
+    padding: 4px;
+    border-radius: 4px;
+    position: absolute;
+    top: 0;
+    right: 10px;
+    color: #fff;
+  }
+
+  #toolbar input {
+    vertical-align: middle;
+    padding-top: 2px;
+    padding-bottom: 2px;
+  }
+</style>
+<div id="rjContainer"></div>
+<div id="toolbar">
+  <table>
+    <tbody>
+      <tr>
+        <td>是否关闭地下模式</td>
+        <td>
+          <input onclick="checkboxOnclick(this)" type="checkbox">
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<&other&>
+</&other&>
+<script>
+  var Globe = new XLGlobe.Globe("rjContainer", {
+    logo: true,
+  });
+
+  //添加底图图层
+  _addbdlayer(Globe);
+
+  //3DTiles瓦片样式 可以设置不同的楼高设置不同的颜色
+  var tilesStyle = {
+    color: {
+      conditions: [
+        ['true', 'color("red")']
+      ]
+    }
+  };
+  //加载3DTile格式
+  new XLGlobe.Model.load3DTiles(Globe.viewer, {
+    url: config.dataUrl + "model/3DTiles/管网/whJSL/tileset.json",
+    hideGlobe: false, //隐藏球只显示模型
+    style: tilesStyle,
+    isZoomTo: true,
+    height: -10
+  })
+
+  //是否可以进入地下
+  Globe.viewer.scene.screenSpaceCameraController.enableCollisionDetection = false;
+
+  //地下模式配置(可用于调试透明度)
+  Globe.viewer.scene.globe.translucency.frontFaceAlphaByDistance = new Cesium.NearFarScalar(0.0, 0.0, 0.0, 1.0);
+  Globe.viewer.scene.globe.translucency.frontFaceAlphaByDistance.nearValue = Cesium.Math.clamp(0.999, 0.0, 1.0);
+  //开启地下模式
+  Globe.viewer.scene.globe.translucency.enabled = false;
+
+  //勾选触发
+  function checkboxOnclick(checkbox) {
+    Globe.viewer.scene.globe.translucency.enabled = checkbox.checked;
+  }
+</script>

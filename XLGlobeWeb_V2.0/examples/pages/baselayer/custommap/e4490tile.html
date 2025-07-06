@@ -1,0 +1,26 @@
+<div id="rjContainer"></div>
+<script>
+  var Globe = new XLGlobe.Globe("rjContainer");
+  //xyz切片
+  var baselayer = new XLGlobe.Layer.createImageryProvider({
+    "type": "image",
+    "url": config.dataUrl + "img/world/world_b.jpg"
+  });
+  Globe.addBaseLayer(baselayer);
+  //4490服务
+  var layer = new XLGlobe.Layer.createImageryProvider({
+    name: "山东影像",
+    type: "tile",
+    url: "http://www.sdmap.gov.cn/tileservice/SDPubMap?layer=SDPubMap&style=default&tilematrixset=default028mm&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/png&TileMatrix={z}&TileCol={x}&TileRow={y}",
+    crs: "4490",
+    minimumLevel: 5,
+    maximumLevel: 18,
+    alpha: 1,
+    queryParameters: {
+      token: "test"
+    },
+    visible: true
+  });
+  Globe.addLayer(layer);
+  Globe.flyTo(117.4, 36.6, 550000, 2.9, -90, 0, 3);
+</script>

@@ -1,0 +1,92 @@
+<style>
+    #menu {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        padding: 10px;
+        background: #72a8eafa;
+        border-radius: 3px;
+        border: 1px solid rgba(128, 128, 128, 0.5);
+        color: #ffffff;
+        background: rgba(0, 0, 0, 0.4);
+        box-shadow: 0 3px 14px rgba(128, 128, 128, 0.5);
+        z-index: 9999;
+    }
+</style>
+
+<div id="rjContainer"></div>
+<!-- 面板 -->
+<div id="menu">
+    <input id="meeting" type="date" value="2020-10-20" />
+    开始时间
+    <select id="ks">
+        <option value="6">6</option>
+        <option selected value="8">8</option>
+        <option value="10">10</option>
+        <option value="12">12</option>
+    </select>
+    结束时间
+    <select id="js">
+        <option value="14">14</option>
+        <option value="16">16</option>
+        <option selected value="18">18</option>
+        <option value="20">20</option>
+    </select>
+    <button onclick="setvisible('play')">播放</button>
+    <button onclick="setvisible('stop')">暂停</button>
+</div>
+
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+        initWork();
+    });
+
+    var viewer;
+    var scene;
+
+    //初始化地图
+    function initMap() {
+        var Globe = new XLGlobe.Globe("rjContainer", {});
+
+        viewer = Globe.viewer;
+        scene = viewer.scene;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+
+        scene.globe.depthTestAgainstTerrain = true;
+    }
+
+    //当前页面业务相关
+    function initWork() {
+        new XLGlobe.Model.load3DTiles(viewer, {
+            url: config.dataUrl + "model/3DTiles/changju/changju/tileset.json",
+            hideGlobe: false,
+            isZoomTo: true,
+            height: 0,
+        })
+    }
+
+    function setvisible(p) {
+        if (p == "play") {
+            new XLGlobe.Analysis.sunlight(viewer, {
+                play: true,
+                multiplier: 5000,
+                day: document.getElementById("meeting").value,
+                startTime: document.getElementById("ks").value,
+                stopTime: document.getElementById("js").value,
+                clockRange: Cesium.ClockRange.LOOP_STOP,
+                clockStep: Cesium.ClockStep.SYSTEM_CLOCK_MULTIPLIER,
+            })
+        } else {
+            new XLGlobe.Analysis.sunlight(viewer, {
+                play: false,
+            })
+        }
+    }
+</script>

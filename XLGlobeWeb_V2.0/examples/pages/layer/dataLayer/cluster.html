@@ -1,0 +1,53 @@
+<div id="rjContainer"></div>
+
+<script>
+    var Globe;
+    var viewer;
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+        initMap();
+        initWork();
+    });
+    // 初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer");
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+    }
+    //初始化气泡
+    function initWork() {
+        //获取每一个点坐标
+        var results = XLGlobe.Utils.util.randomPointsWithinBbox(100, 120, 25, 40, 10000, 'geojson')
+        var clu = new XLGlobe.DataSource.pointCluster({
+            viewer: viewer,
+            dataOrUrl: results,
+            pixelRange: 25,
+            colorArr: [{
+                    num: 1,
+                    size: 30,
+                    color: "#1c86d1cc"
+                },
+                {
+                    num: 50,
+                    size: 32,
+                    color: "#67c23acc"
+                },
+                {
+                    num: 100,
+                    size: 34,
+                    color: "#f56c6ccc"
+                }, {
+                    num: 200,
+                    size: 36,
+                    color: "#e6a23ccc"
+                }
+            ],
+            img: "images/marker/marker6.png"
+        });
+    }
+</script>

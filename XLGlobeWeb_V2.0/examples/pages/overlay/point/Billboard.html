@@ -1,0 +1,61 @@
+<style>
+    #cesiumCantainer {
+        width: 100%;
+        height: 100%;
+    }
+
+    .cesium-popup-background {
+        background: rgba(63, 72, 84, .9);
+    }
+
+    .cesium-popup-color {
+        color: #ffffff;
+    }
+</style>
+<div id="cesiumCantainer"></div>
+<script>
+    window.onload = function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+        initMap();
+    };
+    var Globe;
+    var viewer;
+    //初始化地球
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("cesiumCantainer", {
+            navigation: true, //导航
+        });
+        viewer = Globe.viewer;
+        //添加底图图层
+        _addbdlayer(Globe);
+        new XLGlobe.Utils.tooltip(viewer)
+        // 加载生成点数据
+        new XLGlobe.DataSource.LoadGeojson(viewer, {
+            url: config.dataUrl + "/geojson/dian.json",
+            duration: 1,
+            opacity: 0.8,
+            styleOptions: {
+                "image": "images/marker/mark3.png",
+                "distanceDisplayCondition": true,
+                "distanceDisplayCondition_far": 30000,
+                "distanceDisplayCondition_near": 0,
+                "scale": 0.8
+            },
+            tooltip: "<li>名称：{Name}</li>",
+            clampToGround: true,
+            flyTo: true,
+            duration: 4,
+            center: {
+                "y": 30.55,
+                "x": 114.3707,
+                "z": 20000,
+                heading: 6,
+                pitch: -2,
+                roll: 6
+            }
+        })
+    }
+</script>

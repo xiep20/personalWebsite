@@ -1,0 +1,127 @@
+<style>
+    #toolbar {
+        position: absolute;
+        top: 0;
+        right: 10px;
+        padding: 10px 15px;
+        border-radius: 4px;
+        border: 1px solid rgba(128, 128, 128, .5);
+        color: #fff;
+        background: rgba(0, 0, 0, .4);
+        box-shadow: 0 3px 14px rgba(128, 128, 128, .5);
+        z-index: 999;
+    }
+
+    #toolbar .btn-primary {
+        cursor: pointer;
+        color: #fff;
+        background-color: rgba(32, 160, 255, .2);
+        border: 1px solid #e4eaec;
+        font-size: 14px;
+        border-radius: 3px;
+    }
+</style>
+
+<div id="rjContainer"></div>
+<div id="toolbar">
+    <input type="button" class="btn btn-primary" value="标记文字点" onclick="drawPoint(1)" />
+    <input type="button" class="btn btn-primary" value="标记文字点" onclick="drawPoint(2)" />
+    <input type="button" class="btn btn-primary" value="清除" onclick="deleteAll()" />
+</div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+        initMap();
+        initWork();
+    });
+    var Globe;
+    var viewer;
+    var drawControl, drawtype;
+    var tooltip1, tooltip2;
+    //初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer");
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+        //地形
+        var provider = new XLGlobe.Layer.layerTerrainProvider({
+            url: "http://data.marsgis.cn/terrain",
+            requestWaterMask: true,
+            requestVertexNormals: true
+        });
+        Globe.addTerrainLayer(provider);
+
+        //加载3D模型
+        new XLGlobe.Model.load3DTiles(viewer, {
+            url: config.dataUrl + "model/3DTiles/changju/changju/tileset.json",
+            hideGlobe: false,
+            isZoomTo: true,
+            height: 34,
+        });
+    }
+
+    //当前页面业务相关
+    function initWork() {
+        // 弹框样式一
+        tooltip1 = new XLGlobe.Utils.Tooltip({
+            viewer: viewer,
+            width: 130,
+            lineheight: 20,
+            color: 'rgb(213, 168, 67)',
+            // stroke: 'rgb(200, 192, 164)',
+            stroke: 'rgb(255, 255, 255)',
+        });
+        // 弹框样式二
+        tooltip2 = new XLGlobe.Utils.Tooltip({
+            viewer: viewer,
+            width: 130,
+            lineheight: 20,
+        });
+        // 绘制事件
+        drawControl = XLGlobe.Utils.draw({
+            viewer: viewer,
+            hasEdit: true,
+            onStopDrawing: function (entity) {
+                if (drawtype == 1) {
+                    tooltip1.add({
+                        id: '信息牌_' + Cesium.createGuid(),
+                        position: entity.position._value,
+                        header: "标题",
+                        content: "名称：新增点<br/>分类：点击<br/>地址：长咀科技园"
+                    });
+                } else {
+                    tooltip2.add({
+                        id: '信息牌_' + Cesium.createGuid(),
+                        position: entity.position._value,
+                        header: "标题",
+                        content: "名称：新增点<br/>分类：点击<br/>地址：长咀科技园"
+                    });
+                }
+            },
+        });
+    }
+
+    //清除
+    function deleteAll() {
+        drawControl.deleteAll();
+        tooltip1.cleartooltip();
+        tooltip2.cleartooltip();
+    }
+
+    //绘制
+    function drawPoint(type) {
+        drawtype = type;
+        drawControl.startDraw({
+            type: "point",
+            style: {
+                pixelSize: 12,
+                color: '#3388ff',
+            }
+        });
+    }
+</script>

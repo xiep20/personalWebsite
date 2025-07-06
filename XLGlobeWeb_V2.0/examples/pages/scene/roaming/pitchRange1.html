@@ -1,0 +1,40 @@
+<div id="rjContainer"></div>
+<script>
+  //地图底图
+  var Globe = new XLGlobe.Globe("rjContainer", {
+    animation: true
+  });
+  var viewer = Globe.viewer;
+
+  //添加底图图层
+  _addbdlayer(Globe);
+
+  //地形
+  var provider = new XLGlobe.Layer.layerTerrainProvider({
+    url: config.dataUrl + "dem_tiles",
+    requestWaterMask: true,
+    requestVertexNormals: true
+  });
+  Globe.addTerrainLayer(provider);
+
+  Globe.viewer.camera.setView({
+    destination: Cesium.Cartesian3.fromDegrees(114.405219, 30.458313, 500),
+    orientation: {
+      pitch: Cesium.Math.toRadians(-40.0),
+    }
+  })
+  // 漫游路线数据
+  var roamLineWidget = new XLGlobe.Scene.RoamLineWidget(Globe.viewer, {
+    url: 'geoJSON/漫游路线数据.json',
+    httpRequestParams: {
+      method: 'GET'
+    },
+    modelurl: {
+      model_man: config.dataUrl + 'model/Model/xingren/xingren.gltf',
+      model_car: config.dataUrl + 'model/bujian/qiche.gltf',
+      model_air: config.dataUrl + 'model/CesiumAir/Cesium_Air.gltf',
+      model_zhanji: config.dataUrl + 'model/tower/zhanji.glb',
+      model_weixin: config.dataUrl + 'model/weixin/weixin.gltf',
+    }
+  })
+</script>

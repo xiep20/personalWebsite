@@ -1,0 +1,149 @@
+<style>
+    #menu {
+        position: absolute;
+        top: 20px;
+        left: 100px;
+        padding: 10px 15px;
+        border-radius: 4px;
+        border: 1px solid rgba(128, 128, 128, .5);
+        color: #fff;
+        background: rgba(0, 0, 0, .4);
+        box-shadow: 0 3px 14px rgba(128, 128, 128, .5);
+        z-index: 999;
+        width: 600px;
+    }
+
+    #menu li {
+        color: #ffffff;
+        line-height: 42px;
+    }
+
+    button {
+        color: #fff;
+        background-color: rgba(32, 160, 255, .2);
+        border: 1px solid #e4eaec;
+        font-size: 14px;
+    }
+</style>
+
+<div id="rjContainer"></div>
+<div id="menu">
+    <li>
+        3dtile模型移动(只适合小范围内的偏移 笛卡尔坐标方向，非贴球面)
+    </li>
+    <li>
+        <span>模型URL：</span>
+        <input style="width: 400px;" id="url">
+        <button onclick="loadMX()">加载模型</button>
+    </li>
+    <li>
+        <button>X轴</button>
+        <input style="width: 350px;" id='x' value="0" type='range' min='-1000' max='1000' step='100' />
+        （<span id="xx">0</span>）
+    </li>
+    <li>
+        <button>Y轴</button>
+        <input style="width: 350px;" id='y' value="0" type='range' min='-1000' max='1000' step='100' />
+        （<span id="yy">0</span>）
+    </li>
+    <li>
+        <button>Z轴</button>
+        <input style="width: 350px;" id='z' value="0" type='range' min='-1000' max='1000' step='100' />
+        （<span id="zz">0</span>）
+    </li>
+    <li>
+        <input type="checkbox" id="sd">
+        <span>深度检测</span>
+        <input type="checkbox" id="dx">
+        <span>是否有地形</span>
+    </li>
+</div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+        initMap();
+    });
+
+    var Globe;
+    var viewer;
+    var tileset;
+
+    function initMap() {
+        Globe = new XLGlobe.Globe("rjContainer");
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+
+        //加载人工模型
+        tileset = new XLGlobe.Model.load3DTiles(viewer, {
+            url: config.dataUrl + "model/3DTiles/changju/changju/tileset.json",
+            hideGlobe: false,
+            isZoomTo: true,
+            height: 0
+        });
+
+        $("#url").val(config.dataUrl + "model/3DTiles/changju/changju/tileset.json")
+
+        initMX();
+    }
+
+    function initMX() {
+        // z轴更改
+        $("#z").change(() => {
+            $("#zz").html($("#z").val())
+            changeP()
+        })
+        // x轴更改
+        $("#x").change(() => {
+            $("#xx").html($("#x").val())
+            changeP()
+        })
+        // y轴更改
+        $("#y").change(() => {
+            $("#yy").html($("#y").val())
+            changeP()
+        })
+        // 深度检测
+        $("#sd").change(() => {
+            if ($("#sd").prop('checked')) {
+                viewer.scene.globe.depthTestAgainstTerrain = true;
+            } else {
+                viewer.scene.globe.depthTestAgainstTerrain = false;
+            }
+        })
+        // 是否地形
+        $("#dx").change(() => {
+            if ($("#dx").prop('checked')) {
+                viewer.scene.terrainProvider = new XLGlobe.Layer.layerTerrainProvider({
+                    url: config.dataUrl + "dem_tiles",
+                    requestWaterMask: true,
+                    requestVertexNormals: true
+                });
+            } else {
+                viewer.scene.terrainProvider = new Cesium.EllipsoidTerrainProvider({});
+            }
+        })
+    }
+    // 更改位置
+    function changeP() {
+        var translation = Cesium.Cartesian3.fromArray([Number($("#x").val()), Number($("#y").val()), Number($("#z")
+            .val())])
+        var m = Cesium.Matrix4.fromTranslation(translation)
+        tileset.modelMatrix = m
+
+    }
+    // 加载模型
+    function loadMX() {
+        viewer.scene._primitives.removeAll();
+        tileset = new XLGlobe.Model.load3DTiles(viewer, {
+            url: $("#url").val(),
+            hideGlobe: false,
+            isZoomTo: true,
+            height: 0
+        });
+        initMX();
+    }
+</script>

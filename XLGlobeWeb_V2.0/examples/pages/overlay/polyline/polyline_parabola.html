@@ -1,0 +1,88 @@
+<!--
+ * @Descripttion : 
+ * @version      : 
+ * @Author       : HeDa
+ * @Date         : 2021-01-13 09:13:39
+ * @LastEditors  : HeDa
+ * @LastEditTime : 2021-01-13 17:23:37
+ * @FilePath     : /XLGlobeWebV2.0/public/examples/pages/overlay/polyline/polyline_parabola.html
+-->
+<style>
+</style>
+<div id="rjContainer"></div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+    });
+
+    var Globe;
+    var viewer;
+    //初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer", {
+            navigation: true, //导航
+            mouseLocation: true
+        });
+
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+
+        //加载人工模型
+        var tiles3d = new XLGlobe.Model.load3DTiles(viewer, {
+            url: config.dataUrl + "model/3DTiles/changju/changju/tileset.json",
+            hideGlobe: false,
+            isZoomTo: true,
+            height: 0
+        });
+
+        var parabola = new XLGlobe.DataSource.parabola(viewer);
+        parabola.draw({
+            startPoint: [114.427341, 30.436919],
+            endPoint: [114.428204, 30.437123],
+            step: 80, //平滑度越高越平滑
+            heightProportion: 0.5, //最高点的高度与距离的比值
+            materialLine: new XLGlobe.DataSource.customizeStripeMaterail(Cesium.Color.WHITE, 5, {
+                speed: 100,
+                count: 1,
+                freely: "vertical",
+                direction: "-"
+            }, config.dataUrl + 'img/material/colorLine.png'), //默认线材质
+        })
+
+        parabola.draw({
+            startPoint: [114.427225, 30.436954],
+            endPoint: [114.426896, 30.438052],
+            step: 80, //平滑度越高越平滑
+            heightProportion: 0.2, //最高点的高度与距离的比值
+            width: 10,
+            materialLine: new XLGlobe.DataSource.customizeStripeMaterail(Cesium.Color.WHITE, 5, {
+                speed: 10,
+                count: 70,
+                freely: "cross",
+                direction: "-"
+            }, config.dataUrl + 'img/material/arrow.png'), //默认线材质
+        })
+
+        parabola.draw({
+            startPoint: [114.428304, 30.437123],
+            endPoint: [114.42809, 30.438015],
+            step: 80, //平滑度越高越平滑
+            heightProportion: 0.2, //最高点的高度与距离的比值
+            width: 20,
+            materialLine: new XLGlobe.DataSource.customizeStripeMaterail(Cesium.Color.WHITE, 5, {
+                speed: 10,
+                count: 3,
+                freely: "cross",
+                direction: "-"
+            }, config.dataUrl + 'img/material/LinkPulse.png'), //默认线材质
+        })
+
+    }
+</script>

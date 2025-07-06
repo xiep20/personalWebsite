@@ -1,0 +1,167 @@
+<style>
+  #menu {
+    position: absolute;
+    top: 20px;
+    left: 80px;
+    padding: 10px;
+    background: #8192a7cc;
+    border-radius: 3px;
+    z-index: 999;
+  }
+
+  #toolbar {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    padding: 10px 15px;
+    border-radius: 4px;
+    border: 1px solid rgba(128, 128, 128, .5);
+    color: #fff;
+    background: rgba(0, 0, 0, .4);
+    box-shadow: 0 3px 14px rgba(128, 128, 128, .5);
+    z-index: 999;
+  }
+
+  #toolbar input {
+    vertical-align: middle;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    background-color: white;
+    width: 60px;
+    border: 1px solid #f0f0f0;
+  }
+
+  #toolbar .header {
+    font-weight: bold;
+  }
+
+  #toolbar .btn-primary {
+    cursor: pointer;
+    color: #fff;
+    background-color: rgba(32, 160, 255, .2);
+    border: 1px solid #e4eaec;
+    font-size: 14px;
+    border-radius: 3px;
+  }
+
+  #toolbar .btn-primary:hover {
+    color: #ffffff;
+    border-color: #4db3ff;
+  }
+
+  #toolbar .selbox1 {
+    border-color: #4db3ff;
+  }
+</style>
+
+<div id="rjContainer"></div>
+<div id="toolbar">
+  <input type="button" class="btn btn-primary" value="外裁剪" onclick="drawPolygon(this,1)">
+  <input type="button" class="btn btn-primary" value="内裁剪" onclick="drawPolygon(this,2)">
+  <input type="button" class="btn btn-primary" value="清除" onclick="clearClip()">
+</div>
+<script>
+  $(document).ready(function () {
+    if (!XLGlobe.Utils.util.webglreport()) {
+      alert('系统检测到您使用的浏览器不支持WebGL功能');
+    }
+
+    initMap();
+    initWork();
+  });
+
+  var Globe;
+  var viewer;
+  var tiles3d;
+  var drawControl;
+  var cliptype;
+  var tilesclip;
+  //初始化地图
+  function initMap() {
+    //初始化地图
+    Globe = new XLGlobe.Globe("rjContainer");
+    viewer = Globe.viewer;
+
+    //添加底图图层
+    _addbdlayer(Globe);
+    //地形
+    var provider = new XLGlobe.Layer.layerTerrainProvider({
+      url: "http://data.marsgis.cn/terrain",
+      requestWaterMask: true,
+      requestVertexNormals: true
+    });
+    Globe.addTerrainLayer(provider);
+
+    //加载3D模型
+    tiles3d = new XLGlobe.Model.load3DTiles(viewer, {
+      url: config.dataUrl + "model/3DTiles/changju/changju/tileset.json",
+      hideGlobe: false,
+      isZoomTo: true,
+      height: 34,
+    });
+  }
+
+  //当前页面业务相关
+  function initWork() {
+    drawControl = XLGlobe.Utils.draw({
+      viewer: viewer,
+      hasEdit: true,
+      onStopDrawing: function (entity) {
+        var p = entity._polygon.hierarchy._value.positions;
+
+        tilesclip = new XLGlobe.Analysis.tilesClip({
+          tileset: tiles3d,
+          type: cliptype == 1 ? 'outer' : 'inner'
+        });
+        tilesclip.clip(p);
+        drawControl.deleteEntity(entity)
+      },
+      onStartEditing: function (entity) {
+
+      },
+      onChangeEditing: function (entity) {
+
+      },
+      onStopEditing: function (entity) {
+
+      },
+    });
+
+    //按钮变色事件
+    document.onclick = function (e) {
+      var len = document.querySelectorAll('.selbox1').length;
+      if (e.target.className !== "" && e.target.className.indexOf("selbox1") >= 0 && len == 1) {
+        return
+      }
+      if (len > 0) {
+        if (len > 1) {
+          var all = document.querySelectorAll(".selbox1");
+          for (var a = 0; a < all.length; a++) {
+            if (all[a] !== e.target) {
+              all[a].classList.remove('selbox1');
+            }
+          }
+        } else {
+          document.querySelector('.selbox1').classList.remove('selbox1');
+        }
+      }
+    };
+  }
+  //绘制
+  function drawPolygon(e, type) {
+    e.classList.add('selbox1');
+    cliptype = type;
+    drawControl.startDraw({
+      type: "polygon",
+      style: {
+        color: "#29cf34",
+        opacity: 0.5,
+      }
+    });
+  }
+  //清除
+  function clearClip() {
+    if (tilesclip)
+      tilesclip.clearClip()
+  };
+</script>

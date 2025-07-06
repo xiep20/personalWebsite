@@ -1,0 +1,119 @@
+<style>
+  #menu {
+    position: absolute;
+    top: 20px;
+    left: 80px;
+    padding: 10px;
+    background: #8192a7cc;
+    border-radius: 3px;
+    z-index: 999;
+  }
+</style>
+
+<div id="rjContainer"></div>
+<!-- 面板 -->
+<div id="menu">
+  <span>开挖深度：</span>
+  <input value="50" id="sd" type="number">
+  <span>（米）</span>
+  <button onclick="drawPolygon()">开挖</button>
+  <button onclick="clears()">清除</button>
+</div>
+
+<script>
+  $(document).ready(function () {
+    if (!XLGlobe.Utils.util.webglreport()) {
+      alert('系统检测到您使用的浏览器不支持WebGL功能');
+    }
+
+    initMap();
+    initWork();
+  });
+
+  var viewer;
+  var scene;
+  var drawControl;
+
+  //初始化地图
+  function initMap() {
+    var Globe = new XLGlobe.Globe("rjContainer", {
+      terrainProvider: new XLGlobe.Layer.layerTerrainProvider({
+        url: config.dataUrl + "dem_tiles",
+        requestWaterMask: !0,
+        requestVertexNormals: !0
+      }),
+    });
+
+    viewer = Globe.viewer;
+    scene = viewer.scene;
+    //添加底图图层
+    _addbdlayer(Globe);
+    scene.globe.depthTestAgainstTerrain = true;
+
+  }
+
+  //当前页面业务相关
+  function initWork() {
+    viewer.scene.camera.flyTo({
+      destination: new Cesium.Cartesian3(
+        -2277290.8507348094, 5023103.458870505, 3217328.629663902
+      ),
+      orientation: {
+        heading: 0.01667661418422739,
+        pitch: -1.4058398940259011,
+        roll: 0.00016770574583357956
+      },
+    });
+
+    drawControl = XLGlobe.Utils.draw({
+      viewer: viewer,
+      hasEdit: true,
+      onStopDrawing: function (entity) {
+        kw(entity)
+      },
+      onStartEditing: function (entity) {
+
+      },
+      onChangeEditing: function (entity) {
+
+      },
+      onStopEditing: function (entity) {
+
+      },
+    });
+  }
+
+  function kw(entity) {
+    new XLGlobe.Analysis.excavateTerrain(viewer, {
+      positions: entity._polygon._hierarchy._value.positions,
+      height: Number(document.getElementById("sd").value),
+      bottom: "./images/menu/Analysis/ter_analysis/excavationregion_side.jpg",
+      side: "./images/menu/Analysis/ter_analysis/excavationregion_top.jpg",
+    })
+  }
+
+  function clears() {
+    drawControl.deleteAll();
+    try {
+      viewer.entities.removeById("entityDM");
+      viewer.entities.removeById("entityDMBJ");
+      viewer.scene.globe.clippingPlanes = new Cesium.ClippingPlaneCollection({
+        planes: [],
+        edgeWidth: 1.0,
+        edgeColor: Cesium.Color.OLIVE,
+      });
+    } catch (error) {}
+  }
+
+  function drawPolygon(clampToGround) {
+    drawControl.startDraw({
+      type: "polygon",
+      style: {
+        color: "#29cf34",
+        opacity: 0.5,
+        clampToGround: clampToGround,
+        extrudedHeight: 1
+      }
+    });
+  }
+</script>

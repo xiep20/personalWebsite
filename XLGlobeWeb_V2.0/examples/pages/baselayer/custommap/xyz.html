@@ -1,0 +1,10 @@
+<div id="rjContainer"></div>
+<script>
+  var Globe = new XLGlobe.Globe("rjContainer");
+  //XYZ瓦片
+  var baselayer = new XLGlobe.Layer.TileImageryProvider({
+    "url": config.dataUrl+"tile/wgs3857img/{z}/{x}/{y}.jpg",
+    "maximumLevel": 4
+  });
+  Globe.addBaseLayer(baselayer);
+</script>

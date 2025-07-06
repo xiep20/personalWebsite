@@ -1,0 +1,80 @@
+<style>
+  #buts {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 10px 15px;
+    border-radius: 4px;
+    border: 1px solid rgba(128, 128, 128, .5);
+    font-size: 14px;
+    color: #fff;
+    background: rgba(0, 0, 0, .4);
+    box-shadow: 0 3px 14px rgba(128, 128, 128, .5);
+  }
+</style>
+<div id="rjContainer"></div>
+<div id="buts">
+  <button class="btn btn-primary" onclick="changingView(1)">跟踪视角</button>
+  <button class="btn btn-primary" onclick="changingView(2)">上方视角</button>
+  <button class="btn btn-primary" onclick="changingView(3)">侧方视角</button>
+  <button class="btn btn-primary" onclick="changingView4()">自定义视角</button>
+</div>
+<script>
+  //地图底图
+  var Globe = new XLGlobe.Globe("rjContainer", {
+    animation: true
+  });
+
+  //添加底图图层
+  _addbdlayer(Globe);
+  // 计算飞行路线
+  function computeCirclularFlight(lon, lat, radius) {
+    let positions = [];
+    for (var i = 0; i <= 360; i += 45) {
+      var radians = Cesium.Math.toRadians(i);
+      let position = Cesium.Cartesian3.fromDegrees(
+        lon + radius * 1.5 * Math.cos(radians),
+        lat + radius * Math.sin(radians),
+        Cesium.Math.nextRandomNumber() * 100 + 400
+      );
+      Globe.viewer.entities.add({
+        position: position,
+        point: {
+          pixelSize: 8,
+          color: Cesium.Color.TRANSPARENT,
+          outlineColor: Cesium.Color.YELLOW,
+          outlineWidth: 3,
+        },
+      });
+      positions.push(position)
+    }
+    return positions
+  }
+  var position = computeCirclularFlight(114.35231209, 30.53542614, 0.03);
+
+  var roaming = new XLGlobe.Scene.Roaming(Globe.viewer);
+  roaming.modelRoaming({
+    Lines: position,
+    model: {
+      uri: config.dataUrl + '/model/CesiumAir/Cesium_Air.gltf',
+    },
+    cylinder: {
+      show: true
+    },
+    path: {
+      show: true,
+    }
+  })
+
+  function changingView(value) {
+    roaming.changingView(value)
+  }
+
+  function changingView4() {
+    roaming.changingView(4, {
+      heading: 0,
+      pitch: 0,
+      range: 0
+    })
+  }
+</script>

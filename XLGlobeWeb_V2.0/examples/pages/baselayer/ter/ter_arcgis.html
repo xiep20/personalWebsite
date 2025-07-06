@@ -1,0 +1,16 @@
+<div id="rjContainer"></div>
+<script>
+  var Globe = new XLGlobe.Globe("rjContainer");
+
+  //添加底图图层
+  _addbdlayer(Globe);
+
+  //arcgis地形
+  var provider = new XLGlobe.Layer.ArcGISTiledElevationTerrainProvider({
+    url: 'http://services.arcgisonline.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer',
+    proxy: new Cesium.DefaultProxy('/terrain/')
+  });
+  Globe.addTerrainLayer(provider);
+
+  Globe.flyTo(114.199, 29.203, 3200, 350, -15, 360, 3);
+</script>

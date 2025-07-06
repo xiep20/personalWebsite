@@ -1,0 +1,126 @@
+<style>
+    #cesiumCantainer {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+<div id="cesiumCantainer"></div>
+<script>
+    window.onload = function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+        initMap();
+        initModel();
+        var jsgif = document.querySelectorAll('.jsgif');
+        for (var i = 0; i < jsgif.length; i++) {
+            document.body.removeChild(jsgif[i]);
+        }
+    };
+    var Globe;
+    var viewer;
+    //初始化地图
+    function initMap() {
+        Globe = new XLGlobe.Globe("cesiumCantainer", {
+            navigation: true, //导航
+            mouseLocation: true,
+        });
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+
+        var results = [
+            [114.333386, 30.596216, 14],
+            [114.333396, 30.596216, 32]
+        ]
+        for (var i = 0; i < results.length; i++) {
+            var x = results[i][0];
+            var y = results[i][1];
+            var z = results[i][2];
+            //获取所有点坐标 转换成世界坐标系
+            var positions = Cesium.Cartesian3.fromDegrees(x, y, z);
+            var gif = [];
+            var url = 'images/marker/huo.gif';
+            //设置图片动态速度
+            var speed = 20;
+            loadGif(url, gif);
+            viewer.entities.add({
+                position: positions,
+                billboard: {
+                    verticalOrigin: Cesium.VerticalOrigin.BASELINE,
+                    image: new Cesium.CallbackProperty(() => {
+                        if (gif.length) {
+                            if (i < speed * (gif.length - 1)) {
+                                i++
+                            } else {
+                                i = 0
+                            }
+                            return gif[Math.floor(i / speed)]
+                        } else {
+                            return url //因为loadGif是异步的，在解析完成之前先使用原图
+                        }
+                    }, false),
+                    scale: 2.0,
+
+                }
+            });
+        };
+
+
+        function loadGif(url, imageArr = []) {
+            var img = document.createElement('img');
+            img.src = url;
+            // gif库需要img标签配置下面两个属性
+            img.setAttribute('rel:animated_src', url)
+            img.setAttribute('rel:auto_play', '0')
+            document.body.appendChild(img)
+            // 新建gif实例
+            var rub = new SuperGif({
+                gif: img
+            });
+            return new Promise((resolve) => {
+                rub.load(() => {
+                    for (let i = 1; i <= rub.get_length(); i++) {
+                        // 遍历gif实例的每一帧
+                        rub.move_to(i);
+                        imageArr.push(rub.get_canvas().toDataURL())
+                    }
+                    resolve(imageArr)
+                });
+            })
+
+        }
+    }
+
+    function initModel() {
+        //加载模型
+        var position = Cesium.Cartesian3.fromDegrees(114.333526, 30.596193, 0);
+        var heading = Cesium.Math.toRadians(135);
+        var pitch = 0;
+        var roll = 0;
+        var hpr = new Cesium.HeadingPitchRoll(heading, pitch, roll);
+        var orientation = Cesium.Transforms.headingPitchRollQuaternion(position, hpr);
+        new XLGlobe.Model.loadGltf(Globe.viewer, {
+            id: 1, //模型ID
+            name: "test", //模型名称
+            type: "entity", //加载方式
+            url: config.dataUrl + 'model/builder2/gltf2.gltf', //模型文件地址
+            position: position, //坐标位置
+            orientation: orientation, //设置方向
+            show: true, //模型是否可见
+            maximumScale: 20000, //模型的最大比例尺大小。 minimumPixelSize的上限。
+            runAnimations: true, //是否显示动画
+            isZoomTo: true, //加载完成后是否定位
+            color: { //模型颜色
+                color: "white",
+                alpha: 1
+            },
+            silhouette: { //轮廓设置
+                color: "Red", //颜色   
+                alpha: 1, //透明度
+                size: 0, //宽度
+            },
+        })
+    }
+</script>

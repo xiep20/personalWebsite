@@ -1,0 +1,89 @@
+<style>
+    #toolbar {
+        position: absolute;
+        top: 0;
+        left: 100px;
+        padding: 10px 15px;
+        border-radius: 4px;
+        border: 1px solid rgba(128, 128, 128, .5);
+        color: #fff;
+        background: rgba(0, 0, 0, .4);
+        box-shadow: 0 3px 14px rgba(128, 128, 128, .5);
+        z-index: 999;
+    }
+
+    #toolbar .tool_li {
+        margin: 0 0 10px;
+    }
+
+
+    #toolbar input {
+        vertical-align: middle;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        width: 60px;
+        line-height: 22px;
+        border: 1px solid #6293aa;
+        border-radius: 3px;
+        color: #fff;
+        background-color: rgba(63, 72, 84, .7);
+    }
+
+    #toolbar .btn-primary {
+        cursor: pointer;
+        color: #fff;
+        background-color: rgba(32, 160, 255, .2);
+        border: 1px solid #e4eaec;
+        font-size: 14px;
+        border-radius: 3px;
+    }
+
+    #toolbar .btn-primary:hover {
+        border-color: #4db3ff;
+    }
+
+    #toolbar .btn-primary:focus {
+        border-color: #4db3ff;
+    }
+</style>
+
+<div id="rjContainer"></div>
+<div id="toolbar">
+    <div class="tool_li">模型URL： <input id="modelurl" type="text"
+            value="http://103.94.20.254:6090/wuhan_20201014/model/3DTiles/倾斜摄影/tileset.json" style="width:350px">
+        <input type="button" class="btn btn-primary" title="在地图上单击点选位置" value="加载" onclick="drawModel()">
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+        initMap();
+    });
+
+    var Globe;
+    var viewer;
+    var tiles3d;
+    //初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer");
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+        drawModel();
+    }
+    //添加3dTiles
+    function drawModel() {
+        var url = document.querySelector("#modelurl").value;
+        //加载倾斜摄影
+        var tiles3d = new XLGlobe.Model.load3DTiles(viewer, {
+            url: url,
+            hideGlobe: false,
+            isZoomTo: true,
+            height: 0
+        });
+    }
+</script>

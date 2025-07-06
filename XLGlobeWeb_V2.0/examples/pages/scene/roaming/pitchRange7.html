@@ -1,0 +1,85 @@
+<style>
+  #buts {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 10px 15px;
+    border-radius: 4px;
+    border: 1px solid rgba(128, 128, 128, .5);
+    color: #fff;
+    background: rgba(0, 0, 0, .4);
+    box-shadow: 0 3px 14px rgba(128, 128, 128, .5);
+    z-index: 999;
+  }
+
+  #buts .ts {
+    text-align: center;
+    color: #ffcf00;
+    line-height: 36px;
+    border-bottom: 1px solid #fff;
+  }
+</style>
+</head>
+
+<body>
+  <div id="rjContainer"></div>
+  <div id="buts">
+    <div class="ts">操作前先点击文字表格让键盘事件在当前子窗口中</div>
+    <div class="infoview">
+      <table class="mars-table">
+        <tbody>
+          <tr>
+            <td class="nametd">相机平移：</td>
+            <td>W :向前</td>
+            <td>S :向后</td>
+            <td>D :向右</td>
+            <td>A :向左</td>
+            <td>Q :升高高度</td>
+            <td>E :降低高度</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="nametd">相对于相机本身：</td>
+            <td>↑ :抬头</td>
+            <td>↓ :低头</td>
+            <td>← :向左旋转</td>
+            <td>→ :向右旋转</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="nametd">相对于屏幕中心点：</td>
+            <td>I :飞近</td>
+            <td>K :远离</td>
+            <td>J :逆时针旋转</td>
+            <td>L :顺时针旋转</td>
+            <td>U :向上旋转</td>
+            <td>O :向下旋转</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script>
+    //地图底图
+    var Globe = new XLGlobe.Globe("rjContainer", {
+      animation: true
+    });
+
+    //添加底图图层
+    _addbdlayer(Globe);
+
+    Globe.viewer.camera.setView({
+      destination: Cesium.Cartesian3.fromDegrees(114.405219, 30.458313, 500),
+      orientation: {
+        // 指向
+        heading: Cesium.Math.toRadians(180, 0),
+        // 视角
+        pitch: Cesium.Math.toRadians(-30),
+      }
+    });
+
+    var keyboardRoam = new XLGlobe.Scene.KeyboardRoam(Globe.viewer, {
+      distance: 100
+    })
+  </script>

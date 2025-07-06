@@ -1,0 +1,117 @@
+<!--
+ * @Descripttion : 
+ * @version      : 
+ * @Author       : HeDa
+ * @Date         : 2021-01-13 09:13:39
+ * @LastEditors  : HeDa
+ * @LastEditTime : 2021-01-13 10:05:54
+ * @FilePath     : /XLGlobeWebV2.0/public/examples/pages/overlay/polyline/polyline_dynamic.html
+-->
+<style>
+</style>
+<div id="rjContainer"></div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+    });
+
+    var Globe;
+    var viewer;
+    //初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer", {
+            navigation: true, //导航
+        });
+
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+
+        //加载人工模型
+        tiles3d = new XLGlobe.Model.load3DTiles(viewer, {
+            url: config.dataUrl + "model/3DTiles/changju/changju/tileset.json",
+            hideGlobe: false,
+            isZoomTo: true,
+            height: 0
+        });
+
+        //材质一
+        var material3 = new XLGlobe.DataSource.customizeStripeMaterail(Cesium.Color.WHITE, 5, {
+            speed: 100,
+            count: 1,
+            freely: "cross",
+            direction: "-"
+        }, config.dataUrl + 'img/material/LinkPulse.png');
+        //材质二
+        var material2 = new XLGlobe.DataSource.customizeStripeMaterail(Cesium.Color.WHITE, 5, {
+            speed: 100,
+            count: 50,
+            freely: "cross",
+            direction: "-"
+        }, config.dataUrl + 'img/material/arrow.png');
+        //材质三
+        var material = new XLGlobe.DataSource.customizeStripeMaterail(Cesium.Color.WHITE, 5, {
+            speed: 100,
+            count: 1,
+            freely: "cross",
+            direction: "-"
+        }, config.dataUrl + 'img/material/colorLine.png');
+
+        //加载线
+        var line1 = viewer.entities.add({
+            name: "line",
+            polyline: {
+                positions: Cesium.Cartesian3.fromDegreesArray([
+                    114.426458, 30.43664,
+                    114.428294, 30.437044,
+                    114.429898, 30.437419,
+                    114.42959, 30.438411,
+                    114.429361, 30.439225
+                ]),
+                width: 8,
+                material: material,
+            },
+        });
+        //加载线1
+        var line2 = viewer.entities.add({
+            name: "line",
+            polyline: {
+                positions: Cesium.Cartesian3.fromDegreesArrayHeights([
+                    114.428226, 30.437244, 2,
+                    114.427896, 30.438341, 2,
+                    114.427876, 30.438449, 2,
+                    114.427668, 30.439198, 2
+                ]),
+                width: 10,
+                material: material2,
+                clampToGround: true
+            },
+        });
+
+        //加载线2
+        var line3 = viewer.entities.add({
+            name: "line",
+            polyline: {
+                positions: Cesium.Cartesian3.fromDegreesArrayHeights([
+                    114.426024, 30.437888, 2,
+                    114.427949, 30.438291, 2,
+                    114.428029, 30.438038, 2,
+                    114.429534, 30.438365, 2,
+                    114.429622, 30.438467, 2
+                ]),
+                width: 8,
+                material: material3,
+                clampToGround: true
+            },
+        });
+
+
+
+    }
+</script>

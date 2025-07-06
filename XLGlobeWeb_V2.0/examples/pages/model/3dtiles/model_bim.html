@@ -1,0 +1,45 @@
+<style>
+</style>
+
+<div id="rjContainer"></div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+        initMap();
+    });
+
+    var Globe;
+    var viewer;
+    var tiles3d;
+    var cartographic;
+    var surface;
+    var offset;
+    var translation;
+    //初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer");
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+        //加载bim模型
+        tiles3d = new XLGlobe.Model.load3DTiles(viewer, {
+            url: config.dataUrl + "model/fbxtiles/tileset.json",
+            hideGlobe: false,
+            isZoomTo: true,
+            height: 0
+        });
+        tiles3d.readyPromise.then(function (tileset) {
+            // 修改模型位置
+            cartographic = Cesium.Cartographic.fromCartesian(tileset.boundingSphere.center);
+            surface = Cesium.Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, 0.0);
+            offset = Cesium.Cartesian3.fromDegrees(114.437560, 30.583622, 0.0);
+            translation = Cesium.Cartesian3.subtract(offset, surface, new Cesium.Cartesian3());
+            tileset.modelMatrix = Cesium.Matrix4.fromTranslation(translation);
+        })
+
+    }
+</script>

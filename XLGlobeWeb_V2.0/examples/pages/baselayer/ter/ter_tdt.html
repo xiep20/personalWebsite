@@ -1,0 +1,12 @@
+<div id="rjContainer"></div>
+<script>
+  var Globe = new XLGlobe.Globe("rjContainer");
+
+  //添加底图图层
+  _addbdlayer(Globe);
+  //天地图地形
+  var provider = new XLGlobe.Layer.TiandituTerrainProvider();
+  Globe.addTerrainLayer(provider);
+
+  Globe.flyTo(114.199, 29.203, 3200, 350, -15, 360, 3);
+</script>

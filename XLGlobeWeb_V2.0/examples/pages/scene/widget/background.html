@@ -1,0 +1,28 @@
+<style>
+    #rjContainer .cesium-widget>canvas {
+        background-size: 100% 100%;
+    }
+</style>
+<div id="rjContainer"></div>
+<&other&>
+</&other&>
+<script>
+    //地图底图
+    var Globe = new XLGlobe.Globe("rjContainer", {
+        logo: true,
+        //设置背景渲染
+        orderIndependentTranslucency: false,
+        contextOptions: {
+            webgl: {
+                alpha: true,
+            }
+        },
+    });
+
+
+    //添加底图图层
+    _addbdlayer(Globe);
+    Globe.viewer.scene.canvas.style.backgroundImage = "url('images/Scene/backGroundImg.jpg')" //设置背景图片
+    Globe.viewer.scene.skyBox.show = false; //不显示天空盒
+    Globe.viewer.scene.backgroundColor = new Cesium.Color(0.0, 0.0, 0.0, 0.0); //设置背景色透明
+</script>

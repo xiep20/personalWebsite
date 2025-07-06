@@ -1,0 +1,60 @@
+<style>
+</style>
+<div id="rjContainer"></div>
+<video id="video_dom" preload="auto" autoPlay loop>
+  <source src="./images/visualization/mp4/videoFusion.mp4" type="video/mp4" />
+</video>
+<script>
+  $(document).ready(function () {
+    if (!XLGlobe.Utils.util.webglreport()) {
+      alert('系统检测到您使用的浏览器不支持WebGL功能');
+    }
+    initMap();
+  });
+
+  var viewer;
+  var scene;
+  var videoElement = document.getElementById('video_dom');
+
+  //初始化地图
+  function initMap() {
+    var Globe = new XLGlobe.Globe("rjContainer", {});
+    viewer = Globe.viewer;
+    scene = viewer.scene;
+
+    //添加底图图层
+    _addbdlayer(Globe);
+    //加载模型
+    new XLGlobe.Model.load3DTiles(viewer, {
+      url: config.dataUrl + "model/3DTiles/changju/changju/tileset.json",
+      hideGlobe: false,
+      isZoomTo: true,
+      height: 0,
+    })
+
+    var primitve = new Cesium.VideoShed3D(viewer, {
+      type: 3,
+      url: "./images/visualization/mp4/videoFusion.mp4",
+      position: {
+            x: 114.428104,
+            y: 30.438123,
+        z: 125
+      },
+      rotation: {
+        x: -40,
+        y: 0,
+        z: 0
+      },
+      fov: 40,
+      far: 250,
+      near: 1,
+      aspectRatio: 1.5,
+      alpha: 1,
+      debugFrustum: true
+    });
+
+    // rtmp://ns8.indexforce.com/home/mystream
+
+    // gb28181视频流
+  }
+</script>

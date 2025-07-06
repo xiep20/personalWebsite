@@ -1,0 +1,45 @@
+<style>
+    .rjmap_control {
+        top: 50px;
+    }
+
+    .rjmap_control .control_positionlocation {
+        background-color: rgba(170, 170, 170, 0.6);
+    }
+</style>
+
+<div id="rjContainer"></div>
+<script>
+    //初始化地图
+    var Globe = new XLGlobe.Globe("rjContainer");
+
+    //添加底图图层
+    _addbdlayer(Globe);
+    //arcgis地形
+    var provider = new Cesium.ArcGISTiledElevationTerrainProvider({
+        url: 'http://services.arcgisonline.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer',
+        proxy: new Cesium.DefaultProxy('/terrain/')
+    });
+    Globe.viewer.terrainProvider = provider;
+    //右键菜单
+    var contextmenu = new XLGlobe.Control.ContextMenu({
+        viewer: Globe.viewer,
+        menuList: [{ //右键菜单列表
+                type: 'seeCoord' //查看坐标
+            },
+            {
+                type: 'longlat' //经纬度
+            }, {
+                type: 'opendepth' //开启深度检测
+            }, {
+                type: 'closedepth' //关闭深度检测
+            }, {
+                type: 'firstperspective' //初始视角
+            }, {
+                type: 'flyAroundPoint' //环绕飞行
+            }, {
+                type: 'stopFlyAroundPoint' //关闭环绕飞行
+            }
+        ]
+    });
+</script>

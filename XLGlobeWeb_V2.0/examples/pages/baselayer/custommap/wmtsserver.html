@@ -1,0 +1,25 @@
+<div id="rjContainer"></div>
+<script>
+  var Globe = new XLGlobe.Globe("rjContainer");
+  //mapbox
+  var baselayer = new XLGlobe.Layer.MapboxImageryProvider({
+    layer: 'mapbox.satellite',    
+    token: 'pk.eyJ1IjoibWFyc2dpcyIsImEiOiJja2Fod2xlanIwNjJzMnhvMXBkMnNqcjVpIn0.WnxikCaN2KV_zn9tLZO77A'
+  });
+  Globe.addBaseLayer(baselayer);
+  //wmts服务
+  var layer = new XLGlobe.Layer.WMTSImageryProvider({
+    "name": "武汉",
+    type: "wmts",
+    url: config.deuserver2 + "/gwc/service/wmts",
+    layer: "wuhan:light_WH",//wuhan:night_WH
+    style: "",
+    format: "image/png",
+    tileMatrixSetID: "EPSG:4326",
+    crs: "4326",
+    alpha: .5,
+    visible: true
+  });
+  Globe.addLayer(layer);
+  Globe.flyTo(114.3, 30.6, 500000, 2.9, -90, 0, 3);
+</script>

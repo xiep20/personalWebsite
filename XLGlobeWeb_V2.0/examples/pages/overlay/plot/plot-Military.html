@@ -1,0 +1,108 @@
+<style>
+    .infoview {
+        position: absolute;
+        top: 10px;
+        right: 30px;
+        padding: 10px 15px;
+        border-radius: 4px;
+        border: 1px solid rgba(128, 128, 128, 0.5);
+        color: #ffffff;
+        background: rgba(0, 0, 0, 0.4);
+        box-shadow: 0 3px 14px rgba(128, 128, 128, 0.5);
+        z-index: 9999;
+    }
+
+    .infoview input,
+    .infoview select,
+    .infoview textarea {
+        color: #ffffff;
+        background-color: rgba(32, 160, 255, 0.2);
+        border: 1px solid #e4eaec;
+        font-size: 14px;
+        margin-top: 10px;
+    }
+</style>
+
+<importjs>
+    <!-- 军事标绘插件 -->
+    <link href="libs/plot/plotWorker.css" rel="stylesheet" />
+    <script src="libs/plot/plotUtil.js"></script>
+    <script src="libs/plot/plotWorker.js"></script>
+</importjs>
+<div id="rjContainer" class="cesium-container"></div>
+
+<!-- 面板 -->
+<div class="infoview">
+    <span style="color: #cad1d1;">提示：在地图上单击开始，绘制中单击增加点、双击结束。</span>
+    <br />
+
+    <input type="button" class="btn btn-primary" value="直箭头" onclick="zhiArrow()" />
+    <input type="button" class="btn btn-primary" value="钳击箭头" onclick="qianjiArrow()" />
+    <input type="button" class="btn btn-primary" value="攻击箭头" onclick="gongjiArrow()" />
+
+    <input type="button" class="btn btn-primary" style="background-color: #ff000050;" value="清除" onclick="clearAll()" />
+</div>
+
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+        initWork();
+    });
+
+    var viewer;
+    var scene;
+    //初始化地图
+    function initMap() {
+        var Globe = new XLGlobe.Globe("rjContainer", {});
+
+        viewer = Globe.viewer;
+        scene = viewer.scene;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+    }
+
+    var drawHelper
+
+    //当前页面业务相关
+    function initWork() {
+        drawHelper = new DrawHelper(viewer);
+    }
+
+    //绘制直箭头
+    function zhiArrow() {
+        drawHelper.drawZhiArrow({
+            callback: function (primitive) { //绘制完成后回调
+
+            }
+        });
+    }
+
+    //绘制钳击箭头
+    function qianjiArrow() {
+        drawHelper.drawQianjiArrow({
+            callback: function (primitive) { //绘制完成后回调
+
+            }
+        });
+
+    }
+
+    //绘制攻击箭头
+    function gongjiArrow() {
+        drawHelper.drawGongjiArrow({
+            callback: function (primitive) { //绘制完成后回调
+
+            }
+        });
+    }
+
+    //清除所有图元
+    function clearAll() {
+        scene.primitives.removeAll();
+    }
+</script>

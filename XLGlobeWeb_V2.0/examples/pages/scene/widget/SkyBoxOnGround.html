@@ -1,0 +1,37 @@
+<div id="rjContainer"></div>
+<&other&>
+</&other&>
+<script>
+  //地图底图
+  var Globe = new XLGlobe.Globe("rjContainer", {
+    logo: true,
+  });
+
+  //添加底图图层
+  _addbdlayer(Globe);
+
+  //定位
+  Globe.viewer.camera.setView({
+    destination: Cesium.Cartesian3.fromDegrees(117.214513, 31.812791, 500.0),
+    orientation: {
+      // 指向
+      heading: 1.1498583193870449,
+      // 视角
+      pitch: -0.010769889152716816,
+      roll: 0.0027421662995879004
+    }
+  });
+  //设置天空盒
+  var skyBox = new XLGlobe.Scene.SkyBox(Globe.viewer);
+  //近地天空盒
+  skyBox.SkyBoxOnGround({
+    sources: {
+      positiveX: 'images/Scene/rightav9.jpg',
+      negativeX: 'images/Scene/leftav9.jpg',
+      positiveY: 'images/Scene/frontav9.jpg',
+      negativeY: 'images/Scene/backav9.jpg',
+      positiveZ: 'images/Scene/topav9.jpg',
+      negativeZ: 'images/Scene/bottomav9.jpg'
+    }
+  });
+</script>

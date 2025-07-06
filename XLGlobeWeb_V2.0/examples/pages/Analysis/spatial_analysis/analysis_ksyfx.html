@@ -1,0 +1,114 @@
+<style>
+    .infoview {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 10px 15px;
+        border-radius: 4px;
+        border: 1px solid rgba(128, 128, 128, .5);
+        font-size: 14px;
+        color: #fff;
+        background: rgba(0, 0, 0, .4);
+        box-shadow: 0 3px 14px rgba(128, 128, 128, .5);
+    }
+
+    .infoview input {
+        display: inline-block;
+        padding: 6px 12px;
+        margin-top: 10px;
+        margin-bottom: 0;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        touch-action: manipulation;
+        border-radius: 3px;
+        outline: 0;
+        color: #fff;
+        cursor: pointer;
+        border: 1px solid #e4eaec;
+        font-size: 14px;
+        background-color: rgba(32, 160, 255, .2);
+    }
+</style>
+
+<div id="rjContainer"></div>
+<!-- 面板 -->
+<div class="infoview">
+    <div>提示：单击“添加可视域”后，图上左键绘制两点即可</div>
+    <div style="    margin: 10px 0;">
+        起点高度
+        <input style="height: 24px;width: 80px;    margin: 0;" type="number" value="2" id="qdgd"> 终点高度
+        <input style="height: 24px;width: 80px;    margin: 0;" type="number" value="2" id="zdgd">
+    </div>
+    <div>
+        <input type="button" style="background-color: #0000ff50;" onclick="click_add()" value="添加可视域"></input>
+        <input type="button" style="background-color: #ff000050;" onclick="click_clear()" value="清除"></input>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+        initWork();
+    });
+
+    var viewer;
+    var scene;
+
+    //初始化地图
+    function initMap() {
+        var Globe = new XLGlobe.Globe("rjContainer", {});
+
+        viewer = Globe.viewer;
+        scene = viewer.scene;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+
+        scene.globe.depthTestAgainstTerrain = true;
+    }
+
+    //当前页面业务相关
+    function initWork() {
+        scene.camera.flyTo({
+            destination: new Cesium.Cartesian3.fromDegrees(114.42797, 30.4351, 200),
+            orientation: {
+                heading: Cesium.Math.toRadians(0),
+                pitch: Cesium.Math.toRadians(-30),
+                roll: Cesium.Math.toRadians(0)
+            }
+        });
+
+        new XLGlobe.Model.load3DTiles(viewer, {
+            url: config.dataUrl + "model/3DTiles/changju/changju/tileset.json",
+            hideGlobe: false,
+            isZoomTo: false,
+            height: 0,
+        })
+    }
+
+    var viewsheds = [];
+
+    //添加可视域分析
+    function click_add() {
+        var options = {
+            qdOffset: Number(document.getElementById("qdgd").value),
+            zdOffset: Number(document.getElementById("zdgd").value)
+        };
+        var viewshed = new XLGlobe.Analysis.viewshed(viewer, options);
+        viewsheds.push(viewshed);
+    }
+
+    //清除所有可视域分析
+    function click_clear() {
+        viewsheds.forEach((element) => {
+            element.clear();
+        });
+    }
+</script>

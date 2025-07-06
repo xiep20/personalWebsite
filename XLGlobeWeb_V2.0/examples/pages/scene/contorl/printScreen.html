@@ -1,0 +1,36 @@
+<style>
+  .rjmap_control {
+    top: 50px;
+  }
+
+  .rjmap_control .control_printscreen {
+    background-color: rgba(21, 193, 130, 0.8);
+  }
+</style>
+
+<div id="rjContainer"></div>
+<script>
+  //初始化地图
+  var Globe = new XLGlobe.Globe("rjContainer");
+
+  //添加底图图层
+  _addbdlayer(Globe);
+  //定位
+  Globe.viewer.scene.camera.flyTo({
+    destination: new Cesium.Cartesian3.fromDegrees(114.42797, 30.4351, 200),
+    orientation: {
+      heading: Cesium.Math.toRadians(0),
+      pitch: Cesium.Math.toRadians(-30),
+      roll: Cesium.Math.toRadians(0)
+    }
+  });
+  //加载模型
+  var tiles = new XLGlobe.Model.load3DTiles(Globe.viewer, {
+    url: config.dataUrl + "model/3DTiles/changju/changju/tileset.json",
+    hideGlobe: false,
+    isZoomTo: false,
+    height: 0,
+  })
+  //导出控件
+  Globe.addControl(new XLGlobe.Control.PrintScreen());
+</script>

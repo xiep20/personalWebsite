@@ -1,0 +1,153 @@
+<style>
+    #toolbar {
+        position: absolute;
+        top: 20px;
+        right: 10px;
+        padding: 10px 15px;
+        border-radius: 4px;
+        border: 1px solid rgba(128, 128, 128, .5);
+        color: #fff;
+        background: rgba(0, 0, 0, .4);
+        box-shadow: 0 3px 14px rgba(128, 128, 128, .5);
+        z-index: 999;
+    }
+
+    #toolbar input {
+        vertical-align: middle;
+        padding-top: 2px;
+        padding-bottom: 2px;
+    }
+
+    #toolbar .header {
+        font-weight: bold;
+    }
+
+    #toolbar .btn-primary {
+        cursor: pointer;
+        color: #fff;
+        background-color: rgba(32, 160, 255, .2);
+        border: 1px solid #e4eaec;
+        font-size: 14px;
+    }
+
+    #toolbar table td {
+        border: none;
+    }
+
+    #toolbar .btn-primary:hover {
+        color: #ffffff;
+        border-color: #4db3ff;
+    }
+
+    #toolbar .selbox1 {
+        border-color: #4db3ff;
+    }
+</style>
+
+<div id="rjContainer"></div>
+<div id="toolbar">
+    <table>
+        <tbody>
+            <td>半透明启用</td>
+            <td>
+                <input type="checkbox" data-bind="checked: translucencyEnabled">
+            </td>
+            </tr>
+            <tr>
+                <td>按距离淡入</td>
+                <td>
+                    <input type="checkbox" data-bind="checked: fadeByDistance">
+                </td>
+            </tr>
+            <tr>
+                <td>透明度</td>
+                <td>
+                    <input type="range" min="0.0" max="1.0" step="0.1" data-bind="value: alpha, valueUpdate: 'input'">
+                    <input type="text" size="5" data-bind="value: alpha">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+        initMap();
+    });
+
+    var Globe;
+    var viewer;
+    var undergroundmode;
+    var viewModel;
+
+    var tilelist = [];
+    //初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer");
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+        //定位
+        //Globe.animationFly(117.172544, 34.258636, 120, 0, -85, 0, 3);
+        Globe.animationFly(114.421872, 30.609758, 200, 0, -85, 0, 3);
+        //场景明亮
+        brightness = new XLGlobe.Scene.sceneEffects.brightness(viewer);
+        brightness.update(1.2);
+
+        viewer.scene.globe.depthTestAgainstTerrain = true;
+        var gx = [
+            'dl_gd_tiles/DL_GDLINE', 'dl_gd_tiles/DL_GDPOINT', 'dl_gd_tiles/DL_GDPOINT_3dmodel',
+            'js_ss_tiles/JS_SSLINE', 'js_ss_tiles/JS_SSPOINT', 'js_ss_tiles/JS_SSPOINT_3dmodel',
+            'ps_ws_tiles/PS_WSLINE', 'ps_ws_tiles/PS_WSPOINT', 'ps_ws_tiles/PS_WSPOINT_3dmodel',
+            'ps_ys_tiles/PS_YSLINE', 'ps_ys_tiles/PS_YSPOINT', 'ps_ys_tiles/PS_YSPOINT_3dmodel',
+            'rq_tr_tiles/RQ_TRLINE', 'rq_tr_tiles/RQ_TRPOINT', 'rq_tr_tiles/RQ_TRPOINT_3dmodel',
+            'tx_dx_tiles/TX_DXLINE', 'tx_dx_tiles/TX_DXPOINT', 'tx_dx_tiles/TX_DXPOINT_3dmodel',
+            'tx_kx_tiles/TX_KXLINE', 'tx_kx_tiles/TX_KXPOINT', 'tx_kx_tiles/TX_KXPOINT_3dmodel',
+            'tx_yd_tiles/TX_YDLINE', 'tx_yd_tiles/TX_YDPOINT', 'tx_yd_tiles/TX_YDPOINT_3dmodel',
+            'zh_zh_tiles/ZH_ZHLINE', 'zh_zh_tiles/ZH_ZHPOINT', 'zh_zh_tiles/ZH_ZHPOINT_3dmodel',
+        ];
+        for (var i = 0; i < gx.length; i++) {
+            //加载管线
+            tilelist.push(new XLGlobe.Model.load3DTiles(viewer, {
+                url: config.dataUrl + "model/3DTiles/pipeline_whhcz/3dtiles/" + gx[i] + "/tileset.json",
+                hideGlobe: false, //隐藏球只显示模型
+                isZoomTo: false,
+                height: -2
+            }));
+        }
+
+        //地表透明地下模式
+        undergroundmode = new XLGlobe.Analysis.undergroundmode({
+            viewer: viewer,
+            fadeByDistance: false,
+            alpha: 0.1
+        });
+        //面板事件
+        viewModel = {
+            translucencyEnabled: true,
+            fadeByDistance: false,
+            alpha: 0.1,
+        };
+        Cesium.knockout.track(viewModel);
+        var toolbar = document.getElementById("toolbar");
+        Cesium.knockout.applyBindings(viewModel, toolbar);
+        for (var name in viewModel) {
+            if (viewModel.hasOwnProperty(name)) {
+                Cesium.knockout.getObservable(viewModel, name).subscribe(update);
+            }
+        }
+    }
+    //改变
+    function update() {
+        //改变半透明启用
+        undergroundmode.changeTranslucencyEnabled(viewModel.translucencyEnabled);
+        //改变是否按距离淡入
+        undergroundmode.changeFadeByDistance(viewModel.fadeByDistance);
+        //改变地表透明度
+        undergroundmode.changeAlpha(viewModel.alpha);
+    }
+</script>

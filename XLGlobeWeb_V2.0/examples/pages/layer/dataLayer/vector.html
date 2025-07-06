@@ -1,0 +1,42 @@
+<div id="rjContainer"></div>
+
+<script>
+  var Globe;
+  var viewer;
+  var scene;
+  initMap();
+  // 初始化地图
+  function initMap() {
+    Globe = new XLGlobe.Globe("rjContainer", {
+      logo: true,
+    });
+    viewer = Globe.viewer;
+    scene = viewer.scene;
+
+    //添加底图图层
+    _addbdlayer(Globe);
+  }
+  //在[110,120,26,40]范围内随机50个点
+  var results = XLGlobe.Utils.util.randomPointsWithinBbox(110, 120, 26, 40, 50, 'geojson').features;
+  for (var item of results) {
+    var x = item.geometry.coordinates[0];
+    var y = item.geometry.coordinates[1];
+    var positions = Cesium.Cartesian3.fromDegrees(x, y);
+    viewer.entities.add({
+      position: positions,
+      billboard: {
+        image: "images/marker/mark2.png", //点图片路径
+        scale: 0.6 //设置图片大小
+      }
+    });
+    //设置视角坐标
+    viewer.camera.setView({
+      destination: Cesium.Cartesian3.fromDegrees(x, y, 600000),
+      orientation: {
+        heading: 0.0,
+        pitch: -0.7853981633974483,
+        roll: 0.0
+      }
+    });
+  };
+</script>

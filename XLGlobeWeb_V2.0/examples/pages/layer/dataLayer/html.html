@@ -1,0 +1,62 @@
+<div id="rjContainer"></div>
+
+<script>
+  var Globe;
+  var viewer;
+  var scene;
+  initMap();
+  initHTML();
+  // 初始化地图
+  function initMap() {
+    Globe = new XLGlobe.Globe("rjContainer", {
+      logo: true,
+      mouseLocation: true
+    });
+    viewer = Globe.viewer;
+    scene = viewer.scene;
+
+    //添加底图图层
+    _addbdlayer(Globe);
+    viewer.camera.setView({
+      destination: Cesium.Cartesian3.fromDegrees(114.294109, 30.605402, 1000),
+    });
+
+  }
+
+  function initHTML() {
+    // 模拟HTML标签的坐标点
+    var data = [{
+        x: -2260406.993644903,
+        y: 5007816.514914433,
+        z: 3228424.003730813
+      },
+      {
+        x: -2260616.307293672,
+        y: 5007762.180180461,
+        z: 3228362.153042234
+      },
+      {
+        x: -2260525.8006527536,
+        y: 5007897.659692613,
+        z: 3228216.354867761
+      }
+    ]
+    //自定义HTML内容及样式
+    var style = [
+      `<div style="background-color: white;padding: 6px 10px;box-shadow: 0 0 4px 0 rgba(0,0,0,0.2);border-radius: 3px;">颐和丽晶</div>`,
+      `<div style="background-color: rgb(41 103 243 / 56%);box-shadow: 0 0 4px 0 rgba(0,0,0,0.2);border: 1px solid rgb(41 103 243 / 97%);"><h3 style="margin: 0;
+          text-align: center;color: white;font-size: 16px;background-color: #2967f3d4;padding: 4px 0;">惠一轻工业小区</h3><p style="padding: 0 4px;color: white;
+          font-size: 14px;margin: 4px;">地址：惠济一路16</p></div>`,
+      `<div style="background-color: #4e4e4e;padding: 6px 10px;box-shadow: 0 0 4px 0 rgba(0,0,0,0.2);"><h4 style="margin: 0;text-align: center;color: white;
+          background-color: #313131;padding: 4px 0;">惠济社区</h4><p style="padding: 0 4px;color: white;font-size: 14px;margin: 4px;">地址：解放公园路48号</p></div>`
+    ]
+    // 添加HTML标签
+    data.forEach((item, i) => {
+      new XLGlobe.DataSource.loadHtml({
+        viewer: viewer,
+        geometry: item,
+        htmlContent: style[i]
+      })
+    })
+  }
+</script>

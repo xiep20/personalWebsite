@@ -1,0 +1,51 @@
+<style>
+</style>
+<div id="rjContainer"></div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+    });
+
+    var Globe;
+    var viewer;
+    //初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer", {
+            navigation: true, //导航
+        });
+
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+
+        //设置相机视角
+        viewer.camera.setView({
+            destination: Cesium.Cartesian3.fromDegrees(117.48, 30.67, 18000000.0)
+
+        });
+
+        var activeLine = new XLGlobe.DataSource.OSMBuilding(viewer, {
+            colorHash: { //分值颜色
+                10: new Cesium.Color.fromCssColorString("#FFEDA0"),
+                15: new Cesium.Color.fromCssColorString("#FED976"),
+                20: new Cesium.Color.fromCssColorString("#FEB24C"),
+                25: new Cesium.Color.fromCssColorString("#FD8D3C"),
+                30: new Cesium.Color.fromCssColorString("#FC4E2A"),
+                35: new Cesium.Color.fromCssColorString("#E31A1C"),
+                40: new Cesium.Color.fromCssColorString("#BD0026"),
+                450000: new Cesium.Color.fromCssColorString("#800026")
+            },
+            url: config.dataUrl + "/geojson/OSMBuildingData.json",
+            attributeFloor: "floor", //楼高关键字段
+            zoomTo: true,
+            shine: true //是否闪烁
+        })
+
+    }
+</script>

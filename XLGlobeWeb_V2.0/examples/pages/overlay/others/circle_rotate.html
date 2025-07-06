@@ -1,0 +1,148 @@
+<style>
+    #c1 {
+        -webkit-transition-property: -webkit-transform;
+        -webkit-transition-duration: 1s;
+        -moz-transition-property: -moz-transform;
+        -moz-transition-duration: 1s;
+        -webkit-animation: rotate 3s linear infinite;
+        -moz-animation: rotate 3s linear infinite;
+        -o-animation: rotate 3s linear infinite;
+        animation: rotate 3s linear infinite;
+    }
+
+    @-webkit-keyframes rotate {
+        from {
+            -webkit-transform: rotate(0deg)
+        }
+
+        to {
+            -webkit-transform: rotate(360deg)
+        }
+    }
+
+    @-moz-keyframes rotate {
+        from {
+            -moz-transform: rotate(0deg)
+        }
+
+        to {
+            -moz-transform: rotate(359deg)
+        }
+    }
+
+    @-o-keyframes rotate {
+        from {
+            -o-transform: rotate(0deg)
+        }
+
+        to {
+            -o-transform: rotate(359deg)
+        }
+    }
+
+    @keyframes rotate {
+        from {
+            transform: rotate(0deg)
+        }
+
+        to {
+            transform: rotate(359deg)
+        }
+    }
+
+    #c1 {
+        width: 200px;
+        height: 200px;
+    }
+</style>
+
+<div id="rjContainer"></div>
+<img class="c1" id="c1" src="./images/overlay/c_inner.png" />
+
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+    });
+
+    var Globe;
+    var viewer;
+    var c_inner;
+    var c_middle;
+    var c_outer;
+    var i = 0;
+    var m = 0;
+    var o = 0;
+
+    function initMap() {
+        Globe = new XLGlobe.Globe("rjContainer");
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+        //加载人工模型
+        tiles3d = new XLGlobe.Model.load3DTiles(viewer, {
+            url: config.dataUrl + "model/3DTiles/changju/changju/tileset.json",
+            hideGlobe: false,
+            isZoomTo: true,
+            height: -10
+        });
+        // 内圆
+        c_inner = viewer.entities.add({
+            position: Cesium.Cartesian3.fromDegrees(114.4051, 30.4585, 30),
+            name: "c_inner",
+            ellipse: {
+                semiMinorAxis: 30,
+                semiMajorAxis: 30,
+                height: 30,
+                stRotation: new Cesium.CallbackProperty(() => {
+                    i = i + 0.005; //旋转速度
+                    return i;
+                }),
+                material: new Cesium.ImageMaterialProperty({
+                    transparent: true,
+                    image: "./images/overlay/c_inner.png",
+                })
+            },
+        });
+        // 中间圆
+        c_middle = viewer.entities.add({
+            position: Cesium.Cartesian3.fromDegrees(114.4051, 30.4585, 30),
+            name: "c_middle",
+            ellipse: {
+                semiMinorAxis: 40,
+                semiMajorAxis: 40,
+                height: 30,
+                stRotation: new Cesium.CallbackProperty(() => {
+                    m = m - 0.03;
+                    return m;
+                }),
+                material: new Cesium.ImageMaterialProperty({
+                    transparent: true,
+                    image: "./images/overlay/c_middle.png",
+                })
+            },
+        });
+        // 外圆
+        c_outer = viewer.entities.add({
+            position: Cesium.Cartesian3.fromDegrees(114.4051, 30.4585, 30),
+            name: "c_outer",
+            ellipse: {
+                semiMinorAxis: 50,
+                semiMajorAxis: 50,
+                height: 30,
+                stRotation: new Cesium.CallbackProperty(() => {
+                    o = o + 0.03;
+                    return o;
+                }),
+                material: new Cesium.ImageMaterialProperty({
+                    transparent: true,
+                    image: "./images/overlay/c_outer.png",
+                })
+            },
+        });
+    }
+</script>

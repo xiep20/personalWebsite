@@ -1,0 +1,257 @@
+<style>
+    #toolbar {
+        position: absolute;
+        top: 20px;
+        left: 100px;
+        padding: 5px 10px;
+        border-radius: 4px;
+        border: 1px solid rgba(128, 128, 128, .5);
+        color: #fff;
+        background: rgba(0, 0, 0, .4);
+        box-shadow: 0 3px 14px rgba(128, 128, 128, .5);
+        z-index: 999;
+        width: 400px;
+    }
+
+    select,
+    input {
+        color: #fff;
+        background-color: rgba(32, 160, 255, .2);
+        border: 1px solid #e4eaec;
+        font-size: 14px;
+        width: 250px;
+        margin-left: 10px;
+        height: 30px;
+        line-height: 30px;
+    }
+
+    #toolbar .btn-primary {
+        cursor: pointer;
+        color: #fff;
+        background-color: rgba(32, 160, 255, .2);
+        border: 1px solid #e4eaec;
+        font-size: 14px;
+        border-radius: 3px;
+
+    }
+
+    .tt {
+        color: #fff;
+        background-color: rgba(32, 160, 255, .2);
+        border: 1px solid #e4eaec;
+        font-size: 14px;
+        width: 20px;
+        margin: -4px 4px 0 4px !important;
+        font-size: 1rem;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .d1 {
+        display: none;
+    }
+</style>
+
+<div id="rjContainer"></div>
+<div id="toolbar" style="padding-bottom: 30px;">
+    <ul style="margin-top: 10px;">
+        <span>请选择条件</span>
+        <input class="tt" v="0" name="tt" checked type="radio"><span>指定城市</span>
+        <input class="tt" v="1" name="tt" type="radio"><span>当前视窗</span>
+        <input class="tt" v="2" name="tt" type="radio"><span>指定范围</span>
+    </ul>
+    <div class="d1" style="display: block;">
+        <p>
+            <span>请选择城市</span>
+            <select id="city" value="420100">
+                <option value="420100">武汉市</option>
+                <option value="411300">南阳市</option>
+            </select>
+        </p>
+        <p>
+            <span>输入关键字</span>
+            <input id="key" value="景点" type="text">
+        </p>
+        <p>
+            <span>返回条数值</span>
+            <input id="num" value="10" type="number">
+        </p>
+        <p>
+            <input style="    margin-left: 92px;
+           " type="button" class="btn btn-primary" value="查询" onclick="search()">
+        </p>
+        <p>
+            <input style="    
+        margin-left: 92px;" type="button" class="btn btn-primary" value="删除" onclick="clears()">
+        </p>
+    </div>
+    <div class="d1">
+        <p>
+            <span>输入关键字</span>
+            <input id="key2" value="景点" type="text">
+        </p>
+        <p>
+            <span>返回条数值</span>
+            <input id="num2" value="10" type="number">
+        </p>
+        <p>
+            <input style="    margin-left: 92px;
+       " type="button" class="btn btn-primary" value="查询" onclick="search2()">
+        </p>
+        <p>
+            <input style="    
+    margin-left: 92px;" type="button" class="btn btn-primary" value="删除" onclick="clears()">
+        </p>
+    </div>
+    <div class="d1">
+        <p>
+
+            <input style="    width: 80px; margin-left: 94px;
+            " type="button" onclick="duobianxing()" class="btn btn-primary" value="多边形">
+        </p>
+        <p>
+            <span>输入关键字</span>
+            <input id="key3" value="景点" type="text">
+        </p>
+        <p>
+            <span>返回条数值</span>
+            <input id="num3" value="10" type="number">
+        </p>
+        <p>
+            <input style="    margin-left: 92px;
+       " type="button" class="btn btn-primary" value="查询" onclick="search3()">
+        </p>
+        <p>
+            <input style="    
+    margin-left: 92px;" type="button" class="btn btn-primary" value="删除" onclick="clears()">
+        </p>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+        $(".tt").click(function () {
+            $(".d1").hide()
+            $(".d1").eq($(this).attr("v")).show()
+        })
+    });
+
+    var Viewer;
+    var key;
+    var gaodeQuery;
+    var polygonStr = "";
+    var polygonArr = [];
+    var drawControl;
+    // 初始化地图
+    function initMap() {
+        Globe = new XLGlobe.Globe("rjContainer");
+        Viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+        key = "72f75689dff38a781055e68843474751";
+        gaodeQuery = new XLGlobe.Service.gaodePoiQuery(key, Viewer);
+        drawControl = XLGlobe.Utils.draw({
+            viewer: Viewer,
+            hasEdit: true,
+            onStopDrawing: function (entity) {
+                polygonStr = "";
+                polygonArr = [];
+                var ellipsoid = Viewer.scene.globe.ellipsoid;
+                var arr = entity.polygon.hierarchy._value.positions;
+                arr.forEach((element, index) => {
+                    var catographic = Cesium.Cartographic.fromCartesian(element);
+                    var height = Number(catographic.height.toFixed(2));
+                    var cartographic = ellipsoid.cartesianToCartographic({
+                        x: element.x,
+                        y: element.y,
+                        z: element.z,
+                    });
+                    var lat = Cesium.Math.toDegrees(cartographic.latitude);
+                    var lng = Cesium.Math.toDegrees(cartographic.longitude);
+                    var p1 = wgs84togcj02(lng, lat);
+                    polygonArr.push([lng, lat])
+                    polygonStr += p1[0] + "," + p1[1] + "|";
+                });
+                polygonStr += polygonArr[arr.length - 1][0] + "," + polygonArr[arr.length - 1][1] + "|";
+                polygonStr += polygonArr[0][0] + "," + polygonArr[0][1];
+            },
+            onStartEditing: function (entity) {
+
+            },
+            onChangeEditing: function (entity) {
+
+            },
+            onStopEditing: function (entity) {
+
+            },
+        });
+
+
+    }
+    //指定城市搜索
+    function search() {
+        var result = gaodeQuery.queryByCity({
+            keyword: $("#key").val(),
+            city: $("#city").val(),
+            isMars: false,
+            offset: $("#num").val(),
+            page: "1"
+        })
+    }
+    // 当前视窗搜索
+    function search2() {
+        var rectangle = Viewer.camera.computeViewRectangle();
+        var west = rectangle.west / Math.PI * 180;
+        var north = rectangle.north / Math.PI * 180;
+        var east = rectangle.east / Math.PI * 180;
+        var south = rectangle.south / Math.PI * 180;
+        var p1 = wgs84togcj02(west, south)
+        var p2 = wgs84togcj02(west, north)
+        var p3 = wgs84togcj02(east, north)
+        var p4 = wgs84togcj02(east, south)
+        var s = p1[0] + "," + p1[1] + "|" + p2[0] + "," + p2[1] + "|" + p3[0] + "," + p3[1] + "|" + p4[0] + "," + p4[
+            1] + "|" + p4[0] + "," + p4[1]
+
+        var result = gaodeQuery.queryByCurrentWindow({
+            keyword: $("#key2").val(),
+            polygon: s,
+            isMars: false,
+            offset: $("#num2").val(),
+            page: "1"
+        })
+    }
+    // 指定范围搜索
+    function search3() {
+        drawControl.deleteAll();
+        var result = gaodeQuery.queryByCurrentWindow({
+            keyword: $("#key3").val(),
+            polygon: polygonStr,
+            isMars: false,
+            offset: $("#num2").val(),
+            page: "1"
+        })
+    }
+    // 清除
+    function clears() {
+        gaodeQuery.clear()
+    }
+    // 绘制多边形
+    function duobianxing(flg) {
+        drawControl.deleteAll();
+        drawControl.startDraw({
+            type: "polygon",
+            style: {
+                color: "#29cf34",
+                opacity: 0.5,
+                clampToGround: false,
+                extrudedHeight: 1
+            }
+        });
+    }
+</script>

@@ -1,0 +1,243 @@
+<style>
+    .infoview {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 10px 15px;
+        border-radius: 4px;
+        border: 1px solid rgba(128, 128, 128, .5);
+        font-size: 14px;
+        color: #fff;
+        background: rgba(0, 0, 0, .4);
+        box-shadow: 0 3px 14px rgba(128, 128, 128, .5);
+    }
+
+    .infoview input {
+        display: inline-block;
+        padding: 6px 12px;
+        margin-bottom: 0;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        touch-action: manipulation;
+        border-radius: 3px;
+        outline: 0;
+        color: #fff;
+        cursor: pointer;
+        border: 1px solid #e4eaec;
+        font-size: 14px;
+        background-color: rgba(32, 160, 255, .2);
+    }
+
+    .infoview>div {
+        margin: 10px auto;
+        display: flex;
+        align-items: center;
+    }
+
+    .infoview>div .title {
+        width: 60px;
+    }
+
+    .infoview>div input {
+        margin: 0px 10px;
+    }
+
+    .infoview>div .btn-primary2:hover {
+        color: #ffffff;
+        border-color: #4db3ff;
+    }
+
+    .infoview>div .selbox1 {
+        border-color: #4db3ff;
+    }
+
+    .infoview>div .btn-primary2:focus {
+        border-color: #4db3ff;
+    }
+</style>
+
+<div id="rjContainer"></div>
+<!-- 面板 -->
+<div class="infoview">
+    <div>
+        提示：单击“方量分析”后，图上左键开始绘制
+    </div>
+    <div>
+        1. 挖方体积: 计算“基准面”到地表之间的凸出部分进行挖掉的体积。
+    </div>
+    <div>
+        2. 填方体积：计算“基准面”与“墙底部”之间的缺少部分进行填平的体积。
+    </div>
+    <div>
+        <div class="title">
+        </div>
+
+        <input type="button" class="btn-primary2" style="background-color: #0000ff50;" onclick="click_add()"
+            value="方量分析"></input>
+        <input type="button" class="btn-primary2" style="background-color: #ff000050;" onclick="click_clear()"
+            value="清除"></input>
+        <input type="button" class="btn-primary2" style="background-color: #1dd6898f;" onclick="dxgd(this)"
+            value="点选高度"></input>
+    </div>
+    <div>
+        <div class="title">
+            <span>基准面高</span>
+        </div>
+        <input id="txtHeight" type="number" value="0" step="0.1" class="form-control" style="width:100px">（米）
+    </div>
+    <div>
+        <div class="title">
+            <span>围墙底高</span>
+        </div>
+        <input id="txtMinHeight" type="number" value="0" step="0.1" class="form-control" style="width:100px">（米）
+    </div>
+    <div>
+        <div class="title">
+            <span>围墙顶高</span>
+        </div>
+        <input id="txtMaxHeight" type="number" value="0" step="0.1" class="form-control" style="width:100px">（米）
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+        initWork();
+    });
+
+    var viewer;
+    var scene;
+    var handler;
+
+    //初始化地图
+    function initMap() {
+        var Globe = new XLGlobe.Globe("rjContainer", {});
+
+        viewer = Globe.viewer;
+        scene = viewer.scene;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+
+        //地形
+        var provider = new XLGlobe.Layer.layerTerrainProvider({
+            url: config.dataUrl + "dem_tiles",
+            requestWaterMask: true,
+            requestVertexNormals: true
+        });
+        Globe.addTerrainLayer(provider);
+
+        scene.globe.depthTestAgainstTerrain = true;
+        viewer.scene.camera.flyTo({
+            destination: new Cesium.Cartesian3(
+                -2268317.4499617615, 5079674.901756379, 3111647.090802327
+            ),
+            orientation: {
+                heading: 0.2245865220086678,
+                pitch: -0.5867185106720876,
+                roll: 0.000768067938023087
+            },
+        });
+    }
+
+    var measureVolume;
+    //当前页面业务相关
+    function initWork() {
+        measureVolume = new XLGlobe.Analysis.MeasureVolume(viewer);
+        // 改变基准面高
+        $('#txtHeight').change(function (event) {
+            measureVolume.setParameters({
+                planeHeight: $('#txtHeight').val(),
+                wallMinHeight: $('#txtMinHeight').val(),
+                wallMaxHeight: $('#txtMaxHeight').val(),
+            }, (data) => {
+                $('#txtHeight').val(data.planeHeight);
+                $('#txtMinHeight').val(data.wallMinHeight);
+                $('#txtMaxHeight').val(data.wallMaxHeight);
+            })
+        });
+        // 更改围墙低高
+        $('#txtMinHeight').change(function (event) {
+            measureVolume.setParameters({
+                planeHeight: $('#txtHeight').val(),
+                wallMinHeight: $('#txtMinHeight').val(),
+                wallMaxHeight: $('#txtMaxHeight').val(),
+            }, (data) => {
+                $('#txtHeight').val(data.planeHeight);
+                $('#txtMinHeight').val(data.wallMinHeight);
+                $('#txtMaxHeight').val(data.wallMaxHeight);
+            })
+        });
+        //更改围墙顶高
+        $('#txtMaxHeight').change(function (event) {
+            measureVolume.setParameters({
+                planeHeight: $('#txtHeight').val(),
+                wallMinHeight: $('#txtMinHeight').val(),
+                wallMaxHeight: $('#txtMaxHeight').val(),
+            }, (data) => {
+                $('#txtHeight').val(data.planeHeight);
+                $('#txtMinHeight').val(data.wallMinHeight);
+                $('#txtMaxHeight').val(data.wallMaxHeight);
+            })
+        });
+    }
+    //方量分析，绘制计算多边形
+    function click_add() {
+        if (measureVolume != null) {
+            measureVolume.clear();
+            measureVolume = null;
+        }
+        measureVolume = new XLGlobe.Analysis.MeasureVolume(viewer);
+        measureVolume.initMeasureVolume((data) => {
+            $('#txtHeight').val(data.planeHeight.toFixed(1));
+            $('#txtMinHeight').val(data.wallMinHeight.toFixed(1));
+            $('#txtMaxHeight').val(data.wallMaxHeight.toFixed(1));
+        });
+    };
+    //清除
+    function click_clear() {
+        if (measureVolume != null) {
+            measureVolume.clear();
+            measureVolume = null;
+        }
+        if (document.querySelector(".selbox1"))
+            document.querySelector(".selbox1").classList.remove('selbox1');
+        if (handler && !handler.isDestroyed()) {
+            handler = handler && handler.destroy();
+        }
+    }
+    //点选高度
+    function dxgd(e) {
+        e.classList.add('selbox1');
+        handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
+        handler.setInputAction(function (evt) {
+            var ray = viewer.camera.getPickRay(evt.position);
+            var cartesian = viewer.scene.globe.pick(ray, viewer.scene);
+            let ellipsoid = Cesium.Ellipsoid.WGS84;
+            let cartographic = ellipsoid.cartesianToCartographic(cartesian);
+            let height = cartographic.height;
+            $('#txtHeight').val(Number(height));
+            try {
+                measureVolume.setParameters({
+                    planeHeight: $('#txtHeight').val(),
+                    wallMinHeight: $('#txtMinHeight').val(),
+                    wallMaxHeight: $('#txtMaxHeight').val(),
+                }, (data) => {
+                    $('#txtHeight').val(data.planeHeight);
+                    $('#txtMinHeight').val(data.wallMinHeight);
+                    $('#txtMaxHeight').val(data.wallMaxHeight);
+                })
+            } catch (error) {
+
+            }
+
+        }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+    }
+</script>

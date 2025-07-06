@@ -1,0 +1,16 @@
+<div id="rjContainer"></div>
+<script>
+  var Globe = new XLGlobe.Globe("rjContainer");
+  //天地图影像图层
+  var baselayer1 = new XLGlobe.Layer.TiandituImageryProvider({
+    layer: "img",
+    token: "6a043ce7d3a0791392dd921a6d6f5f29"
+  });
+  //标注图层
+  var baselayer2 = new XLGlobe.Layer.TiandituImageryProvider({
+    layer: "cia",
+    token: "6a043ce7d3a0791392dd921a6d6f5f29"
+  });
+  Globe.addBaseLayer(baselayer1);//添加基础图层
+  Globe.addLayer(baselayer2);//添加标注图层
+</script>

@@ -1,0 +1,49 @@
+<importjs>
+    <!-- mapV -->
+    <script src="libs/mapV/mapv.js"></script>
+    <script src="libs/mapV/mapvgl.js"></script>
+</importjs>
+<div id="rjContainer"></div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+        initMap();
+        grid();
+    });
+    var viewer;
+    var scene;
+    //初始化地图
+    function initMap() {
+        var Globe = new XLGlobe.Globe("rjContainer", {});
+        viewer = Globe.viewer;
+        scene = viewer.scene;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+        //定位
+        viewer.camera.setView({
+            destination: Cesium.Cartesian3.fromDegrees(116.402975, 39.922018, 50000)
+        });
+
+    }
+
+    //当前页面业务相关
+    function grid() {
+        $.get('./examples/pages/visualization/mapV/data/beijing-village.json',
+            function (data) {
+                //MapV配置项
+                var options = {
+                    fillStyle: 'rgba(255, 80, 53, 0.8)',
+                    strokeStyle: 'rgba(250, 255, 53, 0.8)',
+                    context: 'webgl',
+                    size: 3,
+                    lineWidth: 1,
+                    draw: 'simple'
+                }
+                //MapV加载到地图
+                var MapVLayer = new XLGlobe.MapV.CombineMapV(viewer, data, options);
+            });
+    }
+</script>

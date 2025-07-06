@@ -1,0 +1,134 @@
+<style>
+    .bts {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 10px 15px;
+        border-radius: 4px;
+        border: 1px solid rgba(128, 128, 128, .5);
+        color: #fff;
+        background: rgba(0, 0, 0, .4);
+        box-shadow: 0 3px 14px rgba(128, 128, 128, .5);
+    }
+
+    .bts input {
+        display: inline-block;
+        padding: 6px 12px;
+        margin-bottom: 0;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        touch-action: manipulation;
+        border-radius: 3px;
+        outline: 0;
+        color: #fff;
+        cursor: pointer;
+        border: 1px solid #e4eaec;
+        font-size: 14px;
+        background-color: rgba(32, 160, 255, .2);
+    }
+
+    #imgBox {
+        width: 660px;
+        min-height: 460px;
+        background-color: rgba(30, 36, 50, .6);
+        border: 1px solid rgba(32, 160, 255, .6);
+        border-radius: 5px !important;
+        box-shadow: 1px 1px 30px rgba(0, 0, 0, .1);
+    }
+
+    #imgBox .title {
+        color: #fff;
+        padding: 0 10px 0 10px;
+        border-color: rgba(32, 160, 255, .3);
+        background: rgba(30, 36, 50, .6);
+        height: 40px;
+        line-height: 40px;
+        color: #fff;
+        font-size: 16px;
+    }
+
+    .imgDiv {
+        width: 100%;
+        min-height: 420px;
+    }
+
+    #img {
+        width: 100%;
+        min-height: 420px;
+    }
+
+    #close {
+        float: right;
+        cursor: pointer;
+        padding: 0 10px;
+    }
+</style>
+<div id="rjContainer"></div>
+<div class="bts">
+    <input type="button" onclick="bt1Fn()" value="查看场景图"></input>
+    <input type="button" onclick="bt2Fn()" value="下载场景图"></input>
+    <input type="button" onclick="bt3Fn()" value="下载场景缩略图"></input>
+</div>
+<div id="imgBox" style="display:none">
+    <div id="easyDialogTitle" class="title">
+        <span>场景出图</span>
+        <span id="close" onclick="closeFn()">X</span>
+    </div>
+    <div class="imgDiv">
+        <img id="img" src="" alt="" />
+    </div>
+</div>
+<&other&>
+</&other&>
+<script>
+    //地图底图
+    var Globe = new XLGlobe.Globe("rjContainer", {
+        logo: true,
+    });
+    //添加底图图层
+    _addbdlayer(Globe);
+    //定位
+    Globe.viewer.scene.camera.flyTo({
+        destination: new Cesium.Cartesian3.fromDegrees(114.42797, 30.4351, 200),
+        orientation: {
+                heading: Cesium.Math.toRadians(0),
+                pitch: Cesium.Math.toRadians(-30),
+                roll: Cesium.Math.toRadians(0)
+        }
+    });
+
+    //加载模型
+    var tiles = new XLGlobe.Model.load3DTiles(Globe.viewer, {
+        url: config.dataUrl + "model/3DTiles/changju/changju/tileset.json",
+        hideGlobe: false,
+        isZoomTo: false,
+        height: 0,
+    })
+    // 导出图片类
+    var downloadImg = new XLGlobe.Scene.DownloadImg(Globe.viewer);
+
+    //查看图
+    function bt1Fn(params) {
+        XLGlobe.eDialog.open({
+            container: 'imgBox',
+            fixed: false
+        });
+        document.getElementById('img').src = downloadImg.examineImg();
+    }
+
+    //关闭弹窗
+    function closeFn() {
+        XLGlobe.eDialog.close();
+    }
+    //下载场景图
+    function bt2Fn() {
+        downloadImg.exportImg()
+    }
+    //下载场景缩略图
+    function bt3Fn() {
+        downloadImg.exportThumbnail()
+    }
+</script>

@@ -1,0 +1,196 @@
+<style>
+  #buts {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 10px 15px;
+    border-radius: 4px;
+    border: 1px solid rgba(128, 128, 128, .5);
+    font-size: 14px;
+    color: #fff;
+    background: rgba(0, 0, 0, .4);
+    box-shadow: 0 3px 14px rgba(128, 128, 128, .5);
+  }
+
+  .infoview {
+    position: absolute;
+    top: auto;
+    bottom: 60px;
+    left: auto;
+    right: 50px;
+    padding: 10px 15px;
+    border-radius: 4px;
+    border: 1px solid rgba(128, 128, 128, .5);
+    color: #fff;
+    background: rgba(0, 0, 0, .4);
+    box-shadow: 0 3px 14px rgba(128, 128, 128, .5);
+    z-index: 999;
+  }
+
+  .mp_table {
+    width: 100%;
+    border: #cde1de 1px solid;
+    font-size: 12px;
+    border-collapse: collapse;
+    border-spacing: 0;
+    background-color: transparent;
+  }
+
+  .nametd {
+    width: 40%;
+  }
+
+  .mp_table tr td {
+    padding: 5px 5px;
+    text-align: left;
+    border: #cde1de 1px solid;
+  }
+
+  .mp_table tr td:first-child {
+    border-left: none;
+  }
+
+  .progress {
+    margin: 0;
+    height: 22px;
+    overflow: hidden;
+    background-color: #0b2931;
+    border-radius: 3px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1);
+  }
+
+  .progress-bar {
+    float: left;
+    width: 0;
+    height: 100%;
+    font-size: 12px;
+    line-height: 22px;
+    color: #fff;
+    text-align: center;
+    background-color: #62a8ea;
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .15);
+    transition: width .6s ease;
+  }
+
+  .progress-bar-success {
+    background-color: #46be8a;
+  }
+</style>
+<div id="rjContainer"></div>
+<div id="buts">
+  <button class="btn btn-primary" onclick="modelRoaming()">开始漫游</button>
+  <button class="btn btn-primary" onclick="PauseOrContinue(false)">暂停</button>
+  <button class="btn btn-primary" onclick="PauseOrContinue(true)">继续</button>
+  <button class="btn btn-primary" onclick="EndRoaming()">取消</button>
+</div>
+<div class="infoview rightbottom" style="min-width:200px">
+  <table class="mp_table">
+    <tbody>
+      <tr>
+        <td class="nametd">总长度</td>
+        <td id="td_alllength"></td>
+      </tr>
+      <tr>
+        <td class="nametd">已漫游长度</td>
+        <td id="td_length"></td>
+      </tr>
+      <tr>
+        <td class="nametd">总时长</td>
+        <td id="td_alltimes"></td>
+      </tr>
+      <tr>
+        <td class="nametd">已漫游时间</td>
+        <td id="td_times"></td>
+      </tr>
+      <tr>
+        <td class="nametd">经度</td>
+        <td id="td_jd"></td>
+      </tr>
+      <tr>
+        <td class="nametd">经度</td>
+        <td id="td_wd"></td>
+      </tr>
+      <tr>
+        <td class="nametd">漫游高程</td>
+        <td id="td_gd"></td>
+      </tr>
+      <tr>
+        <td class="nametd">地面高程</td>
+        <td id="td_dmhb"></td>
+      </tr>
+      <tr id="tr_ldgd">
+        <td class="nametd">离地距离</td>
+        <td id="td_ldgd"></td>
+      </tr>
+      <tr>
+        <td colspan="2" style="width:100%;text-align:center">
+          <div class="progress">
+            <div class="progress-bar progress-bar-success" id="progressbar" role="progressbar" aria-valuenow="32"
+              aria-valuemin="0" aria-valuemax="100" style="width: 0%;">0%</div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<script>
+  //地图底图
+  var Globe = new XLGlobe.Globe("rjContainer", {
+    animation: true
+  });
+
+  //添加底图图层
+  _addbdlayer(Globe);
+
+  //地形
+  var provider = new XLGlobe.Layer.layerTerrainProvider({
+    url: config.dataUrl + "dem_tiles",
+    requestWaterMask: true,
+    requestVertexNormals: true
+  });
+  Globe.addTerrainLayer(provider);
+
+  Globe.viewer.camera.setView({
+    destination: Cesium.Cartesian3.fromDegrees(114.35231209, 30.53542614, 5000),
+    orientation: {
+      // heading: Cesium.Math.toRadians(180.0),
+      pitch: Cesium.Math.toRadians(-90.0),
+    }
+  })
+
+  var roaming = new XLGlobe.Scene.Roaming(Globe.viewer, {
+    time: 60
+  });
+
+  function modelRoaming() {
+    roaming.modelRoaming({
+      Lines: [Cesium.Cartesian3.fromDegrees(115.921988, 28.662648, 5000), Cesium.Cartesian3.fromDegrees(115.942277,
+        28.780937, 5000)],
+      model: {
+        uri: config.dataUrl + '/model/CesiumAir/Cesium_Air.gltf',
+      },
+    })
+  }
+
+  function PauseOrContinue(params) {
+    roaming.PauseOrContinue(params)
+  }
+
+  function EndRoaming() {
+    roaming.EndRoaming()
+  }
+  roaming.getData(function (data) {
+    document.getElementById('td_alllength').innerText = (data.totalLength / 1000).toFixed(2) + '公里';
+    document.getElementById('td_length').innerText = (data.roamingLength / 1000).toFixed(2) + '公里';
+    document.getElementById('td_alltimes').innerText = data.totalTime;
+    document.getElementById('td_times').innerText = data.delTime;
+    document.getElementById('td_jd').innerText = data.longitude;
+    document.getElementById('td_wd').innerText = data.latitude;
+    document.getElementById('td_gd').innerText = data.roamingElevation + '米';
+    document.getElementById('td_dmhb').innerText = data.terrainHeight + '米';
+    document.getElementById('td_ldgd').innerText = data.liftoffHeight + '米';
+    var progressbar = document.getElementById('progressbar');
+    progressbar.innerText = data.progress;
+    progressbar.style.width = data.progress;
+  })
+</script>

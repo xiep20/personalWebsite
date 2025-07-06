@@ -1,0 +1,102 @@
+<importjs>
+  <!-- echarts插件 -->
+  <script src="libs/echarts.min.js"></script>
+</importjs>
+<div id="rjContainer"></div>
+<script>
+  $(document).ready(function () {
+    if (!XLGlobe.Utils.util.webglreport()) {
+      alert('系统检测到您使用的浏览器不支持WebGL功能');
+    }
+    initMap();
+
+  });
+  var viewer;
+  var scene;
+
+  //初始化地图
+  function initMap() {
+    var Globe = new XLGlobe.Globe("rjContainer", {});
+    viewer = Globe.viewer;
+    scene = viewer.scene;
+    //微软Bing底图
+    var baselayer = [new XLGlobe.Layer.BingImageryProvider({
+      layer: Cesium.BingMapsStyle.CANVAS_DARK,
+      crs: 4326
+    })];
+    Globe.addBaseLayer(baselayer);
+    viewer.camera.setView({
+      destination: Cesium.Cartesian3.fromDegrees(116.399957, 39.906965, 50000)
+    });
+    setTimeout(() => {
+      initWork();
+    }, 5000);
+  }
+  //当前页面业务相关
+  function initWork() {
+    //获取数据
+    $.get('./examples/pages/visualization/echarts/data/mockData.json', function (lineBusData) {
+      var hStep = 300 / (lineBusData.length - 1); //北京公交数据
+      var busLines = [].concat.apply([], lineBusData.map(function (busLine, idx) { //处理数据
+        var prevPt;
+        var points = [];
+        for (var i = 0; i < busLine.length; i += 2) {
+          var pt = [busLine[i], busLine[i + 1]];
+          if (i > 0) {
+            pt = [
+              prevPt[0] + pt[0],
+              prevPt[1] + pt[1]
+            ];
+          }
+          prevPt = pt;
+
+          points.push([pt[0] / 1e4, pt[1] / 1e4]);
+        }
+        return {
+          coords: points,
+          lineStyle: {
+            normal: {
+              color: XLGlobe.Echarts.colorModifyHSL('#5A94DF', Math.round(hStep * idx))
+            }
+          }
+        };
+      }));
+      //设置样式
+      option = {
+        animation: !1,
+        GLMap: {},
+        series: [{
+          type: 'lines',
+          coordinateSystem: 'GLMap',
+          polyline: true,
+          data: busLines,
+          silent: true,
+          lineStyle: {
+            opacity: 1,
+            width: 2
+          },
+          progressiveThreshold: 500,
+          progressive: 200
+        }, {
+          type: 'lines',
+          coordinateSystem: 'GLMap',
+          polyline: true,
+          data: busLines,
+          lineStyle: {
+            width: 0
+          },
+          effect: {
+            constantSpeed: 10,
+            show: true,
+            period: 1,
+            trailLength: 0.02,
+            symbolSize: 2
+          },
+          zlevel: 1
+        }]
+      };
+      //添加数据到地图
+      var combineEcharts = new XLGlobe.Echarts.CombineEcharts(viewer, option);
+    })
+  }
+</script>

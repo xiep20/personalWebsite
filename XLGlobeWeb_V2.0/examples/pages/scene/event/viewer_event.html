@@ -1,0 +1,19 @@
+<style>
+</style>
+
+<div id="rjContainer"></div>
+<script>
+    //初始化地图
+    var Globe = new XLGlobe.Globe("rjContainer");
+
+    //添加底图图层
+    _addbdlayer(Globe);
+
+    Globe.viewer.scene.globe.depthTestAgainstTerrain = true
+    //左键监听事件
+    var f1 = Globe.viewer.on(XLGlobe.MouseEventType.LEFT_CLICK, function (e) {
+        XLGlobe.eDialog.msg(e.trePosition.latlng.lng + " " + e.trePosition.latlng.lat, {
+            offset: 't'
+        })
+    });
+</script>

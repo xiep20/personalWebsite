@@ -1,0 +1,176 @@
+<style>
+</style>
+<div id="rjContainer"></div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+    });
+
+    var Globe;
+    var viewer;
+    //初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer", {
+            mouseLocation: true
+        });
+
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+        //加载人工模型
+        tiles3d = new XLGlobe.Model.load3DTiles(viewer, {
+            url: config.dataUrl + "model/3DTiles/changju/changju/tileset.json",
+            hideGlobe: false,
+            isZoomTo: true,
+            height: 0
+        });
+
+        //渐变纹理
+        function getColorRamp(elevationRamp) {
+            if (elevationRamp == null)
+                elevationRamp = {
+                    0.0: "blue",
+                    0.1: "cyan",
+                    0.37: "lime",
+                    0.54: "yellow",
+                    1: "red"
+                };
+
+            var ramp = document.createElement('canvas');
+            ramp.width = 1;
+            ramp.height = 100;
+            var ctx = ramp.getContext('2d');
+            //ctx.fillStyle = 'rgba(255, 255, 160, 0)';//背景透明
+
+            var grd = ctx.createLinearGradient(0, 0, 0, 100);
+            for (var key in elevationRamp)
+                grd.addColorStop(1 - Number(key), elevationRamp[key]);
+
+            ctx.fillStyle = grd;
+            ctx.fillRect(0, 0, 1, 100); //参数：左上角x  左上角y  宽度width  高度height
+            return ramp;
+        }
+
+        var dynamicWall = new XLGlobe.DataSource.spreadWall(viewer, {
+            positions: [ //墙面缩放显示范围 四个点 第五个点与第一个点重复
+                [
+                    [
+                        114.427341, 30.436919
+                    ],
+                    [
+                        114.428204, 30.437123
+                    ],
+                    [
+                        114.427862, 30.438277
+                    ],
+                    [
+                        114.427017, 30.438059
+                    ],
+                    [
+                        114.427341, 30.436919
+                    ]
+                ]
+            ],
+            zoom: true, //false为收缩 true为扩散
+            speed: 10, //速度范围1~100 默认为10
+            height: 35, //围墙高度
+            zoomTo: true, //是否缩放到围墙处
+            //miniScale: 0.1,//最小缩放比例
+            material: new Cesium.ImageMaterialProperty({
+                image: getColorRamp({
+                    0: 'rgba(65,105,225,1)',
+                    0.2: 'rgba(65,105,225,0.8)',
+                    0.4: 'rgba(65,105,225,0.6)',
+                    0.6: 'rgba(65,105,225,0.4)',
+                    0.8: 'rgba(65,105,225,0.2)',
+                    1: 'rgba(65,105,225,0)'
+                }),
+                transparent: true
+            })
+        })
+
+        var dynamicWall3 = new XLGlobe.DataSource.spreadWall(viewer, {
+            positions: [ //墙面缩放显示范围 四个点 第五个点与第一个点重复
+                [
+                    [
+                        114.426317, 30.43674
+                    ],
+                    [
+                        114.427225, 30.436954
+                    ],
+                    [
+                        114.426896, 30.438052
+                    ],
+                    [
+                        114.42599, 30.437852
+                    ],
+                    [
+                        114.426317, 30.43674
+                    ]
+                ]
+            ],
+            zoom: false, //false为收缩 true为扩散
+            speed: 6, //速度范围1~100 默认为10
+            height: 35, //围墙高度
+            zoomTo: true, //是否缩放到围墙处
+            miniScale: 0.5, //最小缩放比例
+            material: new Cesium.ImageMaterialProperty({
+                image: getColorRamp({
+                    0: 'rgba(255,0,0,1)',
+                    0.2: 'rgba(255,0,0,0.8)',
+                    0.4: 'rgba(255,0,0,0.6)',
+                    0.6: 'rgba(255,0,0,0.4)',
+                    0.8: 'rgba(255,0,0,0.2)',
+                    1: 'rgba(255,0,0,0)'
+                }),
+                transparent: true
+            })
+        })
+
+        var dynamicWall3 = new XLGlobe.DataSource.spreadWall(viewer, {
+            positions: [ //墙面缩放显示范围 四个点 第五个点与第一个点重复
+                [
+                    [
+                    114.428455, 30.437127
+                    ],
+                    [
+                    114.429799, 30.437435
+                    ],
+                    [
+                    114.429496, 30.438305
+                    ],
+                    [
+                    114.42819, 30.438015
+                    ],
+                    [
+                    114.428455, 30.437127
+                    ]
+                ]
+            ],
+            zoom: true, //false为收缩 true为扩散
+            speed: 5, //速度范围1~100 默认为10
+            height: 30, //围墙高度
+            zoomTo: true, //是否缩放到围墙处
+            miniScale: 0.5, //最小缩放比例
+            material: new Cesium.ImageMaterialProperty({
+                image: getColorRamp({
+                    0: 'rgba(255,0,0,1)',
+                    0.2: 'rgba(255,0,0,0.8)',
+                    0.4: 'rgba(255,0,0,0.6)',
+                    0.6: 'rgba(255,0,0,0.4)',
+                    0.8: 'rgba(255,0,0,0.2)',
+                    1: 'rgba(255,0,0,0)'
+                }),
+                transparent: true
+            })
+        })
+
+
+    }
+</script>

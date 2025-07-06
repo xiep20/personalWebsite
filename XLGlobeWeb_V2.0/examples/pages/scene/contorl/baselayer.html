@@ -1,0 +1,36 @@
+<style>
+</style>
+
+<div id="rjContainer"></div>
+<script>
+    var Globe = new XLGlobe.Globe("rjContainer", {
+        baseLayerPicker: true //底图选择
+    });
+    //arcgis
+    var baselayer = new XLGlobe.Layer.ArcgisImageryProvider({
+        type: "wmts",
+        url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"
+    });
+    Globe.addBaseLayer(baselayer, {
+        iconUrl: 'images/basemaps/arcgis.png',
+        name: 'arcgis'
+    });
+    //天地图底图
+    var baselayer1 = new XLGlobe.Layer.TiandituImageryProvider({
+        layer: "img",
+        token: "6a043ce7d3a0791392dd921a6d6f5f29"
+    });
+    Globe.addBaseLayer(baselayer1, {
+        iconUrl: 'images/basemaps/tdt_img.png',
+        name: '天地图影像'
+    });
+
+    //高德底图
+    var baselayer2 = new XLGlobe.Layer.GaodeImageryProvider({
+        layer: "img_d"
+    });
+    Globe.addBaseLayer(baselayer2, {
+        iconUrl: 'images/basemaps/gaode_img.png',
+        name: '高德地图'
+    });
+</script>

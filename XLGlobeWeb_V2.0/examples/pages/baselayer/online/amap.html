@@ -1,0 +1,14 @@
+<div id="rjContainer"></div>
+<script>
+  var Globe = new XLGlobe.Globe("rjContainer");
+  //高德基础图层
+  var baselayer1 = new XLGlobe.Layer.GaodeImageryProvider({
+    layer: "img_d"
+  });
+  //高德标注图层
+  var baselayer2 = new XLGlobe.Layer.GaodeImageryProvider({
+    layer: "img_z"
+  });
+  Globe.addBaseLayer(baselayer1);//添加基础图层
+  Globe.addLayer(baselayer2);//添加标注图层
+</script>

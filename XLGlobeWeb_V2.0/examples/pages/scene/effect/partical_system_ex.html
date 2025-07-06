@@ -1,0 +1,332 @@
+<style>
+    .infoview {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 10px 15px;
+        border-radius: 4px;
+        border: 1px solid rgba(128, 128, 128, .5);
+        font-size: 14px;
+        color: #fff;
+        background: rgba(0, 0, 0, .4);
+        box-shadow: 0 3px 14px rgba(128, 128, 128, .5);
+    }
+
+    .infoview input {
+        display: inline-block;
+        padding: 6px 12px;
+        margin-bottom: 0;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        touch-action: manipulation;
+        border-radius: 3px;
+        outline: 0;
+        color: #fff;
+        cursor: pointer;
+        border: 1px solid #e4eaec;
+        font-size: 14px;
+        background-color: rgba(32, 160, 255, .2);
+    }
+
+    .rj-table {
+        width: 100%;
+        border-collapse: collapse;
+        border-spacing: 0;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    .rj-table tr td {
+        padding: 5px 10px;
+        text-align: left;
+        white-space: nowrap;
+        border: none;
+    }
+
+    .rj-table tr td:first-child {
+        border-left: none;
+    }
+</style>
+
+<div id="rjContainer"></div>
+
+<!-- 面板 -->
+<div class="infoview">
+    <table class="rj-table">
+        <tbody>
+            <tr title="粒子效果的所在位置">
+                <td>所在位置</td>
+                <td><input onclick="btnSelectWZ()" type="button" class="btn btn-info" value="图上选点"></td>
+                <td></td>
+            </tr>
+            <tr title="发射的整体方向所在位置">
+                <td>发射目标方向</td>
+                <td colspan="2"><input onclick="btnSelectMB()" type="button" class="btn btn-info" value="图上选点">
+                    &nbsp;&nbsp;&nbsp;&nbsp; 点高度 <input oninput="inputFn(this)" type="number" size="5" value="10.0"
+                        style="width:60px"></td>
+            </tr>
+            <tr title="particleSize 粒子图片的Size大小">
+                <td>粒子图片大小</td>
+                <td><input type="range" min="2" max="60.0" step="1" id="particleSize"></td>
+                <td><input type="text" size="5" id="particleSize1" readonly> （px）</td>
+            </tr>
+            <tr title="startScale 粒子在出生时的比例（单位：相对于imageSize大小的倍数）">
+                <td>粒子开始比例</td>
+                <td><input type="range" min="0.0" max="10.0" step="1" id="startScale"></td>
+                <td><input type="text" size="5" id="startScale1" readonly></td>
+            </tr>
+            <tr title="endScale 粒子在死亡时的比例（单位：相对于imageSize大小的倍数）">
+                <td>粒子结束比例</td>
+                <td><input type="range" min="0.0" max="10.0" step="1" id="endScale"></td>
+                <td><input type="text" size="5" id="endScale1" readonly></td>
+            </tr>
+            <tr title="emissionRate 粒子发射器的发射速率">
+                <td>粒子发射数量</td>
+                <td><input type="range" min="0.0" max="500.0" step="1" id="emissionRate"></td>
+                <td><input type="text" size="5" id="emissionRate1" readonly> （次/秒）</td>
+            </tr>
+            <tr title="minimumParticleLife 粒子可能存在的最短寿命时间，实际寿命将随机生成">
+                <td>最小寿命时长</td>
+                <td><input type="range" min="0.1" max="30.0" step="1" id="minimumParticleLife"></td>
+                <td><input type="text" size="5" id="minimumParticleLife1" readonly> （秒）</td>
+            </tr>
+            <tr title="maximumParticleLife 粒子可能存在的最长寿命时间，实际寿命将随机生成">
+                <td>最大寿命时长</td>
+                <td><input type="range" min="0.1" max="30.0" step="1" id="maximumParticleLife"></td>
+                <td><input type="text" size="5" id="maximumParticleLife1" readonly> （秒）</td>
+            </tr>
+            <tr title="gravity 重力因子，会修改速度矢量以改变方向或速度（基于物理的效果）">
+                <td>重力因子</td>
+                <td><input type="range" min="-20.0" max="20.0" step="1" id="gravity"></td>
+                <td><input type="text" size="5" id="gravity1" readonly></td>
+            </tr>
+        </tbody>
+    </table>
+    <div>
+        <input type="button" onclick="click_clear()" value="清除"></input>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+        initWork();
+    });
+
+    var viewer;
+    var scene;
+
+    //初始化地图
+    function initMap() {
+        var Globe = new XLGlobe.Globe("rjContainer", {});
+
+        viewer = Globe.viewer;
+        scene = viewer.scene;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+    }
+
+    var tooltip;
+    var tooltipInner;
+    var viewModel;
+    var particleSystemEx = null;
+
+    //当前页面业务相关
+    function initWork() {
+        //定位
+        scene.camera.flyTo({
+            destination: new Cesium.Cartesian3.fromDegrees(114.42797, 30.4351, 200),
+            orientation: {
+                heading: Cesium.Math.toRadians(0),
+                pitch: Cesium.Math.toRadians(-30),
+                roll: Cesium.Math.toRadians(0)
+            }
+        });
+
+        //加载模型
+        new XLGlobe.Model.load3DTiles(viewer, {
+            url: config.dataUrl + "model/3DTiles/changju/changju/tileset.json",
+            hideGlobe: false,
+            isZoomTo: false,
+            height: 0,
+        })
+
+        tooltip = document.createElement('div');
+        tooltip.setAttribute('class', 'roamWidget_tooltip');
+        var tooltipArrow = document.createElement('div');
+        tooltipArrow.setAttribute('class', 'roamWidget_tooltip_arrow')
+        tooltip.appendChild(tooltipArrow);
+
+        tooltipInner = document.createElement('div');
+        tooltipInner.setAttribute('class', 'roamWidget_tooltip_inner')
+        tooltip.appendChild(tooltipInner);
+        var handler = null;
+
+        viewModel = {
+            image: "./images/Scene/smoke.png",
+            particleSize: 20.0,
+            startScale: 1.0,
+            endScale: 3.0,
+            emissionRate: 200.0,
+            minimumParticleLife: 1.2,
+            maximumParticleLife: 1.2,
+            gravity: -11,
+        }
+        //按钮
+        var particleSize = document.getElementById('particleSize'),
+            particleSize1 = document.getElementById('particleSize1'),
+            startScale = document.getElementById('startScale'),
+            startScale1 = document.getElementById('startScale1'),
+            endScale = document.getElementById('endScale'),
+            endScale1 = document.getElementById('endScale1'),
+            emissionRate = document.getElementById('emissionRate'),
+            emissionRate1 = document.getElementById('emissionRate1'),
+            minimumParticleLife = document.getElementById('minimumParticleLife'),
+            minimumParticleLife1 = document.getElementById('minimumParticleLife1'),
+            maximumParticleLife = document.getElementById('maximumParticleLife'),
+            maximumParticleLife1 = document.getElementById('maximumParticleLife1'),
+            gravity = document.getElementById('gravity'),
+            gravity1 = document.getElementById('gravity1');
+
+        particleSize.value = particleSize1.value = viewModel.particleSize;
+        startScale.value = startScale1.value = viewModel.startScale;
+        endScale.value = endScale1.value = viewModel.endScale;
+        emissionRate.value = emissionRate1.value = viewModel.emissionRate;
+        minimumParticleLife.value = minimumParticleLife1.value = viewModel.minimumParticleLife;
+        maximumParticleLife.value = maximumParticleLife1.value = viewModel.maximumParticleLife;
+        gravity.value = gravity1.value = viewModel.gravity;
+        //按钮事件
+        particleSize.oninput = function (e) {
+            particleSize1.value = e.target.value;
+            if (Cesium.defined(particleSystemEx)) {
+                particleSystemEx.rainSystem.minimumImageSize.x = e.target.value;
+                particleSystemEx.rainSystem.minimumImageSize.y = e.target.value;
+                particleSystemEx.rainSystem.maximumImageSize.x = e.target.value;
+                particleSystemEx.rainSystem.maximumImageSize.y = e.target.value;
+            }
+        };
+
+        startScale.oninput = function (e) {
+            startScale1.value = e.target.value;
+            if (Cesium.defined(particleSystemEx)) {
+                particleSystemEx.rainSystem.startScale = e.target.value;
+            }
+        };
+
+        endScale.oninput = function (e) {
+            endScale1.value = e.target.value;
+            if (Cesium.defined(particleSystemEx)) {
+                particleSystemEx.rainSystem.endScale = e.target.value;
+            }
+        };
+
+        emissionRate.oninput = function (e) {
+            emissionRate1.value = e.target.value;
+            if (Cesium.defined(particleSystemEx)) {
+                particleSystemEx.rainSystem.emissionRate = e.target.value;
+            }
+        };
+
+        minimumParticleLife.oninput = function (e) {
+            minimumParticleLife1.value = e.target.value;
+            if (Cesium.defined(particleSystemEx)) {
+                particleSystemEx.rainSystem.minimumParticleLife = e.target.value * 1;
+            }
+        };
+
+        maximumParticleLife.oninput = function (e) {
+            maximumParticleLife1.value = e.target.value;
+            if (Cesium.defined(particleSystemEx)) {
+                particleSystemEx.rainSystem.maximumParticleLife = e.target.value * 1;
+            }
+        };
+
+        gravity.oninput = function (e) {
+            gravity1.value = e.target.value;
+            if (Cesium.defined(particleSystemEx)) {
+                particleSystemEx.options.gravity = e.target.value;
+            }
+        };
+    }
+
+    //选择起始点
+    function btnSelectWZ() {
+        tooltipInner.innerHTML = "单击 添加粒子";
+        tooltip.style.left = "-100000px";
+        tooltip.style.top = "-100000px";
+        document.getElementsByTagName('body')[0].appendChild(tooltip);
+        viewer.scene.canvas.style.cursor = 'crosshair';
+        handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+        //左键点击操作
+        handler.setInputAction(function (event) {
+            //调用获取位置信息的接口
+            let position = viewer.camera.pickEllipsoid(event.position, viewer.scene.globe.ellipsoid);
+            if (Cesium.defined(particleSystemEx)) {
+                particleSystemEx.remove()
+            }
+            particleSystemEx = new XLGlobe.Scene.sceneEffects.ParticleSystemEx(viewer, {
+                position: position,
+                viewModel
+            })
+            handler.destroy(); //关闭事件句柄
+            handler = null;
+            document.getElementsByTagName('body')[0].removeChild(tooltip);
+            viewer.scene.canvas.style.cursor = '';
+        }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+        //鼠标移动事件
+        handler.setInputAction(function (event) {
+            tooltip.style.left = event.endPosition.x + 20 + "px";
+            tooltip.style.top = event.endPosition.y - 10 + "px";
+        }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+    }
+
+    //选择发射方向
+    function btnSelectMB() {
+        tooltipInner.innerHTML = "单击 添加粒子发射方向";
+        tooltip.style.left = "-100000px";
+        tooltip.style.top = "-100000px";
+        document.getElementsByTagName('body')[0].appendChild(tooltip);
+        viewer.scene.canvas.style.cursor = 'crosshair';
+        handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+        //左键点击操作
+        handler.setInputAction(function (event) {
+            //调用获取位置信息的接口
+            // let position =_this.viewer.scene.pickPosition(event.position);
+            let position = viewer.camera.pickEllipsoid(event.position, viewer.scene.globe.ellipsoid);
+
+            if (Cesium.defined(particleSystemEx)) {
+                particleSystemEx.options.downrange = position;
+            }
+
+            handler.destroy(); //关闭事件句柄
+            handler = null;
+            document.getElementsByTagName('body')[0].removeChild(tooltip);
+            viewer.scene.canvas.style.cursor = '';
+        }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+        //鼠标移动事件
+        handler.setInputAction(function (event) {
+            tooltip.style.left = event.endPosition.x + 20 + "px";
+            tooltip.style.top = event.endPosition.y - 10 + "px";
+        }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+    }
+
+    //设置发射高度
+    function inputFn(a) {
+        if (Cesium.defined(particleSystemEx)) {
+            particleSystemEx.options.viewModel.height = a.value;
+        }
+    }
+
+    //清除
+    function click_clear() {
+        particleSystemEx.remove();
+    }
+</script>

@@ -1,0 +1,250 @@
+<style>
+    #menu {
+        position: absolute;
+        top: 20px;
+        left: 100px;
+        padding: 10px 15px;
+        border-radius: 4px;
+        border: 1px solid rgba(128, 128, 128, .5);
+        color: #fff;
+        background: rgba(0, 0, 0, .4);
+        box-shadow: 0 3px 14px rgba(128, 128, 128, .5);
+        z-index: 999;
+        width: 700px;
+    }
+
+    #menu li {
+        color: #ffffff;
+        line-height: 42px;
+    }
+
+    button {
+        color: #fff;
+        background-color: rgba(32, 160, 255, .2);
+        border: 1px solid #e4eaec;
+        font-size: 14px;
+    }
+</style>
+
+<div id="rjContainer"></div>
+<div id="menu">
+    <li>
+        <span>模型URL：</span>
+        <input style="width: 500px;" id="url">
+        <button onclick="loadMX()">加载模型</button>
+    </li>
+    <li>
+        <span style="width: 42px;display: inline-block;">经度</span>
+        <input style="width: 100px;margin: 0 5px;" id='x' value="0" type="number" />
+        <span style="width: 42px;display: inline-block;">纬度</span>
+        <input style="width: 100px;margin: 0 5px;" id='y' value="0" type="number" />
+        <span style="width: 42px;display: inline-block;">高度</span>
+        <input style="width: 100px;margin: 0 5px;" id='z' value="0" type="number" />
+        <span style="width: 42px;display: inline-block;">缩放</span>
+        <input style="width: 100px;margin: 0 5px;" id='ss' value="1" type="number" />
+    </li>
+    <li>
+        <span>方向X</span>
+        <input style="width: 100px;margin: 0 5px;" id='xx' value="0" type="number" />
+        <span>方向Y</span>
+        <input style="width: 100px;margin: 0 5px;" id='yy' value="0" type="number" />
+        <span>方向Z</span>
+        <input style="width: 100px;margin: 0 5px;" id='zz' value="0" type="number" />
+    </li>
+    <li>
+        <span>模型亮度</span>
+        <input style="width: 150px;" id='dd' value="255" type='range' min='0' max='255' step='1' />
+        （ <span id="ddd">255</span>）
+        <span>透明度</span>
+        <input style="width: 150px;" id='tt' value="1" type='range' min='0' max='1' step='0.1' />
+        （ <span id="ttt">1</span>）
+    </li>
+    <li>
+        <input type="checkbox" id="sd">
+        <span>深度检测</span>
+        <input type="checkbox" id="dx">
+        <span>是否有地形</span>
+        <button onclick="dw()">定位</button>
+    </li>
+</div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+        initMap();
+    });
+
+    var Globe;
+    var viewer;
+    var tileset;
+
+    function initMap() {
+        Globe = new XLGlobe.Globe("rjContainer");
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+
+        tileset = new XLGlobe.Model.load3DTiles(Globe.viewer, {
+            url: config.dataUrl + "model/3DTiles/changju/changju/tileset.json",
+            hideGlobe: false, //隐藏球只显示模型
+            isZoomTo: true,
+            height: 0
+        })
+
+        initMX()
+    }
+    // 获取模型信息
+    function getModelInfo(tileset) {
+        var result = {};
+
+        var boundingSphere = tileset.boundingSphere;
+        var position = boundingSphere.center;
+        var catographic = Cesium.Cartographic.fromCartesian(position);
+
+        var height = Number(catographic.height.toFixed(2));
+        var longitude = Number(Cesium.Math.toDegrees(catographic.longitude).toFixed(6));
+        var latitude = Number(Cesium.Math.toDegrees(catographic.latitude).toFixed(6));
+        result = {
+            x: longitude,
+            y: latitude,
+            z: height,
+            heading: 0
+        };
+
+        var mat = Cesium.Matrix4.fromArray(tileset._root.transform);
+        var pos = Cesium.Matrix4.getTranslation(mat, new Cesium.Cartesian3());
+        var wpos = Cesium.Cartographic.fromCartesian(pos);
+        result.x = Number(Cesium.Math.toDegrees(wpos.longitude).toFixed(6));
+        result.y = Number(Cesium.Math.toDegrees(wpos.latitude).toFixed(6));
+        result.z = Number(wpos.height.toFixed(2));
+        return result;
+    }
+
+    //模型信息显示
+    function initMX() {
+        tileset.readyPromise.then(function (tileset) {
+            var location = getModelInfo(tileset);
+            $("#x").val(location.x)
+            $("#y").val(location.y)
+            $("#z").val(location.z)
+        })
+
+
+        tileset.style = new Cesium.Cesium3DTileStyle({
+            color: "color('rgba(255,255,255,1)')"
+        })
+
+        $("#url").val(config.dataUrl + "model/3DTiles/changju/changju/tileset.json")
+
+
+        $("#z").change(() => {
+            changeP(tileset)
+
+        })
+        $("#x").change(() => {
+            changeP(tileset)
+        })
+        $("#y").change(() => {
+            changeP(tileset)
+        })
+        $("#xx").change(() => {
+            changeP(tileset)
+        })
+        $("#yy").change(() => {
+            changeP(tileset)
+        })
+        $("#zz").change(() => {
+            changeP(tileset)
+        })
+        $("#ss").change(() => {
+            changeP(tileset)
+        })
+        $("#tt").change(() => {
+            $("#ttt").html($("#tt").val())
+            changeT(tileset)
+        })
+        $("#dd").change(() => {
+            $("#ddd").html($("#dd").val())
+            changeT(tileset)
+        })
+
+        $("#sd").change(() => {
+            if ($("#sd").prop('checked')) {
+                viewer.scene.globe.depthTestAgainstTerrain = true;
+            } else {
+                viewer.scene.globe.depthTestAgainstTerrain = false;
+            }
+        })
+        // 是否有地形
+        $("#dx").change(() => {
+            if ($("#dx").prop('checked')) {
+                viewer.scene.terrainProvider = new XLGlobe.Layer.layerTerrainProvider({
+                    url: config.dataUrl + "dem_tiles",
+                    requestWaterMask: true,
+                    requestVertexNormals: true
+                });
+            } else {
+                viewer.scene.terrainProvider = new Cesium.EllipsoidTerrainProvider({});
+            }
+        })
+    }
+    // 加载模型
+    function loadMX() {
+        viewer.scene._primitives.removeAll();
+        tileset = new XLGlobe.Model.load3DTiles(viewer, {
+            url: $("#url").val(),
+            hideGlobe: false,
+            isZoomTo: true,
+            height: 0
+        });
+        initMX()
+    }
+    // 更改模型亮度，透明度
+    function changeT(tileset) {
+        var v = $("#tt").val();
+        var d = $("#dd").val();
+        tileset.style = new Cesium.Cesium3DTileStyle({
+            color: "color('rgba(" + d + "," + d + "," + d + ", " + v + ")')"
+        })
+    }
+    // 更改位置
+    function changeP(tileset) {
+        let params = {
+            tx: $("#x").val(),
+            ty: $("#y").val(),
+            tz: $("#z").val(),
+            rx: $("#xx").val(),
+            ry: $("#yy").val(),
+            rz: $("#zz").val()
+        };
+        let mx = Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(params.rx));
+        let my = Cesium.Matrix3.fromRotationY(Cesium.Math.toRadians(params.ry));
+        let mz = Cesium.Matrix3.fromRotationZ(Cesium.Math.toRadians(params.rz));
+        let rotationX = Cesium.Matrix4.fromRotationTranslation(mx);
+        let rotationY = Cesium.Matrix4.fromRotationTranslation(my);
+        let rotationZ = Cesium.Matrix4.fromRotationTranslation(mz);
+        //平移
+        let position = Cesium.Cartesian3.fromDegrees(params.tx, params.ty, params.tz);
+        let m = Cesium.Transforms.eastNorthUpToFixedFrame(position);
+
+        let scale = Cesium.Matrix4.fromUniformScale(Number($("#ss").val()));
+
+        // //缩放
+        Cesium.Matrix4.multiply(m, scale, m);
+        //旋转、平移矩阵相乘
+        Cesium.Matrix4.multiply(m, rotationX, m);
+        Cesium.Matrix4.multiply(m, rotationY, m);
+        Cesium.Matrix4.multiply(m, rotationZ, m);
+        // return m;
+        tileset._root.transform = m;
+    }
+
+    function dw() {
+        this.viewer.camera.flyTo({
+            destination: Cesium.Cartesian3.fromDegrees(Number($("#x").val()), Number($("#y").val()), Number($(
+                "#z").val()) + 1000)
+        });
+    }
+</script>

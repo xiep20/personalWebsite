@@ -1,0 +1,68 @@
+<style>
+    .bts {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 10px 15px;
+        border-radius: 4px;
+        border: 1px solid rgba(128, 128, 128, .5);
+        font-size: 14px;
+        color: #fff;
+        background: rgba(0, 0, 0, .4);
+        box-shadow: 0 3px 14px rgba(128, 128, 128, .5);
+    }
+
+    .bts input {
+        display: inline-block;
+        padding: 6px 12px;
+        margin-bottom: 0;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        touch-action: manipulation;
+        border-radius: 3px;
+        outline: 0;
+        color: #fff;
+        cursor: pointer;
+        border: 1px solid #e4eaec;
+        font-size: 14px;
+        background-color: rgba(32, 160, 255, .2);
+    }
+</style>
+<div id="rjContainer"></div>
+<div class="bts">
+    <div>当前共有<span id="lblAll" class="count">1</span>条视角记录，当前正在第<span id="lblStep" class="count">1</span>条视角</div>
+    <input type="button" onclick="upCamera()" value="上一视图"></input>
+    <input type="button" onclick="nextCamera()" value="下一视图"></input>
+    <input type="button" onclick="presentCamera()" value="回到当前(最后一条)"></input>
+</div>
+<&other&>
+</&other&>
+<script>
+    var Globe = new XLGlobe.Globe("rjContainer", {
+        logo: true,
+    });
+
+    //添加底图图层
+    _addbdlayer(Globe);
+
+    //视角历史记录
+    var historyCamera = new XLGlobe.Scene.HistoryCamera(Globe.viewer, function (obj) {
+        document.getElementById('lblAll').innerText = obj.total;
+        document.getElementById('lblStep').innerText = obj.index;
+    });
+    historyCamera.addHistoryCamera(); //添加视角历史记录
+    function upCamera() {
+        historyCamera.upCamera() //上一视图
+    }
+
+    function nextCamera() {
+        historyCamera.nextCamera() //下一视图
+    }
+
+    function presentCamera() {
+        historyCamera.presentCamera() //回到当前视图
+    }
+</script>

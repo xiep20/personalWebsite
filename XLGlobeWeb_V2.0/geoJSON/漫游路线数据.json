@@ -1,0 +1,100 @@
+[{
+    "name": "步行贴地路线",
+    "id": 1600136356553,
+    "geometry": {
+        "coordinates": [
+            [114.40513, 30.450212, 21.6],
+            [114.403994, 30.45285, 25.5]
+        ],
+        "type": "LineString"
+    },
+    "attr": {
+        "name": "步行贴地路线",
+        "id": 1600136356553,
+        "model": "model_man",
+        "showLine": false,
+        "showShadow": false,
+        "showLabel": false,
+        "clockLoop": false,
+        "interpolation": false,
+        "clampToGround": true,
+        "remark": "",
+        "cameraType": "gs"
+    }
+}, {
+    "name": "汽车贴地漫游",
+    "id": 1600157044596,
+    "geometry": {
+        "coordinates": [
+            [114.415492, 30.451262, 23.2],
+            [114.415246, 30.457482, 20.1],
+            [114.415058, 30.46437, 19]
+        ],
+        "type": "LineString"
+    },
+    "attr": {
+        "name": "汽车贴地漫游",
+        "id": 1600157044596,
+        "model": "model_car",
+        "showLine": false,
+        "showShadow": false,
+        "showLabel": false,
+        "clockLoop": false,
+        "interpolation": false,
+        "clampToGround": true,
+        "remark": "",
+        "cameraType": "gs"
+    }
+}, {
+    "name": "飞行漫游",
+    "id": 1600136574249,
+    "geometry": {
+        "coordinates": [
+            [114.363285, 30.534598, 500.47],
+            [114.369387, 30.535827, 500.56],
+            [114.37851, 30.532477, 500.94],
+            [114.374325, 30.52357, 500.69],
+            [114.367521, 30.521118, 500.03],
+            [114.361043, 30.528309, 500.96],
+            [114.361113, 30.532582, 500.65]
+        ],
+        "type": "LineString"
+    },
+    "attr": {
+        "name": "飞行漫游",
+        "id": 1600136574249,
+        "model": "model_air",
+        "showLine": false,
+        "showShadow": false,
+        "showLabel": false,
+        "clockLoop": false,
+        "interpolation": false,
+        "clampToGround": false,
+        "remark": "",
+        "cameraType": "gs"
+    }
+}, {
+    "name": "卫星轨道",
+    "id": 1600140534086,
+    "geometry": {
+        "coordinates": [
+            [122.167639, 47.692783, 100000],
+            [110.846366, 36.040396, 100000],
+            [102.61946, 23.716881, 100000]
+        ],
+        "type": "LineString"
+    },
+    "attr": {
+        "name": "卫星轨道",
+        "id": 1600140534086,
+        "model": "model_weixin",
+        "showLine": false,
+        "showShadow": false,
+        "showLabel": false,
+        "clockLoop": true,
+        "interpolation": false,
+        "clampToGround": false,
+        "remark": "",
+        "cameraType": "gs"
+    }
+}]

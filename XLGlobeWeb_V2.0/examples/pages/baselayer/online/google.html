@@ -1,0 +1,31 @@
+<style>
+  .ts{
+    position: absolute;
+    top: 10px;
+    width: 300px;
+    left: 50%;
+    margin-left: -150px;
+    height: 50px;
+    line-height: 50px;
+    background-color: #4e4c4c88;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    border: 1px solid #ff0000;
+  }
+</style>
+<div id="rjContainer"></div>
+<div class="ts">该服务目前已停止</div>
+<script>
+  var Globe = new XLGlobe.Globe("rjContainer");
+  //google
+  var baselayer1 = new XLGlobe.Layer.GoogleImageryProvider({
+    layer: "img_d"
+  });
+  //标注图层
+  var baselayer2 = new XLGlobe.Layer.GoogleImageryProvider({
+    layer: "img_z"
+  });
+  Globe.addBaseLayer(baselayer1);
+  Globe.addLayer(baselayer2);
+</script>

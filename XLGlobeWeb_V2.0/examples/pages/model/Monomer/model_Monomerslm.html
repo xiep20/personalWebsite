@@ -1,0 +1,72 @@
+<style>
+</style>
+
+<div id="rjContainer"></div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+        initMap();
+        initWork();
+    });
+
+    var Globe;
+    var viewer;
+    var tiles3d;
+    var popup;
+    //初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer");
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+
+        //加载3D模型
+        tiles3d = new XLGlobe.Model.load3DTiles(viewer, {
+            url: config.dataUrl + "model/3DTiles/changju/changju/tileset.json",
+            hideGlobe: false,
+            isZoomTo: true,
+            height: 0
+        });
+    }
+
+    //当前页面业务相关
+    function initWork() {
+        //弹窗
+        popup = new XLGlobe.Utils.Popup({
+            viewer: viewer,
+            className: "bx-popup-ctn4"
+        });
+        var monomer = new XLGlobe.Model.tileMonomer({
+            viewer: viewer,
+            type: 'property',
+            comparisonField: ['name', 'name'],
+            height: 0,
+            url: config.dataUrl + 'geojson/wdy_mian_jidixp.json',
+            heightField: 'Elevation',
+            fillcolor: Cesium.Color.LIME.withAlpha(0.5),
+            leftcallback: function (fea, point) { //左击回调
+                var cartesian = viewer.scene.pickPosition(point);
+                if (!Cesium.defined(cartesian)) {
+                    let ray = viewer.camera.getPickRay(point);
+                    cartesian = viewer.scene.globe.pick(ray, viewer.scene);
+                }
+                popup.closeAll()
+                popup.add({ //弹出气泡信息
+                    geometry: cartesian,
+                    content: {
+                        header: fea.properties.name,
+                        content: `
+                        <div><span>ID：</span><span>${fea.properties.OBJECTID}</span></div>
+                        <div><span>高度：</span><span>${fea.properties.Elevation}</span></div>
+                            `
+                    },
+                    isclose: false
+                });
+            }
+        });
+    }
+</script>

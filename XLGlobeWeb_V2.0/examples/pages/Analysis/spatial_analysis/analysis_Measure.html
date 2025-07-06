@@ -1,0 +1,64 @@
+<style>
+    .measurePage {
+        position: absolute;
+        width: 350px;
+        height: 30px;
+        top: 25px;
+        left: 10px;
+    }
+</style>
+
+<div id="rjContainer"></div>
+<div class="measurePage">
+    <div id="measure"> </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+        initWork();
+    });
+
+    var Globe;
+    var viewer;
+    var terrainProvider;
+    //初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer");
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+        //地形
+        terrainProvider = new XLGlobe.Layer.layerTerrainProvider({
+            url: "http://data.marsgis.cn/terrain",
+            requestWaterMask: true,
+            requestVertexNormals: true
+        });
+        Globe.addTerrainLayer(terrainProvider);
+        Globe.animationFly(114.429596, 30.43548, 300, 335, -36.5, 360, 2);
+        //加载3D模型
+        var tiles3d = new XLGlobe.Model.load3DTiles(viewer, {
+            url: config.dataUrl + "model/3DTiles/changju/changju/tileset.json",
+            hideGlobe: false,
+            isZoomTo: false,
+            height: 36,
+        });
+    }
+
+    function initWork() {
+        //创建测量工具
+        var measure = new XLGlobe.Control.MeasureTool({
+            viewer: viewer,
+            terrainProvider: terrainProvider,
+            show: true,
+            // target: 'measure',
+            // classname:''
+        });
+    }
+</script>

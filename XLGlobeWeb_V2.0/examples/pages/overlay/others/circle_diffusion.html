@@ -1,0 +1,153 @@
+<style>
+</style>
+
+<div id="rjContainer"></div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+    });
+
+    var Globe;
+    var viewer;
+    var pointPrimitives = null; // 申明点渲染集合
+
+    //初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer", {
+            shouldAnimate: true
+        });
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+        // 烟雾
+        var viewModel = {
+            image: "/images/Scene/smoke2.png",
+            particleSize: 20.0,
+            startScale: 1.0,
+            endScale: 10.0,
+            emissionRate: 20.0,
+            minimumParticleLife: 1,
+            maximumParticleLife: 4,
+            gravity: -11,
+        }
+
+        // 烟雾点
+        new XLGlobe.Scene.sceneEffects.ParticleSystemEx(viewer, {
+            position: new Cesium.Cartesian3.fromDegrees(117.167845550796, 31.81402254953246, 0),
+            viewModel
+        })
+
+        var arr = [];
+        //烟雾扩散数据
+        $.ajax({
+            type: "get",
+            url: "./geoJSON/diffusion.json",
+            dataType: "json",
+            async: false,
+            success: function (response) {
+                arr = response;
+            },
+            error: function (errorMsg) {
+                alert("请求数据失败!");
+            }
+        });
+        pointPrimitives = viewer.scene.primitives.add(new Cesium.PointPrimitiveCollection());
+
+        for (var i = 0; i < arr.length; i++) {
+            var position = new Cesium.Cartesian3(arr[i][0], arr[i][1], arr[i][2]);
+            var va = arr[i][3];
+            var colo;
+            if (va > 0.1) { //设置起始点颜色
+                colo = new Cesium.Color(131 / 255, 52 / 255, 75 / 255, 0.9)
+            } else if (va > 0.05 && va < 0.1) {
+                colo = new Cesium.Color(191 / 255, 68 / 255, 69 / 255, 0.9)
+            } else if (va > 0.03 && va < 0.05) {
+                colo = new Cesium.Color(208 / 255, 137 / 255, 89 / 255, 0.9)
+            } else if (va > 0.02 && va < 0.03) {
+                colo = new Cesium.Color(233 / 255, 163 / 255, 70 / 255, 0.9)
+            } else if (va < 0.02) {
+                colo = new Cesium.Color(235 / 255, 201 / 255, 109 / 255, 0.9)
+            }
+            pointPrimitives.add({
+                pixelSize: 4,
+                color: colo,
+                position: position,
+                outline: false,
+                outlineWidth: va
+            });
+        }
+        // 内半球
+        viewer.entities.add({
+            position: new Cesium.Cartesian3.fromDegrees(117.167845550796, 31.81402254953246, 0),
+            ellipsoid: {
+                radii: new Cesium.Cartesian3(150, 150, 150),
+                maximumCone: Cesium.Math.PI_OVER_TWO,
+                material: new Cesium.Color(243 / 255, 81 / 255, 79 / 255, 0.6),
+                outline: true,
+                outlineColor: Cesium.Color.WHITE,
+                subdivisions: 1024
+            },
+        });
+        // 外半球
+        viewer.entities.add({
+            position: new Cesium.Cartesian3.fromDegrees(117.167845550796, 31.81402254953246, 0),
+            ellipsoid: {
+                radii: new Cesium.Cartesian3(300, 300, 300),
+                maximumCone: Cesium.Math.PI_OVER_TWO,
+                material: new Cesium.Color(239 / 255, 225 / 255, 42 / 255, 0.4),
+                outline: true,
+                outlineColor: Cesium.Color.WHITE,
+            },
+        });
+        // 相机视角
+        viewer.camera.flyTo({
+            destination: new Cesium.Cartesian3(-2476921.132093262, 4828313.511755242, 3342636.1519716247),
+            orientation: {
+                heading: 0.824915994540576,
+                pitch: -0.6987007578075675,
+                roll: 0.002886497866192883
+            }
+        });
+        // 初始化气泡提示框
+        window.poupNoHead = new XLGlobe.Utils.Popup({
+            viewer: viewer,
+            className: "bx-popup-ctn1",
+            html: function (header, content) {
+                return `
+            <div class="divpoint-wrap">
+            <div class="divpoint-center">
+            <div class="bx-popup-header-ctn">
+            ${header}
+            </div>
+            </div>
+            </div>
+            <div class="directional"></div>
+            `;
+            },
+        });
+        // 鼠标移动烟雾，显示提示信息
+        var handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+        handler.setInputAction(function (movement) {
+            var pick = viewer.scene.pick(movement.endPosition);
+            poupNoHead.closeAll();
+            poupNoHead.add({
+                geometry: new Cesium.Cartesian3(
+                    pick.primitive._position.x,
+                    pick.primitive._position.y,
+                    pick.primitive._position.z,
+
+                ),
+                content: {
+                    header: `<span>烟雾浓度值：${pick.primitive._outlineWidth}</span>`,
+                },
+            });
+        }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+
+    }
+</script>

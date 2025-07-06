@@ -1,0 +1,195 @@
+<style>
+    #toolbar {
+        position: absolute;
+        top: 0;
+        right: 10px;
+        padding: 10px 15px;
+        border-radius: 4px;
+        border: 1px solid rgba(128, 128, 128, .5);
+        color: #fff;
+        background: rgba(0, 0, 0, .4);
+        box-shadow: 0 3px 14px rgba(128, 128, 128, .5);
+        z-index: 999;
+    }
+
+    #toolbar input {
+        vertical-align: middle;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        background-color: white;
+        width: 110px;
+        border: 1px solid #f0f0f0;
+    }
+
+    #toolbar .header {
+        font-weight: bold;
+    }
+
+    #toolbar .btn-primary {
+        cursor: pointer;
+        color: #fff;
+        background-color: rgba(32, 160, 255, .2);
+        border: 1px solid #e4eaec;
+        font-size: 14px;
+        border-radius: 3px;
+    }
+</style>
+
+<div id="rjContainer"></div>
+<div id="toolbar">
+    <input type="button" class="btn btn-primary" value="绘制(样式一)" onclick="drawPoint(1)">
+    <input type="button" class="btn btn-primary" value="绘制(样式二)" onclick="drawPoint(2)">
+    <input type="button" class="btn btn-primary" value="绘制(样式三)" onclick="drawPoint(3)">
+    <input type="button" class="btn btn-primary" value="绘制(样式四)" onclick="drawPoint(4)">
+    <input type="button" class="btn btn-primary" value="清除" onclick="clearPoint()">
+</div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+        initMap();
+        initWork();
+    });
+    var Globe;
+    var viewer;
+    var drawControl;
+    var drawtype;
+    var popup1, popup2, popup3, popup4;
+    //初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer");
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+
+        //地形
+        var provider = new XLGlobe.Layer.layerTerrainProvider({
+            url: "http://data.marsgis.cn/terrain",
+            requestWaterMask: true,
+            requestVertexNormals: true
+        });
+        Globe.addTerrainLayer(provider);
+
+        //加载3D模型
+        new XLGlobe.Model.load3DTiles(viewer, {
+            url: config.dataUrl + "model/3DTiles/changju/changju/tileset.json",
+            hideGlobe: false,
+            isZoomTo: true,
+            height: 34,
+        });
+    }
+
+    //当前页面业务相关
+    function initWork() {
+        //弹窗
+        popup1 = new XLGlobe.Utils.Popup({
+            viewer: viewer,
+            className: "bx-popup-ctn1"
+        });
+        //弹窗
+        popup2 = new XLGlobe.Utils.Popup({
+            viewer: viewer,
+            className: "bx-popup-ctn2"
+        });
+        //弹窗
+        popup3 = new XLGlobe.Utils.Popup({
+            viewer: viewer,
+            className: "bx-popup-ctn3"
+        });
+        //弹窗
+        popup4 = new XLGlobe.Utils.Popup({
+            viewer: viewer,
+            className: "bx-popup-ctn4"
+        });
+
+        drawControl = XLGlobe.Utils.draw({
+            viewer: viewer,
+            hasEdit: true,
+            onStopDrawing: function (entity) {
+                // drawControl.deleteEntity(entity)
+                var p = entity.position._value;
+                if (drawtype == 1) {
+                    popup1.add({
+                        geometry: p,
+                        content: {
+                            header: "数据点",
+                            content: `
+                        <div><span>名称：</span><span>中国银行光谷分行</span></div>
+                        <div><span>编号：</span><span>${parseInt(Math.random()*100)}</span></div>
+                        <div><span>状态：</span><span>完成</span></div>
+                            `
+                        },
+                        // isclose: false
+                    });
+                } else if (drawtype == 2) {
+                    popup2.add({
+                        geometry: p,
+                        content: {
+                            header: "数据点",
+                            content: `
+                        <div><span>名称：</span><span>公司名称</span></div>
+                        <div><span>类型：</span><span>POI</span></div>
+                            `
+                        },
+                        // isclose: false
+                    });
+                } else if (drawtype == 3) {
+                    popup3.add({
+                        geometry: p,
+                        content: {
+                            header: "数据点",
+                            content: `
+                            <div><img src="images/basemaps/google_img.png" /></div>
+                            `
+                        },
+                        isclose: false
+                    });
+                } else if (drawtype == 4) {
+                    popup4.add({
+                        geometry: p,
+                        content: {
+                            header: "数据点",
+                            content: `
+                        <div><span>名称：</span><span>公司名称</span></div>
+                        <div><span>类型：</span><span>POI</span></div>
+                            `
+                        },
+                        isclose: false
+                    });
+                }
+            },
+        });
+    }
+    //绘制
+    function drawPoint(type) {
+        drawtype = type;
+        drawControl.startDraw({
+            type: "point",
+            style: {
+                pixelSize: 12,
+                color: '#3388ff',
+            }
+        });
+    }
+    //清除
+    function clearPoint() {
+        if (drawControl) {
+            drawControl.deleteAll()
+        }
+        if (popup1) {
+            popup1.closeAll()
+        }
+        if (popup2) {
+            popup2.closeAll()
+        }
+        if (popup3) {
+            popup3.closeAll()
+        }
+        if (popup4) {
+            popup4.closeAll()
+        }
+    };
+</script>

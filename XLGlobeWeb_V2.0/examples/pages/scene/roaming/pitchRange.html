@@ -1,0 +1,81 @@
+<style>
+    #buts {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 10px 15px;
+        border-radius: 4px;
+        border: 1px solid rgba(128, 128, 128, .5);
+        font-size: 14px;
+        color: #fff;
+        background: rgba(0, 0, 0, .4);
+        box-shadow: 0 3px 14px rgba(128, 128, 128, .5);
+    }
+</style>
+
+<div id="rjContainer"></div>
+<div id="buts">
+    <button class="btn btn-primary" onclick="addCameraTrack()">添加当前视角</button>
+    <button class="btn btn-primary" onclick="cameraPlay()">飞行</button>
+    <button class="btn btn-primary" onclick="cameraPause()">暂停</button>
+    <button class="btn btn-primary" onclick="cameraStop()">停止</button>
+    <button class="btn btn-primary" onclick="setFlyTo()">修改</button>
+</div>
+<script>
+    //地图底图
+    var Globe = new XLGlobe.Globe("rjContainer", {
+        animation: true
+    });
+
+    //添加底图图层
+    _addbdlayer(Globe);
+
+    Globe.viewer.camera.setView({
+        destination: Cesium.Cartesian3.fromDegrees(114.35231209, 30.53542614, 300),
+        orientation: {
+            // heading: Cesium.Math.toRadians(180.0),
+            pitch: Cesium.Math.toRadians(-40.0),
+        }
+    })
+    // 飞行编辑
+    var flyLineEdit = new XLGlobe.Scene.FlyLineEdit(Globe.viewer);
+    //飞行起点坐标
+    flyLineEdit.addFlyLine({
+        id: 'addFlyLine1',
+        destination: Cesium.Cartesian3.fromDegrees(114.35231209, 30.53542614, 300)
+    });
+    //飞行终点
+    flyLineEdit.addFlyLine({
+        id: 'addFlyLine2',
+        destination: Cesium.Cartesian3.fromDegrees(114.35931209, 30.53542614, 300)
+    });
+    //
+    function addCameraTrack() {
+        flyLineEdit.addFlyLine({
+            destination: Globe.viewer.scene.camera.position.clone(),
+            heading: Globe.viewer.scene.camera.heading,
+            pitch: Globe.viewer.scene.camera.pitch,
+            roll: Globe.viewer.scene.camera.roll,
+        });
+    }
+    // 开始飞行
+    function cameraPlay() {
+        flyLineEdit.startFlyTo();
+    }
+    // 暂停
+    function cameraPause() {
+        flyLineEdit.pause();
+    }
+    // 停止
+    function cameraStop() {
+        flyLineEdit.stop();
+    }
+
+    function setFlyTo() {
+        flyLineEdit.setFlyTo('addFlyLine2', {
+            heading: 0.01706637719266091,
+            pitch: -0.4979302400932535,
+            roll: 0.000057090359307565564,
+        });
+    }
+</script>

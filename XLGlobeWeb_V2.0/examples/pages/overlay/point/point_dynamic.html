@@ -1,0 +1,73 @@
+<style>
+</style>
+
+<div id="rjContainer"></div>
+<script>
+    window.onload = function () {
+
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+    };
+
+
+    var Globe;
+    var viewer;
+
+    //初始化地球
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer", {
+            navigation: true, //导航
+        });
+
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+
+        //设置相机高度
+        viewer.camera.setView({
+            destination: new Cesium.Cartesian3(-3987502.8281410695, 13809470.784977118, 10928597.686225055)
+        });
+        //获取地理位置数据
+        var results = XLGlobe.Utils.util.randomPointsWithinBbox(90, 110, 30, 45, 15, 'geojson').features;
+        //设置动态点
+        function setpointflicker() {
+            var x = 1;
+            var flog = true;
+            for (var item of results) {
+                var x = item.geometry.coordinates[0];
+                var y = item.geometry.coordinates[1];
+                var positions = Cesium.Cartesian3.fromDegrees(x, y);
+                viewer.entities.add({
+                    name: "圆点point闪烁",
+                    position: positions,
+                    point: {
+                        show: true, // default
+                        color: new Cesium.CallbackProperty(function () {
+                            if (flog) {
+                                x = x - 0.15;
+                                if (x <= 0) {
+                                    flog = false;
+                                }
+                            } else {
+                                x = x + 0.15;
+                                if (x >= 1) {
+                                    flog = true;
+                                }
+                            }
+                            return Cesium.Color.YELLOW.withAlpha(x);
+                        }, false),
+                        pixelSize: 15, // default: 1
+                        outlineWidth: 0
+                    }
+                });
+            }
+
+        }
+        setpointflicker();
+    };
+</script>

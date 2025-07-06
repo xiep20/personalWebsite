@@ -1,0 +1,15 @@
+<div id="rjContainer"></div>
+<script>
+  var Globe = new XLGlobe.Globe("rjContainer");
+  //mapbox地图
+  //自定义样式mapbox地图
+  //mapboxstyle
+  var baselayer2 = new XLGlobe.Layer.MapboxStyleImageryProvider({
+    url: 'https://api.mapbox.com/styles/v1',
+    username: 'mapboxxp',
+    styleId: 'ckjtlf8n60gel19ljgjpbj6k4',
+    token: 'pk.eyJ1IjoibWFwYm94eHAiLCJhIjoiY2tibGpud2txMGc4dDJ0cjVhcHRnYTVvZSJ9.U7Q1ed7gtkp4xFLxrZNIAg',
+    scaleFactor: true
+  });
+  Globe.addBaseLayer(baselayer2);
+</script>

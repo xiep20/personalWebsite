@@ -1,0 +1,181 @@
+<style>
+  ul li {
+    color: #ffffff;
+    line-height: 40px;
+  }
+
+  #menu button {
+    /* width: 90px; */
+    height: 27px;
+    line-height: 20px;
+    padding: 2px 12px;
+    margin-bottom: 0;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    touch-action: manipulation;
+    border-radius: 3px;
+    outline: 0;
+    color: #fff;
+    cursor: pointer;
+    border: 1px solid #e4eaec;
+    font-size: 14px;
+    background-color: #47475450;
+    margin: 0 5px 0 0px;
+  }
+
+  #menu {
+    position: absolute;
+    top: 20px;
+    left: 90px;
+    padding: 10px;
+    background: #8192a7cc;
+    border-radius: 3px;
+    z-index: 999;
+    padding: 10px 15px;
+    border-radius: 4px;
+    border: 1px solid rgba(128, 128, 128, .5);
+    font-size: 14px;
+    color: #fff;
+    background: rgba(0, 0, 0, .4);
+    box-shadow: 0 3px 14px rgba(128, 128, 128, .5);
+    padding: 10px 50px 10px 15px;
+  }
+</style>
+<div id="rjContainer"></div>
+<video id="video_dom" preload="auto" muted autoplay loop crossorigin>
+</video>
+<div id="menu">
+  <button onclick="click_add()">添加</button>
+  <button onclick="click_clear()">清除</button>
+  <ul style="margin: 10px 0 0 0;">
+    <li>
+      提示：单击“添加”后，需要绘制两个点，依次是投射起点和目标点
+    </li>
+    <li>
+      <span style="width: 84px;
+        display: inline-block;">视角距离</span>
+      <input id='jl' style="width: 250px;" value="40" type='range' min='0' max='100' step='1' />
+    </li>
+    <li>
+      <span>视角宽高比例</span>
+      <input id='kgb' style="width: 250px;" value="1.7" type='range' min='1' max='5' step='0.1' />
+    </li>
+    <li>
+      <span>视角水平张角</span>
+      <input id='spj' style="width: 250px;" value="1.2" type='range' min='1' max='3' step='0.1' />
+    </li>
+    <li>
+      <span style="width: 84px;
+        display: inline-block;">视频地址</span>
+      <input style="    border: none;
+        padding: 5px;
+        height: 32px;width: 350px;" id='spUrl' type="text" value="https://cctvksh5c.v.kcdnvip.com/live/cdrmcctv1_1/index.m3u8">
+    </li>
+    <li style="margin-top: 10px;">
+      <button onclick="play(1)">播放视频</button>
+      <button onclick="play(0)">暂停视频</button>
+      <button onclick="switchSP()">切换视频源</button>
+    </li>
+  </ul>
+</div>
+
+<script>
+  $(document).ready(function () {
+    if (!XLGlobe.Utils.util.webglreport()) {
+      alert('系统检测到您使用的浏览器不支持WebGL功能');
+    }
+
+    initMap();
+  });
+
+  var viewer;
+  var scene;
+
+  var videoElement = document.getElementById('video_dom');
+  var videoSrc = $("#spUrl").val();
+  var hls = new Hls();
+  hls.loadSource(videoSrc);
+  hls.attachMedia(videoElement);
+  var v;
+
+  //初始化地图
+  function initMap() {
+    var Globe = new XLGlobe.Globe("rjContainer", {});
+
+    viewer = Globe.viewer;
+    scene = viewer.scene;
+
+    //添加底图图层
+    _addbdlayer(Globe);
+    new XLGlobe.Model.load3DTiles(viewer, {
+      url: config.dataUrl + "model/3DTiles/changju/changju/tileset.json",
+      hideGlobe: false,
+      isZoomTo: true,
+      height: 0,
+    })
+    var options = {
+      horizontalViewAngle: 60,
+      verticalViewAngle: 40,
+      video: "video_dom",
+      viewPosition: {
+        "x": -2273579.1031458573,
+        "y": 5011075.774174137,
+        "z": 3214252.247588271,
+      },
+      viewPositionEnd: {
+        "x": -2273570.492500592,
+        "y": 5011061.894257468,
+        "z": 3214282.3418900105
+      }
+    };
+    v = new XLGlobe.Visualization.video(viewer, options);
+    v.drawVideo();
+  }
+
+  function click_add() {
+    var options = {
+      video: "video_dom"
+    };
+    v = new XLGlobe.Visualization.video(viewer, options);
+    v.drawVideo();
+  }
+
+  function click_clear() {
+    new XLGlobe.Visualization.video(viewer, {}).clearAll();
+  }
+
+  $("#kgb").change(() => {
+    v.change({
+      aspectRatio: Number($("#kgb").val())
+    })
+  })
+  $("#spj").change(() => {
+    v.change({
+      fov: Number($("#spj").val())
+    })
+  })
+  $("#jl").change(() => {
+    v.change({
+      far: Number($("#jl").val())
+    })
+  })
+
+  function play(ff) {
+    console.log(ff)
+    if (ff) {
+      videoElement.play();
+    } else {
+      videoElement.pause();
+    }
+  }
+
+  function switchSP() {
+    var videoSrc = $("#spUrl").val();
+    var hls = new Hls();
+    hls.loadSource(videoSrc);
+    hls.attachMedia(videoElement);
+  }
+</script>

@@ -1,0 +1,11 @@
+{
+    "md": "开发文档左侧配置文件-相关文档",
+    "tree": [
+        {
+            "id": "3-1",
+            "name": "相关文档",
+            "icon": "el-icon-iconleicankao",
+            "isHtml": true
+        }
+    ]
+}

@@ -1,0 +1,49 @@
+<!--
+ * @Descripttion : 
+ * @version      : 
+ * @Author       : HeDa
+ * @Date         : 2021-01-13 09:13:39
+ * @LastEditors  : HeDa
+ * @LastEditTime : 2021-01-13 10:30:01
+ * @FilePath     : /XLGlobeWebV2.0/public/examples/pages/overlay/polyline/polyline_halo.html
+-->
+<style>
+</style>
+<div id="rjContainer"></div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+    });
+
+    var Globe;
+    var viewer;
+    //初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer", {
+            navigation: true, //导航
+            mouseLocation: true
+        });
+
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+
+        //设置相机视角
+        viewer.camera.setView({
+            destination: Cesium.Cartesian3.fromDegrees(117.48, 30.67, 18000000.0)
+
+        });
+        // 加载光晕线
+        var haloLine = new XLGlobe.DataSource.haloLine(viewer, config.dataUrl + "/geojson/xian.json"); //线数据地址
+
+        viewer.camera.flyTo({
+            destination: Cesium.Cartesian3.fromDegrees(114.418825, 30.609454, 2556.0)
+        });
+    }
+</script>

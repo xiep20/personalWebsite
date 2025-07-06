@@ -1,0 +1,64 @@
+<style>
+  .infoview {
+    position: absolute;
+    top: 10px;
+    right: 30px;
+    padding: 10px 15px;
+    border-radius: 4px;
+    border: 1px solid rgba(128, 128, 128, 0.5);
+    color: #ffffff;
+    background: rgba(0, 0, 0, 0.4);
+    box-shadow: 0 3px 14px rgba(128, 128, 128, 0.5);
+    z-index: 9999;
+  }
+
+  .infoview input,
+  .infoview select,
+  .infoview textarea {
+    color: #ffffff;
+    background-color: rgba(32, 160, 255, 0.2);
+    border: 1px solid #e4eaec;
+    font-size: 14px;
+  }
+</style>
+<div id="rjContainer"></div>
+<div id="toolbar" class="infoview"></div>
+<script>
+  var Globe = new XLGlobe.Globe("rjContainer");
+
+  //地图底图
+  var bingProviderMenu = [];
+  var bingStyle = [
+    Cesium.BingMapsStyle.AERIAL,
+    Cesium.BingMapsStyle.AERIAL_WITH_LABELS,
+    Cesium.BingMapsStyle.AERIAL_WITH_LABELS_ON_DEMAND,
+    Cesium.BingMapsStyle.CANVAS_DARK,
+    Cesium.BingMapsStyle.CANVAS_GRAY,
+    Cesium.BingMapsStyle.CANVAS_LIGHT,
+    // Cesium.BingMapsStyle.COLLINS_BART,
+    // Cesium.BingMapsStyle.ORDNANCE_SURVEY,
+    Cesium.BingMapsStyle.ROAD,
+    Cesium.BingMapsStyle.ROAD_ON_DEMAND
+  ];
+
+  for (var i = 0; i < bingStyle.length; i++) {
+    //各类风格bingmap底图
+    var imageryProvider = new XLGlobe.Layer.BingImageryProvider({
+      layer: bingStyle[i]
+    });
+    Globe.addBaseLayer(imageryProvider);
+    //选择栏
+    var obj = {
+      text: bingStyle[i],
+      onselect: function (index) {
+        return function () {
+          Globe.changeBaseLayer(index);
+        }
+      }(i)
+    };
+    bingProviderMenu.push(obj);
+  }
+
+  //加载选择栏内容
+  Sandcastle.addDefaultToolbarMenu(bingProviderMenu);
+</script>

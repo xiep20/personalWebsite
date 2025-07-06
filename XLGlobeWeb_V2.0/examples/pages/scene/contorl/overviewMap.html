@@ -1,0 +1,36 @@
+<style>
+</style>
+
+<div id="rjContainer"></div>
+<script>
+    //初始化地图
+    var Globe;
+    var viewer;
+
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+        initMap();
+        initWork();
+    });
+
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer");
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+        //定位
+        Globe.flyTo(114.4, 31, 550000, 2.9, -90, 0, 3);
+    }
+
+    function initWork() {
+        // 鹰眼
+        var overmap = new XLGlobe.Control.OverviewMap({
+            viewer: viewer,
+            tileUrl: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+        });
+    }
+</script>

@@ -1,0 +1,116 @@
+<style>
+</style>
+<div id="rjContainer"></div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+    });
+
+    var Globe;
+    var viewer;
+    //初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer", {});
+
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+        //加载人工模型
+        tiles3d = new XLGlobe.Model.load3DTiles(viewer, {
+            url: config.dataUrl + "model/3DTiles/changju/changju/tileset.json",
+            hideGlobe: false,
+            isZoomTo: true,
+            height: 0
+        });
+
+        //材质一
+        var material = new XLGlobe.DataSource.customizeStripeMaterail(Cesium.Color.WHITE, 5, {
+            //speed: 100,
+            count: 50,
+            freely: "cross",
+            direction: "-"
+        }, config.dataUrl + 'img/material/arrow.png');
+        //材质二
+        var material2 = new XLGlobe.DataSource.customizeStripeMaterail(Cesium.Color.YELLOW, 5, {
+            //speed: 100,
+            count: 1,
+            freely: "vertical",
+            direction: "-"
+        }, config.dataUrl + 'img/material/colorLine.png');
+        //材质三
+        var material3 = new XLGlobe.DataSource.customizeStripeMaterail(Cesium.Color.YELLOW, 5, {
+            //speed: 100,
+            count: 1,
+            freely: "vertical",
+            direction: "-"
+        }, config.dataUrl + 'img/material/lineYellow.png');
+
+        //墙一
+        var wallStyle1 = viewer.entities.add({
+            name: "1",
+            wall: {
+                positions: Cesium.Cartesian3.fromDegreesArrayHeights([
+                    114.427341, 30.436919, 10,
+                    114.428204, 30.437123, 10,
+                    114.427862, 30.438277, 10,
+                    114.427017, 30.438059, 10,
+                    114.427341, 30.436919, 10
+                ]),
+                material: material,
+            },
+        });
+        //墙二
+        var wallStyle2 = viewer.entities.add({
+            name: "2",
+            wall: {
+                positions: Cesium.Cartesian3.fromDegreesArrayHeights([
+                    114.426317, 30.43674, 10,
+                    114.427225, 30.436954, 10,
+                    114.426896, 30.438052, 10,
+                    114.42599, 30.437852, 10,
+                    114.426317, 30.43674, 10,
+
+                ]),
+                material: material,
+            },
+        });
+        //墙三
+        var wallStyle3 = viewer.entities.add({
+            name: "3",
+            wall: {
+                positions: Cesium.Cartesian3.fromDegreesArrayHeights([
+                    114.428455, 30.437127, 10,
+                    114.429799, 30.437435, 10,
+                    114.429496, 30.438305, 10,
+                    114.42819, 30.438015, 10,
+                    114.428455, 30.437127, 10,
+
+                ]),
+                material: material2,
+            },
+        });
+        //墙四
+        var wallStyle4 = viewer.entities.add({
+            name: "3",
+            wall: {
+                positions: Cesium.Cartesian3.fromDegreesArrayHeights([
+                    114.428153, 30.438118, 10,
+                    114.42942, 30.438402, 10,
+                    114.429155, 30.439284, 10,
+                    114.427918, 30.439019, 10,
+                    114.428153, 30.438118, 10,
+
+
+                ]),
+                material: material3,
+            },
+        });
+
+    }
+</script>

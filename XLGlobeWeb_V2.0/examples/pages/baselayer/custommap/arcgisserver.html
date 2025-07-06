@@ -1,0 +1,12 @@
+<div id="rjContainer"></div>
+<script>
+  var Globe = new XLGlobe.Globe("rjContainer");
+  //arcgis服务图片
+  var baselayer = new XLGlobe.Layer.ArcgisImageryProvider({
+    type: "wmts",
+    url: "http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer",
+    showClickFeature: true,
+    visible: true
+  });
+  Globe.addBaseLayer(baselayer);
+</script>

@@ -1,0 +1,63 @@
+<importjs>
+    <!-- mapV -->
+    <script src="libs/mapV/mapv.js"></script>
+    <script src="libs/mapV/mapvgl.js"></script>
+</importjs>
+<div id="rjContainer"></div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+        initMap();
+        point_i();
+    });
+    var viewer;
+    var scene;
+    //初始化地图
+    function initMap() {
+        var Globe = new XLGlobe.Globe("rjContainer", {});
+        viewer = Globe.viewer;
+        scene = viewer.scene;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+        //定位
+        viewer.camera.setView({
+            destination: Cesium.Cartesian3.fromDegrees(112.088953, 31.161181, 5000000)
+        });
+    }
+
+    //当前页面业务相关
+    function point_i() {
+        var randomCount = 300;
+        var data = [];
+        var citys = ["北京", "天津", "上海", "重庆", "石家庄", "太原", "呼和浩特", "哈尔滨", "长春", "沈阳", "济南", "南京", "合肥", "杭州", "南昌", "福州",
+            "郑州", "武汉", "长沙", "广州", "南宁", "西安", "银川", "兰州", "西宁", "乌鲁木齐", "成都", "贵阳", "昆明", "拉萨", "海口"
+        ];
+        while (randomCount--) {
+            var cityCenter = XLGlobe.MapV.getCenterByCityName(citys[parseInt(Math.random() * citys.length)]);
+            data.push({
+                geometry: {
+                    type: 'Point',
+                    coordinates: [cityCenter.lng - 2 + Math.random() * 4, cityCenter.lat - 2 + Math.random() *
+                        4
+                    ]
+                },
+                count: 30 * Math.random()
+            });
+        }
+        //MapV配置项
+        var options = {
+            gradient: {
+                0: 'blue',
+                0.5: 'yellow',
+                1: 'red'
+            },
+            max: 30,
+            draw: 'intensity'
+        }
+        //MapV加载到地图
+        var MapVLayer = new XLGlobe.MapV.CombineMapV(viewer, data, options);
+    }
+</script>

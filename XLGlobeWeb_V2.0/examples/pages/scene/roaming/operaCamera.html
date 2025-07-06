@@ -1,0 +1,210 @@
+<style>
+    .bts {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 10px 15px;
+        border-radius: 4px;
+        border: 1px solid rgba(128, 128, 128, .5);
+        font-size: 14px;
+        color: #fff;
+        background: rgba(0, 0, 0, .4);
+        box-shadow: 0 3px 14px rgba(128, 128, 128, .5);
+    }
+
+    .bts select {
+        width: 248px;
+        display: inline-block;
+        position: relative;
+        background: #303336;
+        border: 1px solid #444;
+        color: #edffff;
+        fill: #edffff;
+        border-radius: 4px;
+        padding: 5px 12px;
+        margin: 2px 3px;
+        cursor: pointer;
+        overflow: hidden;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+</style>
+<div id="rjContainer"></div>
+<div class="bts">
+    <select>
+        <option value="">选择相机功能</option>
+        <option value="flyInACity">飞到一个城市</option>
+        <option value="flyToBeiJin">飞往北京</option>
+        <option value="flyToHeadingPitchRoll">飞到有航向、俯仰和滚转的位置</option>
+        <option value="flyToLocation">飞到我的位置</option>
+        <option value="setReferenceFrame">设置相机框架</option>
+        <option value="setHeadingPitchRoll">设置相机的航向、俯仰和滚转位置</option>
+        <option value="flyOverLongitude">从洛杉矶经欧洲飞往武汉</option>
+        <option value="flyOverLongitudeWithPitch">在飞行中向下看</option>
+    </select>
+</div>
+<&other&>
+</&other&>
+<script>
+    //地图底图
+    var Globe = new XLGlobe.Globe("rjContainer", {
+        logo: true,
+        animation: true
+    });
+
+    //添加底图图层
+    _addbdlayer(Globe);
+
+    // 飞到一个城市
+    var flyInACity = function () {
+        Globe.viewer.scene.camera.flyTo({
+            destination: Cesium.Cartesian3.fromDegrees(114.3, 30.5, 10000),
+            complete: function () {
+                setTimeout(function () {
+                    Globe.viewer.camera.flyTo({
+                        destination: Cesium.Cartesian3.fromDegrees(114.3, 30.5,
+                            10000),
+                        orientation: {
+                            heading: Cesium.Math.toRadians(10.0),
+                            pitch: Cesium.Math.toRadians(-35.0),
+                        },
+                        easingFunction: Cesium.EasingFunction.LINEAR_NONE
+                    });
+                }, 1000);
+            }
+        });
+    };
+    // 飞到北京
+    var flyToBeiJin = function () {
+        Globe.viewer.camera.flyTo({
+            destination: Cesium.Cartesian3.fromDegrees(116.390088, 39.916165, 10000.0)
+        });
+    };
+    // 飞到有航向、俯仰和滚转的位置
+    var flyToHeadingPitchRoll = function () {
+        Globe.viewer.camera.flyTo({
+            destination: Cesium.Cartesian3.fromDegrees(114.3, 30.5, 5000.0),
+            orientation: {
+                /*弧度*/
+                heading: Cesium.Math.toRadians(20.0),
+                pitch: Cesium.Math.toRadians(-35.0),
+                roll: 0.0
+            }
+        });
+    }
+    // 飞到我的位置
+    var flyToLocation = function () {
+        var options = {
+            enableHighAccuracy: true,
+            maximumAge: 1000
+        };
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(fly, onError, options); //浏览器支持geolocation
+        } else {
+            //浏览器不支持geolocation
+        }
+
+        // Create callback for browser's geolocation
+        function fly(position) {
+            Globe.viewer.camera.flyTo({
+                destination: Cesium.Cartesian3.fromDegrees(position.coords.longitude, position.coords
+                    .latitude, 1000.0)
+            });
+        }
+        //失败时
+        function onError(error) {
+            switch (error.code) {
+                case 1:
+                    alert("位置服务被拒绝");
+                    break;
+                case 2:
+                    alert("暂时获取不到位置信息");
+                    break;
+                case 3:
+                    alert("获取信息超时");
+                    break;
+                case 4:
+                    alert("未知错误");
+                    break;
+            }
+        }
+    };
+    // 设置相机框架
+    var setReferenceFrame = function () {
+        var center = Cesium.Cartesian3.fromDegrees(114.3, 30.5, );
+        var transform = Cesium.Transforms.eastNorthUpToFixedFrame(center);
+
+        // View in east-north-up frame
+        var camera = Globe.viewer.camera;
+        camera.constrainedAxis = Cesium.Cartesian3.UNIT_Z;
+        camera.lookAtTransform(transform, new Cesium.Cartesian3(-120000.0, -120000.0, 120000.0));
+
+        // Show reference frame.  Not required.
+        Globe.viewer.scene.primitives.add(new Cesium.DebugModelMatrixPrimitive({
+            modelMatrix: transform,
+            length: 100000.0
+        }));
+    }
+    // 设置相机的航向、俯仰和滚转位置
+    var setHeadingPitchRoll = function () {
+        Globe.viewer.camera.setView({
+            destination: Cesium.Cartesian3.fromDegrees(114.3, 30.5, 1000.0),
+            orientation: {
+                heading: -Cesium.Math.PI_OVER_TWO,
+                pitch: -Cesium.Math.PI_OVER_FOUR,
+                roll: 0.0
+            }
+        });
+    };
+    // 从洛杉矶经欧洲飞往武汉
+    var losAngelesToTokyo = function (adjustPitch) {
+        var camera = Globe.viewer.scene.camera;
+
+        var tokyoOptions = {
+            destination: Cesium.Cartesian3.fromDegrees(114.3, 30.5, 20000.0),
+            orientation: {
+                heading: Cesium.Math.toRadians(15.0),
+                pitch: Cesium.Math.toRadians(-60),
+                roll: 0.0
+            },
+            duration: 20,
+            flyOverLongitude: Cesium.Math.toRadians(60.0)
+        };
+
+        var laOptions = {
+            destination: Cesium.Cartesian3.fromDegrees(-118.1, 34.007, 100000.0),
+            duration: 5,
+            orientation: {
+                heading: Cesium.Math.toRadians(-15.0),
+                pitch: Cesium.Math.toRadians(-80),
+                roll: 0.0
+            }
+        };
+        laOptions.complete = function () {
+            setTimeout(function () {
+                camera.flyTo(tokyoOptions);
+            }, 1000);
+        };
+        if (adjustPitch) {
+            tokyoOptions.pitchAdjustHeight = 1000;
+            laOptions.pitchAdjustHeight = 1000;
+        }
+        camera.flyTo(laOptions);
+    };
+
+    var flyOverLongitude = function (adjustPitch) {
+        losAngelesToTokyo();
+    };
+    // 从洛杉矶经欧洲飞往武汉向下看
+    var flyOverLongitudeWithPitch = function () {
+        losAngelesToTokyo(true);
+    };
+
+    $("select").change(function () {
+        if ($("select").val() != '') {
+            window[$("select").val()]()
+        }
+    })
+</script>

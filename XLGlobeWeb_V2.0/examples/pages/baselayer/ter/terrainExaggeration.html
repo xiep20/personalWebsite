@@ -1,0 +1,14 @@
+<div id="rjContainer"></div>
+<script>
+  var Globe = new XLGlobe.Globe("rjContainer", {
+    terrainExaggeration: 3 //地下夸张系数
+  });
+
+  //添加底图图层
+  _addbdlayer(Globe);
+  //天地图地形
+  var provider = new XLGlobe.Layer.TiandituTerrainProvider();
+  Globe.addTerrainLayer(provider);
+
+  Globe.flyTo(114.199, 29.203, 5000, 350, -15, 360, 3);
+</script>

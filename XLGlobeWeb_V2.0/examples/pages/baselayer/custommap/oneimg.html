@@ -1,0 +1,10 @@
+<div id="rjContainer"></div>
+<script>
+  var Globe = new XLGlobe.Globe("rjContainer");
+  //xyz切片
+  var baselayer = new XLGlobe.Layer.createImageryProvider({
+    "type": "image",
+    "url": config.dataUrl + "img/world/world.jpg"
+  });
+  Globe.addBaseLayer(baselayer);
+</script>

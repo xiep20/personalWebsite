@@ -1,0 +1,52 @@
+<style>
+</style>
+
+<div id="rjContainer"></div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+    });
+
+    var Globe;
+    var viewer;
+    //初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer", {
+            shouldAnimate: true
+        });
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+
+        let r = new Cesium.HeadingPitchRoll(Cesium.Math.toRadians(90), Cesium.Math.toRadians(0), Cesium.Math.toRadians(
+            0));
+        // 雷达中心点
+        let l = Cesium.Cartesian3.fromDegrees(114.37169679640347, 30.483518218936656, 10);
+        let sensorEntity = viewer.entities.add({
+            position: l,
+            orientation: Cesium.Transforms.headingPitchRollQuaternion(l, r),
+            rectangularSensor: new Cesium.RectangularSensorGraphics({
+                radius: 1000, //范围
+                xHalfAngle: Cesium.Math.toRadians(50), //北南方向弧度，开口大小
+                yHalfAngle: Cesium.Math.toRadians(50), //东西方向弧度，开口大小
+                material: new Cesium.Color(0, 1, 1, .4),
+                lineColor: new Cesium.Color(0, 1, 1, 1),
+                showScanPlane: true, //扫描动画效果
+                scanPlaneColor: new Cesium.Color(0, 1, 1, 1),
+                scanPlaneMode: "vertical",
+                scanPlaneRate: 3, //速度
+                showThroughEllipsoid: !1
+            })
+        })
+        //定位
+        viewer.camera.flyTo({
+            destination: Cesium.Cartesian3.fromDegrees(114.37169679640347, 30.483518218936656, 10000)
+        });
+    }
+</script>

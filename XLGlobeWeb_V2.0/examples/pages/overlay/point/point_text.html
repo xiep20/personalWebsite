@@ -1,0 +1,73 @@
+<style>
+</style>
+
+<div id="rjContainer"></div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+    });
+
+    var Globe;
+    var viewer;
+    //初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer", {
+            navigation: true, //导航
+        });
+        viewer = Globe.viewer;
+        //天地图影像
+        var baselayer1 = new XLGlobe.Layer.TiandituImageryProvider({
+            layer: "img",
+            token: "6a043ce7d3a0791392dd921a6d6f5f29"
+        });
+        Globe.addBaseLayer(baselayer1);
+        //设置相机视角
+        viewer.camera.setView({
+            destination: Cesium.Cartesian3.fromDegrees(115, 22, 1800000),
+            orientation: {
+                heading: 0.0,
+                pitch: -1,
+                roll: 0.0
+            }
+        });
+        //获取 GeoJSON数据
+        function getDatsSource() {
+            XLGlobe.Utils.util.getJSON('geoJSON/city.json', (datas) => {
+                addEntitys(datas.city);
+            });
+        }
+        getDatsSource();
+        // 添加文字点
+        function addEntitys(datas) {
+            for (var i = 0; i < datas.length; i++) {
+                var data = datas[i];
+                var entity = viewer.entities.add({
+                    //参数顺序：经度、纬度
+                    position: Cesium.Cartesian3.fromDegrees(data.lon, data.lat),
+                    point: {
+                        pixelSize: 6,
+                        color: Cesium.Color.YELLOW
+                    },
+                    label: {
+                        text: data.name,
+                        font: "14pt 华文新魏",
+                        style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                        fillColor: Cesium.Color[data.color],
+                        outlineWidth: 2,
+                        verticalOrigin: Cesium.VerticalOrigin.CENTER,
+                        horizontalOrigin: Cesium.HorizontalOrigin.LEFT, //水平偏移
+                        verticalOrigin: Cesium.VerticalOrigin.BOTTOM //垂直偏移
+                    },
+                    type: 'text' //自定义属性
+                });
+            }
+
+        };
+
+    }
+</script>

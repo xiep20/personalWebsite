@@ -1,0 +1,1075 @@
+[{
+        "name": "baselayer",
+        "label": "基础底图",
+        "icon": "ditu",
+        "children": [{
+                "name": "online",
+                "label": "在线地图",
+                "examples": [{
+                        "name": "tdt",
+                        "label": "天地图"
+                    },
+                    {
+                        "name": "baidu",
+                        "label": "百度"
+                    },
+                    {
+                        "name": "amap",
+                        "label": "高德"
+                    },
+                    {
+                        "name": "google",
+                        "label": "谷歌"
+                    },
+                    {
+                        "name": "bingmap",
+                        "label": "微软BingMap"
+                    },
+                    {
+                        "name": "arcgis",
+                        "label": "Arcgis"
+                    },
+                    {
+                        "name": "OSM",
+                        "label": "OSM"
+                    },
+                    {
+                        "name": "mapbox",
+                        "label": "mapbox"
+                    },
+                    {
+                        "name": "pbf",
+                        "label": "pbf"
+                    }
+                ]
+            },
+            {
+                "name": "custommap",
+                "label": "自定义地图",
+                "examples": [{
+                        "name": "oneimg",
+                        "label": "本地单张图片"
+                    },
+                    {
+                        "name": "oneimg_night",
+                        "label": "本地单张图片（夜）"
+                    },
+                    {
+                        "name": "xyz",
+                        "label": "xyz金字塔瓦片"
+                    },
+                    {
+                        "name": "arcgistile",
+                        "label": "arcgis格式瓦片"
+                    },
+                    {
+                        "name": "arcgisserver",
+                        "label": "ArcGIS Server服务"
+                    },
+                    {
+                        "name": "WMSserver",
+                        "label": " OGC WMS服务"
+                    },
+                    {
+                        "name": "wmtsserver",
+                        "label": "OGC WMTS服务"
+                    },
+                    {
+                        "name": "e4490tile",
+                        "label": "EPSG4490坐标系"
+                    },
+                    {
+                        "name": "cloud",
+                        "label": "时空效果(云图)",
+                        "suffix": "gif"
+                    }
+                ]
+            },
+            {
+                "name": "ter",
+                "label": "地形",
+                "examples": [{
+                        "name": "terrain",
+                        "label": "地形"
+                    },
+                    {
+                        "name": "terrainExaggeration",
+                        "label": "地形夸张"
+                    },
+                    {
+                        "name": "ter_arcgis",
+                        "label": "arcgis地形"
+                    },
+                    {
+                        "name": "ter_tdt",
+                        "label": "天地图地形"
+                    }
+                ]
+            },
+            {
+                "name": "setting",
+                "label": "地图效果",
+                "examples": [{
+                        "name": "param",
+                        "label": "底图参数"
+                    },
+                    {
+                        "name": "split",
+                        "label": "双图对比"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "layer",
+        "label": "数据图层",
+        "icon": "shuju",
+        "children": [{
+                "name": "dataLayer",
+                "label": "数据图层",
+                "examples": [{
+                        "name": "vector",
+                        "label": "矢量图层"
+                    },
+                    {
+                        "name": "cluster",
+                        "label": "聚合图层"
+                    },
+                    {
+                        "name": "dtiles",
+                        "label": "3DTiles图层"
+                    },
+                    {
+                        "name": "geojson",
+                        "label": "GeoJson图层"
+                    },
+                    {
+                        "name": "html",
+                        "label": "Html图层"
+                    },
+                    {
+                        "name": "czml",
+                        "label": "Czml图层",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "wfsService",
+                        "label": "WFS矢量服务"
+                    },
+                    {
+                        "name": "autoPointOnModel",
+                        "label": "矢量点自动贴模型"
+                    }
+                ]
+            },
+            {
+                "name": "onlineServices",
+                "label": "在线服务支持",
+                "examples": [{
+                    "name": "onlineServices_gaode",
+                    "label": "高德POI查询"
+                }]
+            }
+        ]
+    },
+    {
+        "name": "overlay",
+        "label": "矢量要素",
+        "icon": "shiliang",
+        "children": [{
+                "name": "point",
+                "label": "点要素",
+                "examples": [{
+                        "name": "point_base",
+                        "label": "基本点"
+                    },
+                    {
+                        "name": "point_text",
+                        "label": "文字点"
+                    },
+                    {
+                        "name": "point_icon",
+                        "label": "图标点"
+                    },
+                    {
+                        "name": "point_icon_m",
+                        "label": "一万图标点"
+                    },
+                    {
+                        "name": "Billboard",
+                        "label": "Billboard 图标点"
+                    },
+                    {
+                        "name": "point_style",
+                        "label": "样式点"
+                    },
+                    {
+                        "name": "point_div",
+                        "label": "div文本点"
+                    },
+                    {
+                        "name": "point_svg",
+                        "label": "div文本点(图片)"
+                    },
+                    {
+                        "name": "point_gif",
+                        "label": "Gif动画图片支持",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "point_dynamic",
+                        "label": "动态效果点",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "point_tetrahedron",
+                        "label": "四棱椎",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "point_time",
+                        "label": "实时数据"
+                    },
+                    {
+                        "name": "point_weibo",
+                        "label": "微博点亮中国"
+                    }
+                ]
+            },
+            {
+                "name": "polyline",
+                "label": "线状要素",
+                "examples": [{
+                        "name": "polyline_base",
+                        "label": "基本线"
+                    },
+                    {
+                        "name": "polyline_material",
+                        "label": "材质线"
+                    },
+                    {
+                        "name": "polyline_trail",
+                        "label": "轨迹线",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "polyline_halo",
+                        "label": "光晕线"
+                    },
+                    {
+                        "name": "polyline_dynamic",
+                        "label": "动态线",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "polyline_flow",
+                        "label": "流动线",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "polyline_parabola",
+                        "label": "抛物线",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "polyline_Gradient_wall",
+                        "label": "渐变纹理墙"
+                    },
+                    {
+                        "name": "road",
+                        "label": "道路",
+                        "isPlugin": false,
+                        "suffix": "png"
+                    }
+                ]
+            },
+            {
+                "name": "polygon",
+                "label": "面状要素",
+                "examples": [{
+                        "name": "polygon_base",
+                        "label": "基本面"
+                    },
+                    {
+                        "name": "polygon_height",
+                        "label": "高度面"
+                    },
+                    {
+                        "name": "polygon_isosurface",
+                        "label": "等值面"
+                    },
+                    {
+                        "name": "polygon_DynamicStereoscopicWall",
+                        "label": "动态立体围墙",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "polygon_diffusionWall",
+                        "label": "围墙扩散动画",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "polygon_sectors",
+                        "label": "非规则面（扇形）"
+                    },
+                    {
+                        "name": "polygon_textIcon",
+                        "label": "文字贴图"
+                    },
+                    {
+                        "name": "polygon_OSMBuilding",
+                        "label": "OSMBuilding立体建筑物"
+                    },
+                    {
+                        "name": "polygon_Building_Shining",
+                        "label": "立体建筑物(闪烁)",
+                        "suffix": "gif"
+                    }
+                ]
+            },
+            {
+                "name": "others",
+                "label": "其他要素",
+                "examples": [{
+                        "name": "circle_default",
+                        "label": "默认圆"
+                    },
+                    {
+                        "name": "circle_style",
+                        "label": "样式圆"
+                    },
+                    {
+                        "name": "circle_rotate",
+                        "label": "旋转圆"
+                    },
+                    {
+                        "name": "circle_flicker",
+                        "label": "闪烁圆",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "circle_wave",
+                        "label": "波动圆",
+                        "isPlugin": true
+                    },
+                    {
+                        "name": "circle_diffusion",
+                        "label": "危化品扩散效果"
+                    },
+                    {
+                        "name": "circle_radar",
+                        "label": "相控阵雷达范围",
+                        "isPlugin": true
+                    },
+                    {
+                        "name": "circle_radar2",
+                        "label": "雷达范围",
+                        "isPlugin": true
+                    },
+                    {
+                        "name": "circle_cone",
+                        "label": "动态圆锥体",
+                        "suffix": "gif"
+                    }
+                ]
+            },
+            {
+                "name": "plot",
+                "label": "标绘",
+                "examples": [{
+                        "name": "plot-overlay",
+                        "label": "要素标绘"
+                    },
+                    {
+                        "name": "plot-Military",
+                        "label": "军事标绘",
+                        "isPlugin": true
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "model",
+        "label": "模型",
+        "icon": "moxing",
+        "children": [{
+                "name": "dtmx",
+                "label": "单体模型",
+                "examples": [{
+                        "name": "model_fj",
+                        "label": "gLTF模型"
+                    },
+                    {
+                        "name": "model_dh",
+                        "label": "动画模型",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "model_xz",
+                        "label": "模型旋转",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "model_mxk",
+                        "label": "模型库[项目widget]"
+                    },
+                    {
+                        "name": "model_bdgltf",
+                        "label": "本地gltf数据"
+                    }
+                ]
+            },
+            {
+                "name": "3dtiles",
+                "label": "3DTiles",
+                "examples": [{
+                        "name": "model_qxsy",
+                        "label": "倾斜摄影"
+                    },
+                    {
+                        "name": "model_rgmx",
+                        "label": "人工模型"
+                    },
+                    {
+                        "name": "model_csbm",
+                        "label": "城市建筑白模"
+                    },
+                    {
+                        "name": "model_bim",
+                        "label": "BIM数据"
+                    },
+                    {
+                        "name": "model_dxgw",
+                        "label": "地下管网"
+                    },
+                    {
+                        "name": "model_dz",
+                        "label": "地质模型"
+                    }
+                ]
+            },
+            {
+                "name": "Monomer",
+                "label": "模型单体化",
+                "examples": [{
+                        "name": "model_Monomersj",
+                        "label": "3dtiles数据内单体化"
+                    },
+                    {
+                        "name": "model_Monomerslm",
+                        "label": "矢量面叠加单体化"
+                    },
+                    {
+                        "name": "model_Monomerfc",
+                        "label": "模型分层单体化"
+                    }
+                ]
+            },
+            {
+                "name": "modeledit",
+                "label": "数据编辑控制",
+                "examples": [{
+                        "name": "model_gcj",
+                        "label": "国测局坐标系纠偏"
+                    },
+                    {
+                        "name": "model_wzpy",
+                        "label": "位置直线偏移(不贴球面)"
+                    },
+                    {
+                        "name": "model_rgmxeidtwz",
+                        "label": "【人工模型】位置编辑"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "scene",
+        "label": "场景",
+        "icon": "changjing",
+        "children": [{
+                "name": "contorl",
+                "label": "控件",
+                "examples": [{
+                        "name": "navigation",
+                        "label": "导航球"
+                    },
+                    {
+                        "name": "scale",
+                        "label": "比例尺"
+                    },
+                    {
+                        "name": "zoom",
+                        "label": "放大缩小按钮"
+                    },
+                    {
+                        "name": "baselayer",
+                        "label": "底图切换控制"
+                    },
+                    {
+                        "name": "VR",
+                        "label": "偏振立体(VR)"
+                    },
+                    {
+                        "name": "mouseLocation",
+                        "label": "位置信息状态栏"
+                    },
+                    {
+                        "name": "logo",
+                        "label": "logo"
+                    },
+                    {
+                        "name": "customControl",
+                        "label": "自定义控件接口"
+                    },
+                    {
+                        "name": "positionLocation",
+                        "label": "定位控件"
+                    },
+                    {
+                        "name": "contextMenu",
+                        "label": "右键菜单"
+                    },
+                    {
+                        "name": "overviewMap",
+                        "label": "鹰眼图（leaflet）"
+                    },
+                    {
+                        "name": "printScreen",
+                        "label": "导出图片"
+                    }
+                ]
+            },
+            {
+                "name": "widget",
+                "label": "场景控制",
+                "examples": [{
+                        "name": "background",
+                        "label": "自定义空间背景图"
+                    },
+                    {
+                        "name": "customSkyBox",
+                        "label": "自定义天空盒"
+                    },
+                    {
+                        "name": "SkyBoxOnGround",
+                        "label": "近地天空盒"
+                    },
+                    {
+                        "name": "sceneModePicker",
+                        "label": "二维三维切换"
+                    },
+                    {
+                        "name": "2DMode",
+                        "label": "2D模式"
+                    },
+                    {
+                        "name": "downloadImg",
+                        "label": "场景出图(导出图片)"
+                    }
+                ]
+            },
+            {
+                "name": "camera",
+                "label": "相机视角",
+                "examples": [{
+                        "name": "bookmarkWidget",
+                        "label": "视角书签[项目widget]"
+                    },
+                    {
+                        "name": "rotate",
+                        "label": "旋转的地球",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "historyCamera",
+                        "label": "视角历史记录"
+                    },
+                    {
+                        "name": "limitCamera",
+                        "label": "限定视角范围"
+                    },
+                    {
+                        "name": "pointRaodian",
+                        "label": "绕点环绕飞行",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "pointSizhou",
+                        "label": "原地四周旋转",
+                        "suffix": "gif"
+                    }
+                ]
+            },
+            {
+                "name": "roaming",
+                "label": "飞行漫游",
+                "examples": [{
+                        "name": "operaCamera",
+                        "label": "相机操作"
+                    },
+                    {
+                        "name": "pitchRange",
+                        "label": "飞行编辑",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "flyRoute",
+                        "label": "飞行漫游",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "pitchRange1",
+                        "label": "飞行漫游(含编辑)",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "pitchRange2",
+                        "label": "飞行路线",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "pitchRange3",
+                        "label": "贴地表表面漫游"
+                    },
+                    {
+                        "name": "pitchRange4",
+                        "label": "贴模型表面漫游",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "pitchRange5",
+                        "label": "空中漫游",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "pitchRange6",
+                        "label": "行人漫游",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "pitchRange7",
+                        "label": "键盘漫游"
+                    }
+                ]
+            },
+            {
+                "name": "event",
+                "label": "事件控制",
+                "examples": [{
+                        "name": "viewer_event",
+                        "label": "场景鼠标事件"
+                    },
+                    {
+                        "name": "camera_event",
+                        "label": "相机移动事件"
+                    },
+                    {
+                        "name": "render_event",
+                        "label": "场景渲染事件"
+                    },
+                    {
+                        "name": "scene_morph",
+                        "label": "场景模式转换完成"
+                    },
+                    {
+                        "name": "clock_tick",
+                        "label": "时间跳动"
+                    }
+                ]
+            },
+            {
+                "name": "effect",
+                "label": "场景特效",
+                "examples": [{
+                        "name": "intro",
+                        "label": "开场动画",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "circle_scan",
+                        "label": "扫描圈",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "radar_scan",
+                        "label": "雷达扫描",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "brightness",
+                        "label": "场景明亮"
+                    },
+                    {
+                        "name": "night_vision",
+                        "label": "夜视场景"
+                    },
+                    {
+                        "name": "rain",
+                        "label": "雨天场景",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "snow",
+                        "label": "雪天场景",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "fog",
+                        "label": "雾天场景"
+                    },
+                    {
+                        "name": "partical_system",
+                        "label": "雨、雪、火焰粒子效果",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "partical_system_ex",
+                        "label": "粒子效果调试",
+                        "suffix": "gif"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Analysis",
+        "label": "分析",
+        "icon": "analysis",
+        "children": [{
+                "name": "spatial_analysis",
+                "label": "空间分析",
+                "examples": [{
+                        "name": "analysis_Measure",
+                        "label": "量算"
+                    },
+                    {
+                        "name": "analysis_profile",
+                        "label": "剖面分析",
+                        "isPlugin": true
+                    },
+                    {
+                        "name": "analysis_flfx",
+                        "label": "方量分析"
+                    },
+                    {
+                        "name": "analysis_buffer",
+                        "label": "缓冲分析（实体）"
+                    },
+                    {
+                        "name": "analysis_buffer2",
+                        "label": "缓冲分析（坐标）"
+                    },
+                    {
+                        "name": "analysis_tsfx",
+                        "label": "通视分析"
+                    },
+                    {
+                        "name": "analysis_ksyfx",
+                        "label": "可视域分析"
+                    },
+                    {
+                        "name": "analysis_sunlight",
+                        "label": "日照分析",
+                        "isPlugin": false,
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "analysis_dbtm",
+                        "label": "地表透明"
+                    },
+                    {
+                        "name": "analysis_tjxmb",
+                        "label": "天际线描边"
+                    }
+                ]
+            },
+            {
+                "name": "ter_analysis",
+                "label": "地形模型相关",
+                "examples": [{
+                        "name": "analysis_dxkw",
+                        "label": "地形开挖",
+                        "isPlugin": false,
+                        "suffix": "jpg"
+                    },
+                    {
+                        "name": "analysis_dxkwcz",
+                        "label": "地形开挖(材质)",
+                        "isPlugin": false,
+                        "suffix": "jpg"
+                    },
+                    {
+                        "name": "analysis_dgx",
+                        "label": "等高线",
+                        "isPlugin": true
+                    },
+                    {
+                        "name": "analysis_mxpq",
+                        "label": "模型剖切"
+                    },
+                    {
+                        "name": "analysis_jzwtx",
+                        "label": "建筑物特效",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "clippingPlanes",
+                        "label": "模型剪裁（凸多边形）"
+                    },
+                    {
+                        "name": "SubmergenceAnalysis",
+                        "label": "淹没分析（无源）"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "visualization",
+        "label": "数据可视化",
+        "icon": "keshihua",
+        "children": [{
+                "name": "visualization_base",
+                "label": "基础可视化",
+                "examples": [{
+                        "name": "heat",
+                        "label": "热区图层"
+                    },
+                    {
+                        "name": "wendu",
+                        "label": "温度图"
+                    },
+                    {
+                        "name": "windy",
+                        "label": "风向图",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "sptf",
+                        "label": "视频投射（立体）",
+                        "isPlugin": false,
+                        "suffix": "png"
+                    },
+                    {
+                        "name": "sptf2",
+                        "label": "视频投射（平面）",
+                        "isPlugin": false,
+                        "suffix": "jpg"
+                    },
+                    {
+                        "name": "sptf3",
+                        "label": "视频投射（MP4）",
+                        "isPlugin": true,
+                        "suffix": "png"
+                    },
+                    {
+                        "name": "sptf4",
+                        "label": "贴物空间投射",
+                        "isPlugin": true,
+                        "suffix": "png"
+                    },
+                    {
+                        "name": "sptf5",
+                        "label": "视频投射(HLS协议)",
+                        "isPlugin": true,
+                        "suffix": "png"
+                    }
+                ]
+            },
+            {
+                "name": "echarts",
+                "label": "Echarts",
+                "examples": [{
+                        "name": "e_pm2.5",
+                        "label": "散点图 空气质量",
+                        "isPlugin": true
+                    },
+                    {
+                        "name": "e_sdt_ts",
+                        "label": "散点图 态势",
+                        "isPlugin": true
+                    },
+                    {
+                        "name": "e_plane",
+                        "label": "飞机",
+                        "isPlugin": true,
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "e_traffic",
+                        "label": "北京公交线路图",
+                        "isPlugin": true
+                    },
+                    {
+                        "name": "e_bus_h",
+                        "label": "道路热力图",
+                        "isPlugin": true
+                    },
+                    {
+                        "name": "e_qx",
+                        "label": "人口迁徙",
+                        "isPlugin": true,
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "e_qx_2",
+                        "label": "人口迁徙",
+                        "isPlugin": true,
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "e_wl",
+                        "label": "物流线路",
+                        "isPlugin": true,
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "e_lcx",
+                        "label": "流出线",
+                        "isPlugin": true,
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "e_lrx",
+                        "label": "流入线",
+                        "isPlugin": true,
+                        "suffix": "gif"
+                    }
+                ]
+            },
+            {
+                "name": "mapV",
+                "label": "mapV",
+                "examples": [{
+                        "name": "m_point",
+                        "isPlugin": true,
+                        "label": "点"
+                    },
+                    {
+                        "name": "m_point_d",
+                        "label": "动画点",
+                        "isPlugin": true,
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "m_point_i",
+                        "isPlugin": true,
+                        "label": "强度点"
+                    },
+                    {
+                        "name": "m_weibo",
+                        "isPlugin": true,
+                        "label": "微博",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "m_grid",
+                        "isPlugin": true,
+                        "label": "方格图"
+                    },
+                    {
+                        "name": "m_grid_d",
+                        "isPlugin": true,
+                        "label": "方格动画图",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "m_honeycomb",
+                        "isPlugin": true,
+                        "label": "蜂巢图"
+                    },
+                    {
+                        "name": "m_honeycomb_d",
+                        "isPlugin": true,
+                        "label": "蜂巢动画图",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "m_polyline",
+                        "isPlugin": true,
+                        "label": "线"
+                    },
+                    {
+                        "name": "m_polyline_d",
+                        "isPlugin": true,
+                        "label": "动画线",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "m_polyline_i",
+                        "isPlugin": true,
+                        "label": "强度线"
+                    },
+                    {
+                        "name": "m_linetime",
+                        "isPlugin": true,
+                        "label": "动态轨迹",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "m_polyline_f",
+                        "isPlugin": true,
+                        "label": "强边界图",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "m_beijing",
+                        "isPlugin": true,
+                        "label": "北京"
+                    },
+                    {
+                        "name": "m_qianxi",
+                        "isPlugin": true,
+                        "label": "迁徙图",
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "m_qianxi_b",
+                        "isPlugin": true,
+                        "label": "大迁徙图",
+                        "suffix": "gif"
+                    }
+                ]
+            },
+            {
+                "name": "ammo",
+                "label": "ammo物理引擎支持",
+                "examples": [{
+                        "name": "ammo_clyd",
+                        "label": "车辆运动",
+                        "isPlugin": true,
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "ammo_zdqz",
+                        "label": "转动（旗子）",
+                        "isPlugin": true,
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "ammo_zdqiu",
+                        "label": "转动（球）",
+                        "isPlugin": true,
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "ammo_zjrt",
+                        "label": "撞击（软体）",
+                        "isPlugin": true,
+                        "suffix": "gif"
+                    },
+                    {
+                        "name": "ammo_zjdlt",
+                        "label": "撞击（断裂体）",
+                        "isPlugin": true,
+                        "suffix": "gif"
+                    }
+                ]
+            }
+        ]
+    }
+]

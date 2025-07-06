@@ -1,0 +1,25 @@
+<div id="rjContainer"></div>
+<script>
+  var Globe = new XLGlobe.Globe("rjContainer");
+  //mapbox
+  var baselayer = new XLGlobe.Layer.MapboxImageryProvider({
+    layer: 'mapbox.satellite',    
+    token: 'pk.eyJ1IjoibWFyc2dpcyIsImEiOiJja2Fod2xlanIwNjJzMnhvMXBkMnNqcjVpIn0.WnxikCaN2KV_zn9tLZO77A'
+  });
+  Globe.addBaseLayer(baselayer);
+  //wms服务
+  var layer = new XLGlobe.Layer.WMSImageryProvider({
+    "name": "省界线",
+    "type": "wms",
+    "url": config.deuserver + "/LJDY/wms",
+    "layers": "	LJDY:shengjie_line",
+    "crs": "EPSG:3857",
+    "parameters": {
+      "transparent": true,
+      "format": "image/png"
+    },
+    "alpha": 0.6,
+    "visible": true
+  });
+  Globe.addLayer(layer);
+</script>

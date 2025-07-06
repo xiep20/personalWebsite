@@ -1,0 +1,89 @@
+{
+  "data": [
+    {
+      "label": "View",
+      "name": "View",
+      "html": "View"
+    },
+    {
+      "label": "矢量图层",
+      "name": "VectorTileDeuMapRest",
+      "html": "VectorTileDeuMapRest"
+    },
+    {
+      "label": "ImageWMS图层",
+      "name": "ImageWMS",
+      "html": "ImageWMS"
+    },
+    {
+      "label": "TileWMS图层",
+      "name": "TileWMS",
+      "html": "TileWMS"
+    },
+    {
+      "label": "WMTS图层",
+      "name": "WMTS",
+      "html": "WMTS"
+    },
+    {
+      "label": "WFS图层",
+      "name": "GeoJSON",
+      "html": "GeoJSON"
+    },
+    {
+      "label": "WFS图层",
+      "name": "WFS",
+      "html": "WFS"
+    },
+    {
+      "label": "百度地图",
+      "name": "baiduLayer",
+      "html": "baiduLayer"
+    },
+    {
+      "label": "高德地图",
+      "name": "GaodeMap",
+      "html": "GaodeMap"
+    },
+    {
+      "label": "天地图",
+      "name": "Tianditu",
+      "html": "Tianditu"
+    },
+    {
+      "label": "ImageWMS图层",
+      "name": "ImageWMS",
+      "html": "ImageWMS"
+    },
+    {
+      "label": "ImageWMS图层",
+      "name": "ImageWMS",
+      "html": "ImageWMS"
+    },
+    {
+      "label": "ImageWMS图层",
+      "name": "ImageWMS",
+      "html": "ImageWMS"
+    },
+    {
+      "label": "ImageWMS图层",
+      "name": "ImageWMS",
+      "html": "ImageWMS"
+    },
+    {
+      "label": "ImageWMS图层",
+      "name": "ImageWMS",
+      "html": "ImageWMS"
+    },
+    {
+      "label": "ImageWMS图层",
+      "name": "ImageWMS",
+      "html": "ImageWMS"
+    },
+    {
+      "label": "ImageWMS图层",
+      "name": "ImageWMS",
+      "html": "ImageWMS"
+    }
+  ]
+}

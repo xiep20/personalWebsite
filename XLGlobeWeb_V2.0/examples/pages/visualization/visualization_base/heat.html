@@ -1,0 +1,202 @@
+<style>
+    #toolbar {
+        position: absolute;
+        top: 0;
+        right: 10px;
+        padding: 10px 15px;
+        border-radius: 4px;
+        border: 1px solid rgba(128, 128, 128, .5);
+        color: #fff;
+        background: rgba(0, 0, 0, .4);
+        box-shadow: 0 3px 14px rgba(128, 128, 128, .5);
+        z-index: 999;
+    }
+
+    #toolbar .tool_row {
+        height: 32px;
+        margin: 10px 0 10px 10px;
+        text-align: center;
+    }
+
+    #toolbar .tool_row div {
+        float: left;
+        font-size: 16px;
+    }
+
+    #toolbar .tool_row input {
+        vertical-align: middle;
+        margin: 0 10px 0 5px;
+        padding: 0 5px;
+        background-color: rgba(32, 160, 255, .2);
+        line-height: 22px;
+        border-radius: 3px;
+        width: 80px;
+        border: 1px solid #f0f0f0;
+        float: left;
+    }
+
+    #toolbar .tool_row .btn-primary {
+        cursor: pointer;
+        color: #fff;
+        background-color: rgba(32, 160, 255, .2);
+        border: 1px solid #e4eaec;
+        font-size: 14px;
+        border-radius: 3px;
+    }
+
+    #toolbar .tool_row .btn-primary,
+    input {
+        float: none;
+    }
+
+    #toolbar .tool_row .btn-primary:hover {
+        color: #ffffff;
+        border-color: #4db3ff;
+    }
+
+    #toolbar .tool_row .selbox1 {
+        border-color: #4db3ff;
+    }
+</style>
+
+<div id="rjContainer"></div>
+<div id="toolbar">
+    <div class="tool_row">
+        <div>取样点数量：</div><input type="text" id="pointvalue" value="100">
+        <div>大小：</div><input type="text" id="pointsize" value="100">
+    </div>
+    <div class="tool_row">
+        <input type="button" class="btn btn-primary" value="绘制矩形" onclick="draw(this,'rectangle')">
+        <input type="button" class="btn btn-primary" value="绘制多边形" onclick="draw(this,'polygon')">
+        <input type="button" class="btn btn-primary" value="清除" onclick="clearheatmap()">
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+        initWork();
+    });
+
+    var Globe;
+    var viewer;
+    var drawControl;
+    var drawtype = 'rectangle';
+    var heatmap;
+    //初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer");
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+        //地形
+        var provider = new XLGlobe.Layer.layerTerrainProvider({
+            url: "http://data.marsgis.cn/terrain",
+            requestWaterMask: true,
+            requestVertexNormals: true
+        });
+        Globe.addTerrainLayer(provider);
+        Globe.centerAt(114.4, 30.2, 30000, 1.2, -35, 0)
+    }
+
+    //当前页面业务相关
+    function initWork() {
+        //热力图
+        var RJHeatMap = new XLGlobe.Visualization.RJHeatMap();
+        //图上绘制事件
+        drawControl = XLGlobe.Utils.draw({
+            viewer: viewer,
+            hasEdit: true,
+            onStopDrawing: function (entity) {
+                // 得到绘制结果
+                var points = null;
+                var pnum = parseFloat(document.getElementById("pointvalue").value);
+                if (drawtype == "rectangle") { //矩形
+                    var bbox = Cesium.Rectangle.subsample(entity.rectangle.coordinates.getValue());
+                    var xmin = 1000,
+                        xmax = -1000,
+                        ymin = 1000,
+                        ymax = -1000;
+                    var ellipsoid = viewer.scene.globe.ellipsoid;
+                    for (var i = 0; i < bbox.length; i++) {
+                        var x = Cesium.Math.toDegrees(ellipsoid.cartesianToCartographic(bbox[i]).longitude);
+                        var y = Cesium.Math.toDegrees(ellipsoid.cartesianToCartographic(bbox[i]).latitude);
+                        if (x > xmax) {
+                            xmax = x;
+                        }
+                        if (x < xmin) {
+                            xmin = x;
+                        }
+                        if (y > ymax) {
+                            ymax = y;
+                        }
+                        if (y < ymin) {
+                            ymin = y;
+                        }
+                    }
+                    //生成随机点
+                    points = XLGlobe.Utils.util.randomPointsWithinBbox(xmin, xmax, ymin, ymax, pnum,
+                        'geojson');
+                } else if (drawtype == "polygon") { //多边形
+                    var poly = entity._polygon.hierarchy._value.positions;
+                    var poly2 = [];
+                    for (var i = 0; i < poly.length; i++) {
+                        poly2.push(XLGlobe.Utils.latlng.formatPositon(poly[i]));
+                    }
+                    //生成随机点
+                    points = XLGlobe.Utils.util.randomPointsWithinPolygon(poly2, pnum, 'geojson');
+                }
+                drawControl.deleteEntity(entity)
+                //绘制热力图
+                heatmap = new RJHeatMap.CesiumHeatmapGL(viewer, points, {
+                    size: parseFloat(document.getElementById("pointsize").value), //size: "value", 
+                    intensity: .5
+                });
+            },
+        });
+        //按钮变色事件
+        document.onclick = function (e) {
+            var len = document.querySelectorAll('.selbox1').length;
+            if (e.target.className !== "" && e.target.className.indexOf("selbox1") >= 0 && len == 1) {
+                return
+            }
+            if (len > 0) {
+                if (len > 1) {
+                    var all = document.querySelectorAll(".selbox1");
+                    for (var a = 0; a < all.length; a++) {
+                        if (all[a] !== e.target) {
+                            all[a].classList.remove('selbox1');
+                        }
+                    }
+                } else {
+                    document.querySelector('.selbox1').classList.remove('selbox1');
+                }
+            }
+        };
+    }
+    //绘制
+    function draw(e, type) {
+        e.classList.add('selbox1');
+        drawtype = type;
+        drawControl.startDraw({
+            type: drawtype,
+            style: {
+                color: "#29cf34",
+                opacity: 0.5,
+                clampToGround: true,
+                extrudedHeight: 1
+            }
+        });
+    }
+    //清除
+    function clearheatmap() {
+        if (heatmap) {
+            heatmap._wRectangle.destroy();
+        }
+    }
+</script>

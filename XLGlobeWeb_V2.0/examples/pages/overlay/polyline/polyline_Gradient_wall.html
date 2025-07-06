@@ -1,0 +1,115 @@
+<style>
+</style>
+<div id="rjContainer"></div>
+<script>
+    $(document).ready(function () {
+        if (!XLGlobe.Utils.util.webglreport()) {
+            alert('系统检测到您使用的浏览器不支持WebGL功能');
+        }
+
+        initMap();
+    });
+
+    var Globe;
+    var viewer;
+    //初始化地图
+    function initMap() {
+        //初始化地图
+        Globe = new XLGlobe.Globe("rjContainer", {
+            navigation: true, //导航
+        });
+
+        viewer = Globe.viewer;
+
+        //添加底图图层
+        _addbdlayer(Globe);
+
+        //加载人工模型
+        tiles3d = new XLGlobe.Model.load3DTiles(viewer, {
+            url: config.dataUrl + "model/3DTiles/changju/changju/tileset.json",
+            hideGlobe: false,
+            isZoomTo: true,
+            height: 0
+        });
+
+        //渐变纹理
+        function getColorRamp(elevationRamp) {
+            if (elevationRamp == null)
+                elevationRamp = {
+                    0.0: "blue",
+                    0.1: "cyan",
+                    0.37: "lime",
+                    0.54: "yellow",
+                    1: "red"
+                };
+
+            var ramp = document.createElement('canvas');
+            ramp.width = 1;
+            ramp.height = 100;
+            var ctx = ramp.getContext('2d');
+            //ctx.fillStyle = 'rgba(255, 255, 160, 0)';//背景透明
+
+            var grd = ctx.createLinearGradient(0, 0, 0, 100);
+            for (var key in elevationRamp)
+                grd.addColorStop(1 - Number(key), elevationRamp[key]);
+
+            ctx.fillStyle = grd;
+            ctx.fillRect(0, 0, 1, 100); //参数：左上角x  左上角y  宽度width  高度height
+            return ramp;
+        }
+
+        //材质一
+        var material1 = new Cesium.ImageMaterialProperty({
+            image: getColorRamp({
+                0: 'rgba(65,105,225,1)',
+                0.2: 'rgba(65,105,225,0.8)',
+                0.4: 'rgba(65,105,225,0.6)',
+                0.6: 'rgba(65,105,225,0.4)',
+                0.8: 'rgba(65,105,225,0.2)',
+                1: 'rgba(65,105,225,0)'
+            }),
+            transparent: true
+        })
+        //材质二
+        var material2 = new Cesium.ImageMaterialProperty({
+            image: getColorRamp({
+                0: 'rgba(65,115,55,1)',
+                0.2: 'rgba(75,220,66,0.8)',
+                0.4: 'rgba(85,60,77,0.6)',
+                0.6: 'rgba(95,10,88,0.4)',
+                0.8: 'rgba(105,20,88,0.2)',
+                1: 'rgba(115,30,99,0)'
+            }),
+            transparent: true
+        })
+
+        //墙一
+        var wallStyle1 = viewer.entities.add({
+            name: "1",
+            wall: {
+                positions: Cesium.Cartesian3.fromDegreesArrayHeights([
+                    114.428455, 30.437127, 30,
+                    114.429799, 30.437435, 30,
+                    114.429496, 30.438305, 30,
+                    114.42819, 30.438015, 30,
+                    114.428455, 30.437127, 30,
+                ]),
+                material: material1,
+            },
+        });
+        //墙二
+        var wallStyle2 = viewer.entities.add({
+            name: "2",
+            wall: {
+                positions: Cesium.Cartesian3.fromDegreesArrayHeights([
+                    114.428153, 30.438118, 50,
+                    114.42942, 30.438402, 50,
+                    114.429155, 30.439284, 50,
+                    114.427918, 30.439019, 50,
+                    114.428153, 30.438118, 50,
+                ]),
+                material: material2,
+            },
+        });
+    }
+</script>

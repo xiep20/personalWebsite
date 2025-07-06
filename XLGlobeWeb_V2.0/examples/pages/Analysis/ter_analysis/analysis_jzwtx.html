@@ -1,0 +1,76 @@
+<style>
+  #menu {
+    position: absolute;
+    top: 20px;
+    left: 80px;
+    padding: 10px;
+    background: #8192a7cc;
+    border-radius: 3px;
+    z-index: 999;
+  }
+</style>
+<div id="rjContainer"></div>
+<script>
+  $(document).ready(function () {
+    if (!XLGlobe.Utils.util.webglreport()) {
+      alert('系统检测到您使用的浏览器不支持WebGL功能');
+    }
+
+    initMap();
+    initWork();
+  });
+
+  var viewer;
+  var scene;
+  var tiles3d
+  //初始化地图
+  function initMap() {
+    var Globe = new XLGlobe.Globe("rjContainer", {});
+    viewer = Globe.viewer;
+    scene = viewer.scene;
+
+    //添加底图图层
+    _addbdlayer(Globe);
+    //wmts服务
+    var layer = new XLGlobe.Layer.WMTSImageryProvider({
+      "name": "武汉",
+      type: "wmts",
+      url: config.geoserver + "/gwc/service/wmts",
+      layer: "night-wh",
+      style: "",
+      format: "image/png",
+      tileMatrixSetID: "EPSG:4326",
+      crs: "4326",
+      alpha: .5,
+      visible: true
+    });
+    Globe.addLayer(layer);
+    Globe.centerAt(114.28761, 30.577965, 478, 5, -15, 0);
+  }
+
+  //当前页面业务相关
+  function initWork() {
+    //加载3D模型
+    tiles3d = new XLGlobe.Model.load3DTiles(viewer, {
+      url: config.dataUrl + "/model/3DTiles/武汉市白模2/tileset.json",
+      hideGlobe: false,
+      isZoomTo: false,
+      height: 0
+    });
+
+    new XLGlobe.Model.Buildflowline({
+      viewer: viewer,
+      tileset: tiles3d,
+      //backgroundcolor: 'rgba(235, 223, 94,1)',
+      linespeed: "2.0",
+      // brightness: "100.0",
+      glowRange: "200.0"
+    });
+    // 亮度设置
+    var stages = viewer.scene.postProcessStages;
+    viewer.scene.brightness = viewer.scene.brightness || stages.add(Cesium.PostProcessStageLibrary
+      .createBrightnessStage());
+    viewer.scene.brightness.enabled = true;
+    viewer.scene.brightness.uniforms.brightness = Number(2);
+  }
+</script>

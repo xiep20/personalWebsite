@@ -1,0 +1,1 @@
+import{_ as e,c as t,o}from"./chunks/framework.Dgg8-8ov.js";const l=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"notes/deploy/index.md","filePath":"notes/deploy/index.md"}'),n={name:"notes/deploy/index.md"};function a(s,r,d,c,i,p){return o(),t("div")}const m=e(n,[["render",a]]);export{l as __pageData,m as default};

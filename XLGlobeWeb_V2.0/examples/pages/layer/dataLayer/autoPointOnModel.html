@@ -1,0 +1,99 @@
+<div id="rjContainer"></div>
+
+<script>
+  var viewer;
+  var scene;
+  initMap();
+  initPopup();
+  point2Mod();
+  // 初始化地图
+  function initMap() {
+    Globe = new XLGlobe.Globe("rjContainer", {
+      logo: true,
+    });
+    viewer = Globe.viewer;
+    scene = viewer.scene;
+
+    //添加底图图层
+    _addbdlayer(Globe);
+    var handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
+    handler.setInputAction(function (movement) { //点击查询信息
+      var pick = scene.pick(movement.position);
+      var pickxy = new Cesium.Cartesian2(movement.position.x, movement.position.y);
+      var cartesian = viewer.scene.globe.pick(viewer.camera.getPickRay(pickxy), viewer.scene); //屏幕转世界坐标
+      tooltip.cleartooltip();
+      if (Cesium.defined(pick) && pick.id) {
+        tooltip.add({
+          position: pick.id.position._value,
+          header: "名称：" + (pick.id.properties._name || ''),
+          content: "地址：" + (pick.id.properties._add || '')
+        });
+      }
+    }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+  }
+  //初始化气泡
+  function initPopup() {
+    tooltip = new XLGlobe.Utils.Tooltip({
+      viewer: viewer,
+      lineheight: 20,
+    });
+  }
+
+  //点数据加载
+  function point2Mod() {
+    var tileset = new Cesium.Cesium3DTileset({
+      url: config.dataUrl + 'model/3DTiles/changju/changju/tileset.json',
+    });
+    viewer.scene.primitives.add(tileset); //加载模型
+    viewer.zoomTo(tileset);
+    tileset.allTilesLoaded.addEventListener(function () { //所有模型加载完成
+      // 模拟点数据
+      let point = [{
+        lng: 114.42859,
+        lat: 30.438015,
+        field: {
+          name: '光电谷',
+          add: '长咀科技园'
+        }
+      },
+      {
+        lng: 114.42659,
+        lat: 30.437852,
+        field: {
+          name: '凤凰园',
+          add: '长咀科技园'
+        }
+      },
+      {
+        lng: 114.426107,
+        lat: 30.438882,
+        field: {
+          name: '藏龙阁',
+          add: '长咀科技园'
+        }
+      },
+      {
+        lng: 114.429807,
+        lat: 30.438882,
+        field: {
+          name: '外部点',
+          add: '不在模型上'
+        }
+      }
+      ]
+      let billboardStyle = {
+        image: "images/marker/mark1.png", //marker点图片路径
+        scale: 0.8 //设置图片大小
+      }
+      let offsetHeight = 3.5 //矢量点偏移高度
+      /** 
+       * 点自动贴模型
+       * viewer 
+       * point 要添加的点数据
+       * billboardStyle 点样式
+       * offsetHeight 矢量点偏移高度
+       */
+      XLGlobe.PointOnMode(viewer, point, billboardStyle, offsetHeight)
+    });
+  }
+</script>

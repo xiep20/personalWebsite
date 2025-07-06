@@ -1,0 +1,22 @@
+<style>
+</style>
+
+<div id="rjContainer"></div>
+<script>
+    //初始化地图
+    var Globe = new XLGlobe.Globe("rjContainer", {
+        animation: true,
+        timeline: true,
+        shouldAnimate: true,
+    });
+    var viewer = Globe.viewer;
+
+    //添加底图图层
+    _addbdlayer(Globe);
+    //时间跳动事件
+    viewer.clock.onTick.addEventListener(function (e) {
+        XLGlobe.eDialog.msg(Cesium.JulianDate.toDate(e.currentTime), {
+            offset: 't'
+        })
+    });
+</script>
